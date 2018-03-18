@@ -6,6 +6,8 @@ import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.components.View;
 import com.hjwylde.bowser.ui.components.bowser.BowserBuilder;
 import com.hjwylde.bowser.ui.components.fileBrowser.FileBrowserBuilder;
+import com.hjwylde.bowser.ui.components.fileBrowser.FileBrowserView;
+import com.hjwylde.bowser.ui.components.scrollable.ScrollableView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -41,10 +43,11 @@ public final class Application {
 
     private static @NotNull View buildFileBrowserView() {
         FileBrowser fileBrowser = new SystemFileBrowser();
-
-        return new FileBrowserBuilder()
+        FileBrowserView fileBrowserView = new FileBrowserBuilder()
                 .fileBrowser(fileBrowser)
                 .build();
+
+        return new ScrollableView(fileBrowserView);
     }
 
     private static @NotNull String getTitle() {
