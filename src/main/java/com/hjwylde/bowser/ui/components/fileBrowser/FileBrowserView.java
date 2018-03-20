@@ -15,9 +15,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.nio.file.Path;
 import java.util.Objects;
-
 
 public final class FileBrowserView implements View {
     private final static @NotNull Logger LOGGER = LogManager.getLogger(FileBrowserView.class.getSimpleName());
@@ -33,12 +33,22 @@ public final class FileBrowserView implements View {
         this.viewModel = Objects.requireNonNull(viewModel, "viewModel cannot be null.");
 
         initialiseListeners();
+        initialiseInputMap();
+        initialiseActionMap();
         initialiseRootNode();
     }
 
     @Override
     public @NotNull Component getComponent() {
         return tree;
+    }
+
+    private void initialiseActionMap() {
+        tree.getActionMap().put(FileBrowserAction.OPEN, new OpenAction());
+    }
+
+    private void initialiseInputMap() {
+        tree.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), FileBrowserAction.OPEN);
     }
 
     private void initialiseListeners() {

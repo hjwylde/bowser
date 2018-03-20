@@ -19,9 +19,13 @@ final class FileTreeNode extends DefaultMutableTreeNode {
         return filePath;
     }
 
+    public boolean isDirectory() {
+        return Files.isDirectory(filePath);
+    }
+
     @Override
     public boolean isLeaf() {
-        return !Files.isDirectory(filePath);
+        return !isDirectory();
     }
 
     @Override
