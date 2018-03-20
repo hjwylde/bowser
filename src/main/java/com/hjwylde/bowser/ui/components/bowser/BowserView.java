@@ -43,17 +43,22 @@ public final class BowserView implements View {
                 .build();
 
         ScrollableView scrollableView = new ScrollableView(fileBrowserView);
+        Component component = scrollableView.getComponent();
 
         // TODO (hjw): Dynamically set the tab name
-        tabbedPane.addTab("Tab", scrollableView.getComponent());
+        tabbedPane.addTab("Tab", component);
+        tabbedPane.setSelectedComponent(component);
     }
 
     private void initialiseActionMap() {
         tabbedPane.getActionMap().put(BowserAction.CLOSE_TAB, new CloseTabAction());
+        tabbedPane.getActionMap().put(BowserAction.NEW_TAB, new NewTabAction(this));
     }
 
     private void initialiseInputMap() {
         tabbedPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), BowserAction.CLOSE_TAB);
+        tabbedPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), BowserAction.NEW_TAB);
     }
 }
