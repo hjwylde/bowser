@@ -1,17 +1,15 @@
 package com.hjwylde.bowser;
 
+import com.hjwylde.bowser.io.DefaultFileSystemFactory;
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.components.View;
 import com.hjwylde.bowser.ui.components.bowser.BowserBuilder;
-import com.hjwylde.bowser.ui.components.fileBrowser.FileBrowserBuilder;
-import com.hjwylde.bowser.ui.components.fileBrowser.FileBrowserView;
-import com.hjwylde.bowser.ui.components.scrollable.ScrollableView;
+import com.hjwylde.bowser.ui.components.bowser.BowserView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.nio.file.FileSystems;
 import java.util.ResourceBundle;
 
 public final class Application {
@@ -34,18 +32,14 @@ public final class Application {
     }
 
     private static @NotNull View buildBowserView() {
-        return new BowserBuilder()
+        BowserView bowserView = new BowserBuilder()
                 .title(getTitle())
-                .addView(buildFileBrowserView())
-                .build();
-    }
-
-    private static @NotNull View buildFileBrowserView() {
-        FileBrowserView fileBrowserView = new FileBrowserBuilder()
-                .fileSystem(FileSystems.getDefault())
+                .fileSystemFactory(DefaultFileSystemFactory.getInstance())
                 .build();
 
-        return new ScrollableView(fileBrowserView);
+        bowserView.addDefaultFileBrowserTab();
+
+        return bowserView;
     }
 
     private static @NotNull String getTitle() {
