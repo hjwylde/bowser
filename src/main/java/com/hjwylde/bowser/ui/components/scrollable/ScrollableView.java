@@ -13,7 +13,6 @@ public final class ScrollableView implements View {
         component = new JScrollPane(view.getComponent());
     }
 
-    @Override
     public @NotNull Component getComponent() {
         return component;
     }

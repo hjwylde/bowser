@@ -15,7 +15,7 @@ public final class BowserBuilder {
     private boolean built = false;
 
     public BowserBuilder() {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.add(tabbedPane);
 
