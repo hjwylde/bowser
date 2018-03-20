@@ -1,7 +1,5 @@
 package com.hjwylde.bowser;
 
-import com.hjwylde.bowser.fileBrowsers.FileBrowser;
-import com.hjwylde.bowser.fileBrowsers.SystemFileBrowser;
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.components.View;
 import com.hjwylde.bowser.ui.components.bowser.BowserBuilder;
@@ -13,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.nio.file.FileSystems;
 import java.util.ResourceBundle;
 
 public final class Application {
@@ -42,9 +41,8 @@ public final class Application {
     }
 
     private static @NotNull View buildFileBrowserView() {
-        FileBrowser fileBrowser = new SystemFileBrowser();
         FileBrowserView fileBrowserView = new FileBrowserBuilder()
-                .fileBrowser(fileBrowser)
+                .fileSystem(FileSystems.getDefault())
                 .build();
 
         return new ScrollableView(fileBrowserView);

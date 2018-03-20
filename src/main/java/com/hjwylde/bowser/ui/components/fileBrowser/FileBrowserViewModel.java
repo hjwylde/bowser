@@ -1,29 +1,20 @@
 package com.hjwylde.bowser.ui.components.fileBrowser;
 
-import com.hjwylde.bowser.fileBrowsers.FileBrowser;
+import com.hjwylde.bowser.io.RxFiles;
+import com.hjwylde.bowser.modules.RxFilesModule;
 import io.reactivex.Observable;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 
 final class FileBrowserViewModel {
-    private final @NotNull FileBrowser fileBrowser;
+    private final @NotNull RxFiles rxFiles = RxFilesModule.provideRxFiles();
 
-    FileBrowserViewModel(@NotNull FileBrowser fileBrowser) {
-        this.fileBrowser = Objects.requireNonNull(fileBrowser, "fileBrowser cannot be null.");
-    }
-
-    public @NotNull Observable<? extends Path> getChildren(@NotNull Path path) {
+    public @NotNull Observable<? extends Path> getChildren(@NotNull Path parent) {
         // TODO (hjw): Ensure we are observing on the Swing EDT.
-        return fileBrowser.getChildren(path)
+        return rxFiles.getChildren(parent)
                 .filter(child -> !Files.isHidden(child))
-                .sorted();
-    }
-
-    public @NotNull Observable<? extends Path> getRootDirectories() {
-        return fileBrowser.getRootDirectories()
                 .sorted();
     }
 }
