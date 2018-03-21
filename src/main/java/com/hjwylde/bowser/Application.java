@@ -2,9 +2,10 @@ package com.hjwylde.bowser;
 
 import com.hjwylde.bowser.io.DefaultFileSystemFactory;
 import com.hjwylde.bowser.modules.LocaleModule;
-import com.hjwylde.bowser.ui.components.View;
-import com.hjwylde.bowser.ui.components.bowser.BowserBuilder;
-import com.hjwylde.bowser.ui.components.bowser.BowserView;
+import com.hjwylde.bowser.ui.BowserBuilder;
+import com.hjwylde.bowser.ui.BowserFrame;
+import com.hjwylde.bowser.ui.components.tabbedFileBrowser.TabbedFileBrowserBuilder;
+import com.hjwylde.bowser.ui.components.tabbedFileBrowser.TabbedFileBrowserView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -28,18 +29,24 @@ public final class Application {
             LOGGER.warn(e);
         }
 
-        SwingUtilities.invokeLater(Application::buildBowserView);
+        SwingUtilities.invokeLater(Application::build);
     }
 
-    private static @NotNull View buildBowserView() {
-        BowserView bowserView = new BowserBuilder()
+    private static @NotNull BowserFrame build() {
+        return new BowserBuilder()
                 .title(getTitle())
+                .tabbedFileBrowserView(buildTabbedFileBrowserView())
+                .build();
+    }
+
+    private static @NotNull TabbedFileBrowserView buildTabbedFileBrowserView() {
+        TabbedFileBrowserView tabbedFileBrowserView = new TabbedFileBrowserBuilder()
                 .fileSystemFactory(DefaultFileSystemFactory.getInstance())
                 .build();
 
-        bowserView.addDefaultFileBrowserTab();
+        tabbedFileBrowserView.addTab();
 
-        return bowserView;
+        return tabbedFileBrowserView;
     }
 
     private static @NotNull String getTitle() {

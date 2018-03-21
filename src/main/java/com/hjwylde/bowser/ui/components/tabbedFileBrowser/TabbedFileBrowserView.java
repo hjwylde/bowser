@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui.components.bowser;
+package com.hjwylde.bowser.ui.components.tabbedFileBrowser;
 
 import com.hjwylde.bowser.io.FileSystemFactory;
 import com.hjwylde.bowser.ui.components.View;
@@ -12,41 +12,39 @@ import java.awt.*;
 import java.nio.file.FileSystem;
 import java.util.Objects;
 
-public final class BowserView implements View {
-    private final @NotNull JFrame frame;
+public final class TabbedFileBrowserView implements View {
     private final @NotNull JTabbedPane tabbedPane;
 
     private final @NotNull FileSystemFactory fileSystemFactory;
 
-    BowserView(@NotNull JFrame frame, @NotNull JTabbedPane tabbedPane, @NotNull FileSystemFactory fileSystemFactory) {
-        this.frame = Objects.requireNonNull(frame, "frame cannot be null.");
+    TabbedFileBrowserView(@NotNull JTabbedPane tabbedPane, @NotNull FileSystemFactory fileSystemFactory) {
         this.tabbedPane = Objects.requireNonNull(tabbedPane, "tabbedPane cannot be null.");
         this.fileSystemFactory = Objects.requireNonNull(fileSystemFactory, "fileSystemFactory cannot be null.");
     }
 
-    public void addDefaultFileBrowserTab() {
-        addFileBrowserTab(fileSystemFactory.getFileSystem());
+    public void addTab() {
+        addTab(fileSystemFactory.getFileSystem());
     }
 
     @Override
-    public @NotNull Component getComponent() {
-        return frame;
+    public @NotNull JComponent getComponent() {
+        return tabbedPane;
     }
 
-    public void removeCurrentFileBrowserTab() {
+    public void removeCurrentTab() {
         Component component = tabbedPane.getSelectedComponent();
         if (component != null) {
             tabbedPane.remove(component);
         }
     }
 
-    private void addFileBrowserTab(@NotNull FileSystem fileSystem) {
+    private void addTab(@NotNull FileSystem fileSystem) {
         FileBrowserView fileBrowserView = new FileBrowserBuilder()
                 .fileSystem(fileSystem)
                 .build();
 
         ScrollableView scrollableView = new ScrollableView(fileBrowserView);
-        Component component = scrollableView.getComponent();
+        JComponent component = scrollableView.getComponent();
 
         // TODO (hjw): Dynamically set the tab name
         tabbedPane.addTab("Tab", component);

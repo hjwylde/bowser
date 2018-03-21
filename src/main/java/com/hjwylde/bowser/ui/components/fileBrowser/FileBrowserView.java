@@ -15,7 +15,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
@@ -44,7 +43,7 @@ public final class FileBrowserView implements View {
     }
 
     @Override
-    public @NotNull Component getComponent() {
+    public @NotNull JComponent getComponent() {
         return tree;
     }
 
