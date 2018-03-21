@@ -14,6 +14,7 @@ public final class BowserBuilder {
     private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(BowserBuilder.class.getName(), LocaleModule.provideLocale());
     private static final @NotNull String RESOURCE_CLOSE_TAB = "closeTab";
     private static final @NotNull String RESOURCE_FILE = "file";
+    private static final @NotNull String RESOURCE_NEW_FTP_TAB = "newFtpTab";
     private static final @NotNull String RESOURCE_NEW_TAB = "newTab";
 
     private final @NotNull JFrame frame = new JFrame();
@@ -71,6 +72,11 @@ public final class BowserBuilder {
         newTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         newTabMenuItem.addActionListener((e) -> tabbedFileBrowserView.addTab());
         fileMenu.add(newTabMenuItem);
+
+        JMenuItem newFtpTabMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_NEW_FTP_TAB), KeyEvent.VK_Y);
+        newFtpTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        newFtpTabMenuItem.addActionListener((e) -> tabbedFileBrowserView.addFtpTab());
+        fileMenu.add(newFtpTabMenuItem);
 
         fileMenu.addSeparator();
 
