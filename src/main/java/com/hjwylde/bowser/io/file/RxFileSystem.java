@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.io;
+package com.hjwylde.bowser.io.file;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;

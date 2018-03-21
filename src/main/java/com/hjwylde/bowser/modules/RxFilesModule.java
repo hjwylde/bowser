@@ -1,6 +1,6 @@
 package com.hjwylde.bowser.modules;
 
-import com.hjwylde.bowser.io.RxFiles;
+import com.hjwylde.bowser.io.file.RxFiles;
 import org.jetbrains.annotations.NotNull;
 
 public final class RxFilesModule {

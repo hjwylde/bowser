@@ -1,7 +1,7 @@
 package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 
 import com.github.robtimus.filesystems.ftp.FTPEnvironment;
-import com.hjwylde.bowser.io.FileSystemFactory;
+import com.hjwylde.bowser.io.file.FileSystemFactory;
 import com.hjwylde.bowser.ui.dialogs.FtpConnectionDialog;
 import com.hjwylde.bowser.ui.views.View;
 import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowserBuilder;

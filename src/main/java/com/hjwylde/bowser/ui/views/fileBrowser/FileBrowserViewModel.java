@@ -1,7 +1,7 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
-import com.hjwylde.bowser.io.RxFileSystem;
-import com.hjwylde.bowser.io.RxFiles;
+import com.hjwylde.bowser.io.file.RxFileSystem;
+import com.hjwylde.bowser.io.file.RxFiles;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.SwingSchedulers;
 import org.jetbrains.annotations.NotNull;

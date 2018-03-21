@@ -1,6 +1,6 @@
 package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 
-import com.hjwylde.bowser.io.FileSystemFactory;
+import com.hjwylde.bowser.io.file.FileSystemFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

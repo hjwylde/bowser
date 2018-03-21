@@ -1,6 +1,6 @@
 package com.hjwylde.bowser;
 
-import com.hjwylde.bowser.io.DefaultFileSystemFactory;
+import com.hjwylde.bowser.io.file.DefaultFileSystemFactory;
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.BowserBuilder;
 import com.hjwylde.bowser.ui.BowserFrame;
