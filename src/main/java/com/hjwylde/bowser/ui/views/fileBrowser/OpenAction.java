@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui.components.fileBrowser;
+package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

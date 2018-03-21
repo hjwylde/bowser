@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui.components.fileBrowser;
+package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import com.hjwylde.bowser.io.RxFiles;
 import com.hjwylde.bowser.modules.RxFilesModule;

@@ -1,10 +1,10 @@
-package com.hjwylde.bowser.ui.components.tabbedFileBrowser;
+package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 
 import com.hjwylde.bowser.io.FileSystemFactory;
-import com.hjwylde.bowser.ui.components.View;
-import com.hjwylde.bowser.ui.components.fileBrowser.FileBrowserBuilder;
-import com.hjwylde.bowser.ui.components.fileBrowser.FileBrowserView;
-import com.hjwylde.bowser.ui.components.scrollable.ScrollableView;
+import com.hjwylde.bowser.ui.views.View;
+import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowserBuilder;
+import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowserView;
+import com.hjwylde.bowser.ui.views.scrollable.ScrollableView;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

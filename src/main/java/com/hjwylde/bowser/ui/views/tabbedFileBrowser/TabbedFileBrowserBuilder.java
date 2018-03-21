@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui.components.tabbedFileBrowser;
+package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 
 import com.hjwylde.bowser.io.FileSystemFactory;
 import org.jetbrains.annotations.NotNull;

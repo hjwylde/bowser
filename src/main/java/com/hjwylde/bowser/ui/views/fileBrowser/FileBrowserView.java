@@ -1,6 +1,6 @@
-package com.hjwylde.bowser.ui.components.fileBrowser;
+package com.hjwylde.bowser.ui.views.fileBrowser;
 
-import com.hjwylde.bowser.ui.components.View;
+import com.hjwylde.bowser.ui.views.View;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;

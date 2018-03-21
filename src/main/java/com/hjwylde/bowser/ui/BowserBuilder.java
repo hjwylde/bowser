@@ -1,7 +1,7 @@
 package com.hjwylde.bowser.ui;
 
 import com.hjwylde.bowser.modules.LocaleModule;
-import com.hjwylde.bowser.ui.components.tabbedFileBrowser.TabbedFileBrowserView;
+import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowserView;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

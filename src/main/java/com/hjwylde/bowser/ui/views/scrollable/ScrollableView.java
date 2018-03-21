@@ -1,6 +1,6 @@
-package com.hjwylde.bowser.ui.components.scrollable;
+package com.hjwylde.bowser.ui.views.scrollable;
 
-import com.hjwylde.bowser.ui.components.View;
+import com.hjwylde.bowser.ui.views.View;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
