@@ -1,7 +1,6 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import com.hjwylde.bowser.ui.views.View;
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +15,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.KeyEvent;
-import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -28,13 +26,10 @@ public final class FileBrowserView implements View {
 
     private final @NotNull FileBrowserViewModel viewModel;
 
-    private final @NotNull FileSystem fileSystem;
-
-    FileBrowserView(@NotNull JTree tree, @NotNull DefaultTreeModel treeModel, @NotNull FileBrowserViewModel viewModel, @NotNull FileSystem fileSystem) {
+    FileBrowserView(@NotNull JTree tree, @NotNull DefaultTreeModel treeModel, @NotNull FileBrowserViewModel viewModel) {
         this.tree = Objects.requireNonNull(tree, "tree cannot be null.");
         this.treeModel = Objects.requireNonNull(treeModel, "treeModel cannot be null.");
         this.viewModel = Objects.requireNonNull(viewModel, "viewModel cannot be null.");
-        this.fileSystem = Objects.requireNonNull(fileSystem, "fileSystem cannot be null.");
 
         initialiseListeners();
         initialiseInputMap();
@@ -63,7 +58,7 @@ public final class FileBrowserView implements View {
     private void initialiseRootNode() {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeModel.getRoot();
 
-        Observable.fromIterable(fileSystem.getRootDirectories())
+        viewModel.getRootDirectories()
                 .subscribe(new OnGetChildrenObserver(node));
     }
 

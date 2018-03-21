@@ -1,5 +1,8 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
+import com.hjwylde.bowser.io.RxFileSystem;
+import com.hjwylde.bowser.io.RxFiles;
+import com.hjwylde.bowser.modules.RxFilesModule;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -25,9 +28,11 @@ public final class FileBrowserBuilder {
         JTree tree = new JTree(treeModel);
         tree.setRootVisible(false);
 
-        FileBrowserViewModel viewModel = new FileBrowserViewModel();
+        RxFiles rxFiles = RxFilesModule.provideRxFiles();
+        RxFileSystem rxFileSystem = RxFileSystem.forFileSystem(fileSystem);
+        FileBrowserViewModel viewModel = new FileBrowserViewModel(rxFiles, rxFileSystem);
 
-        return new FileBrowserView(tree, treeModel, viewModel, fileSystem);
+        return new FileBrowserView(tree, treeModel, viewModel);
     }
 
     public @NotNull FileBrowserBuilder fileSystem(@NotNull FileSystem fileSystem) {
