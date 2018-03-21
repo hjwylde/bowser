@@ -1,12 +1,21 @@
 package com.hjwylde.bowser.ui.components.bowser;
 
 import com.hjwylde.bowser.io.FileSystemFactory;
+import com.hjwylde.bowser.modules.LocaleModule;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 public final class BowserBuilder {
+    private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(BowserBuilder.class.getName(), LocaleModule.provideLocale());
+    private static final @NotNull String RESOURCE_CLOSE_TAB = "closeTab";
+    private static final @NotNull String RESOURCE_FILE = "file";
+    private static final @NotNull String RESOURCE_NEW_TAB = "newTab";
+
     private final @NotNull JFrame frame = new JFrame();
     private final @NotNull JTabbedPane tabbedPane = new JTabbedPane();
 
@@ -34,7 +43,13 @@ public final class BowserBuilder {
         frame.pack();
         frame.setVisible(true);
 
-        return new BowserView(frame, tabbedPane, fileSystemFactory);
+        // This is done temporarily just to test the menu system. This is not really ideal due to the cycles introduced
+        // here
+        BowserView bowserView = new BowserView(frame, tabbedPane, fileSystemFactory);
+
+        frame.setJMenuBar(buildMenuBar(bowserView));
+
+        return bowserView;
     }
 
     public @NotNull BowserBuilder fileSystemFactory(@NotNull FileSystemFactory fileSystemFactory) {
@@ -47,5 +62,26 @@ public final class BowserBuilder {
         frame.setTitle(title);
 
         return this;
+    }
+
+    private @NotNull JMenuBar buildMenuBar(@NotNull BowserView bowserView) {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu fileMenu = new JMenu(RESOURCES.getString(RESOURCE_FILE));
+        menuBar.add(fileMenu);
+
+        JMenuItem newTabMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_NEW_TAB), KeyEvent.VK_T);
+        newTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        newTabMenuItem.addActionListener(new NewTabAction(bowserView));
+        fileMenu.add(newTabMenuItem);
+
+        fileMenu.addSeparator();
+
+        JMenuItem closeTabMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_CLOSE_TAB), KeyEvent.VK_W);
+        closeTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        closeTabMenuItem.addActionListener(new CloseTabAction(bowserView));
+        fileMenu.add(closeTabMenuItem);
+
+        return menuBar;
     }
 }

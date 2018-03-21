@@ -6,18 +6,19 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.Objects;
 
 final class CloseTabAction extends AbstractAction {
     private final static @NotNull Logger LOGGER = LogManager.getLogger(CloseTabAction.class.getSimpleName());
 
+    private final @NotNull BowserView bowserView;
+
+    CloseTabAction(@NotNull BowserView bowserView) {
+        this.bowserView = Objects.requireNonNull(bowserView, "bowserView cannot be null.");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!(e.getSource() instanceof JTabbedPane)) {
-            LOGGER.error("event source must be an instance of JTabbedPane.");
-            return;
-        }
-
-        JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
-        tabbedPane.remove(tabbedPane.getSelectedComponent());
+        bowserView.removeCurrentFileBrowserTab();
     }
 }
