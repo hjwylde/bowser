@@ -19,7 +19,7 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 public final class FileBrowserView implements View {
-    private final static @NotNull Logger LOGGER = LogManager.getLogger(FileBrowserView.class.getSimpleName());
+    private static final @NotNull Logger LOGGER = LogManager.getLogger(FileBrowserView.class.getSimpleName());
 
     private final @NotNull JTree tree;
     private final @NotNull DefaultTreeModel treeModel;
