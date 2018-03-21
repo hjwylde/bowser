@@ -90,7 +90,7 @@ public final class TabbedFileBrowserView implements View {
 
             return Optional.of(fileSystem);
         } catch (IOException | URISyntaxException e) {
-            LOGGER.warn(e);
+            LOGGER.warn(e.getMessage(), e);
         }
 
         return Optional.empty();

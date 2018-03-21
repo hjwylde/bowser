@@ -16,8 +16,7 @@ final class OpenAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!(e.getSource() instanceof JTree)) {
-            LOGGER.error("event source must be an instance of JTree.");
-            return;
+            throw new IllegalArgumentException("event source must be an instance of JTree, instead it was " + e.getSource().getClass());
         }
 
         JTree tree = (JTree) e.getSource();
@@ -39,7 +38,7 @@ final class OpenAction extends AbstractAction {
         try {
             Desktop.getDesktop().open(file.toFile());
         } catch (IOException e) {
-            LOGGER.warn(e);
+            LOGGER.warn(e.getMessage(), e);
         }
     }
 }

@@ -26,7 +26,7 @@ public final class Application {
         try {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
         } catch (SecurityException e) {
-            LOGGER.warn(e);
+            LOGGER.warn(e.getMessage(), e);
         }
 
         SwingUtilities.invokeLater(Application::build);

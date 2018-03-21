@@ -81,7 +81,7 @@ public final class FileBrowserView implements View {
 
         @Override
         public void onError(Throwable e) {
-            LOGGER.warn(e);
+            LOGGER.warn(e.getMessage(), e);
         }
 
         @Override
