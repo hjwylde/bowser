@@ -10,6 +10,9 @@ import java.awt.event.KeyEvent;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * An uninstantiable namespace.
+ */
 public final class Bowser {
     private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(Bowser.class.getName(), LocaleModule.provideLocale());
     private static final @NotNull String RESOURCE_CLOSE_TAB = "closeTab";
@@ -20,6 +23,12 @@ public final class Bowser {
     private Bowser() {
     }
 
+    /**
+     * Creates a new {@link Builder} and returns it. The builder is used to set up and show a {@link BowserFrame} to the
+     * user.
+     *
+     * @return a new {@link Builder}.
+     */
     public static @NotNull Builder builder() {
         return new Builder();
     }
@@ -36,6 +45,15 @@ public final class Bowser {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         }
 
+        /**
+         * Builds a {@link BowserFrame} and shows it to the user. The frame is setup with a menu bar and the provided
+         * {@link TabbedFileBrowser.View}. This method may only be called once. Any repeated calls will result in a
+         * {@link IllegalStateException}.
+         *
+         * @return the built and shown {@link BowserFrame}.
+         * @throws IllegalStateException if called repeatedly.
+         * @throws IllegalStateException if tabbedFileBrowserView is null.
+         */
         public @NotNull BowserFrame build() {
             // I'm not sure of the best way to do this. I could look at frame#isVisible, or perhaps there are other
             // methods as well. Given I don't know the corner cases here, using a variable seems the safest option.
@@ -78,19 +96,19 @@ public final class Bowser {
 
             JMenuItem newTabMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_NEW_TAB), KeyEvent.VK_T);
             newTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-            newTabMenuItem.addActionListener((e) -> tabbedFileBrowserView.addTab());
+            newTabMenuItem.addActionListener(e -> tabbedFileBrowserView.addTab());
             fileMenu.add(newTabMenuItem);
 
             JMenuItem newFtpTabMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_NEW_FTP_TAB), KeyEvent.VK_Y);
             newFtpTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-            newFtpTabMenuItem.addActionListener((e) -> tabbedFileBrowserView.addFtpTab());
+            newFtpTabMenuItem.addActionListener(e -> tabbedFileBrowserView.addFtpTab());
             fileMenu.add(newFtpTabMenuItem);
 
             fileMenu.addSeparator();
 
             JMenuItem closeTabMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_CLOSE_TAB), KeyEvent.VK_W);
             closeTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-            closeTabMenuItem.addActionListener((e) -> tabbedFileBrowserView.removeCurrentTab());
+            closeTabMenuItem.addActionListener(e -> tabbedFileBrowserView.removeCurrentTab());
             fileMenu.add(closeTabMenuItem);
 
             return menuBar;

@@ -12,11 +12,20 @@ import javax.swing.tree.TreeNode;
 import java.nio.file.FileSystem;
 import java.util.Objects;
 
+/**
+ * {@link FileBrowser} provides the interfaces to create and use a component that displays a file tree. The file tree is
+ * navigatable and interactable. E.g., it is possible to extract and open different file types.
+ */
 public final class FileBrowser {
     private FileBrowser() {
     }
 
-    public static final @NotNull Builder builder() {
+    /**
+     * Creates a new {@link Builder}.
+     *
+     * @return a new {@link Builder}.
+     */
+    public static @NotNull Builder builder() {
         return new Builder();
     }
 
@@ -29,6 +38,13 @@ public final class FileBrowser {
         private Builder() {
         }
 
+        /**
+         * Builds and returns a new {@link FileBrowser.View}. The file browser view must have a file system to
+         * reference.
+         *
+         * @return a new {@link FileBrowser.View}.
+         * @throws IllegalStateException if fileSystem is null.
+         */
         public @NotNull View build() {
             if (fileSystem == null) {
                 throw new IllegalStateException("fileSystem must be set.");

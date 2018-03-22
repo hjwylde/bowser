@@ -12,6 +12,11 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.util.ResourceBundle;
 
+/**
+ * The source of the {@link #main(String[])} method! This application simply initialises and shows a
+ * {@link BowserFrame}. This class is responsible for setting the title and any global application settings, while the
+ * frame is responsible for displaying and interacting with the user.
+ */
 public final class Application {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(Application.class.getSimpleName());
 
@@ -21,6 +26,12 @@ public final class Application {
     private Application() {
     }
 
+    /**
+     * Builds a {@link BowserFrame} and shows it. The default frame has a single {@link TabbedFileBrowser.View} using
+     * the default file system (the local harddrive).
+     *
+     * @param args unused.
+     */
     public static void main(String[] args) {
         try {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
