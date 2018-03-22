@@ -27,6 +27,9 @@ final class SwingEdtScheduler extends Scheduler {
         return new SwingEdtWorker();
     }
 
+    /**
+     * A flag-like disposable, useful for marking actions, e.g., "stop".
+     */
     private static class BooleanDisposable implements Disposable {
         private final @NotNull AtomicBoolean disposed = new AtomicBoolean(false);
 
@@ -87,6 +90,8 @@ final class SwingEdtScheduler extends Scheduler {
                 public void dispose() {
                     super.dispose();
 
+                    // Stop the timer, but also mark the operation (flag) as cancelled to prevent it from completing in
+                    // case it gets picked up
                     timer.cancel();
                     flag.dispose();
                     disposables.remove(flag);

@@ -38,7 +38,7 @@ final class ExtractArchiveStrategy implements OpenStrategy {
         }
 
         ArchiveFileFactory archiveFileFactory = mArchiveFileFactory.get();
-        ArchiveFile archiveFile = archiveFileFactory.getArchiveFile(file);
+        ArchiveFile archiveFile = archiveFileFactory.createArchiveFile(file);
 
         // Using the archive parent path as the directory name is less than ideal, it would be nicer to ask the user
         // where to expand the archive

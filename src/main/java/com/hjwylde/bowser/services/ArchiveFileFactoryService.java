@@ -12,6 +12,10 @@ import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.stream.StreamSupport;
 
+/**
+ * Uses the {@link ServiceLoader} pattern to load all visible {@link ArchiveFileFactory}s on the class path. Additional
+ * {@link ArchiveFileFactory}s added will be automatically picked up.
+ */
 public final class ArchiveFileFactoryService {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(ArchiveFileFactoryService.class.getSimpleName());
 
@@ -23,10 +27,23 @@ public final class ArchiveFileFactoryService {
         loader = ServiceLoader.load(ArchiveFileFactory.class);
     }
 
+    /**
+     * Gets the singleton {@link ArchiveFileFactoryService} instance.
+     *
+     * @return the singleton instance.
+     */
     public static @NotNull ArchiveFileFactoryService getInstance() {
         return INSTANCE;
     }
 
+    /**
+     * Gets an {@link ArchiveFileFactory} that supports the given archive file. Returns {@link Optional#empty()} if no
+     * {@link ArchiveFileFactory} can be found.
+     *
+     * @param file the archive file to support.
+     * @return an {@link ArchiveFileFactory} that supports the given file, or nothing.
+     * @throws NullPointerException if file is null.
+     */
     public @NotNull Optional<ArchiveFileFactory> getArchiveFileFactory(@NotNull Path file) {
         Optional<String> mContentType = getContentType(file);
 

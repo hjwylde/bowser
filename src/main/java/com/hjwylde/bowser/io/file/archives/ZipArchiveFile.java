@@ -11,6 +11,9 @@ import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+/**
+ * An {@link ArchiveFile} that supports the ZIP file format.
+ */
 public final class ZipArchiveFile implements ArchiveFile {
     private final Path path;
 
@@ -18,6 +21,9 @@ public final class ZipArchiveFile implements ArchiveFile {
         this.path = Objects.requireNonNull(path, "path cannot be null.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void extract(@NotNull Path destination) throws IOException {
         if (!Files.exists(destination)) {
