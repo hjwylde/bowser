@@ -2,7 +2,7 @@ package com.hjwylde.bowser;
 
 import com.hjwylde.bowser.io.file.DefaultFileSystemFactory;
 import com.hjwylde.bowser.modules.LocaleModule;
-import com.hjwylde.bowser.ui.BowserBuilder;
+import com.hjwylde.bowser.ui.Bowser;
 import com.hjwylde.bowser.ui.BowserFrame;
 import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowser;
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +32,7 @@ public final class Application {
     }
 
     private static @NotNull BowserFrame build() {
-        return new BowserBuilder()
+        return Bowser.builder()
                 .title(getTitle())
                 .tabbedFileBrowserView(buildTabbedFileBrowserView())
                 .build();
