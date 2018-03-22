@@ -1,6 +1,5 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
-import com.hjwylde.bowser.ui.views.View;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import org.apache.logging.log4j.LogManager;
@@ -18,15 +17,15 @@ import java.awt.event.KeyEvent;
 import java.nio.file.Path;
 import java.util.Objects;
 
-public final class FileBrowserView implements View {
-    private static final @NotNull Logger LOGGER = LogManager.getLogger(FileBrowserView.class.getSimpleName());
+public final class FileBrowserComponent implements FileBrowser.View {
+    private static final @NotNull Logger LOGGER = LogManager.getLogger(FileBrowserComponent.class.getSimpleName());
 
     private final @NotNull JTree tree;
     private final @NotNull DefaultTreeModel treeModel;
 
     private final @NotNull FileBrowserViewModel viewModel;
 
-    FileBrowserView(@NotNull JTree tree, @NotNull DefaultTreeModel treeModel, @NotNull FileBrowserViewModel viewModel) {
+    FileBrowserComponent(@NotNull JTree tree, @NotNull DefaultTreeModel treeModel, @NotNull FileBrowserViewModel viewModel) {
         this.tree = Objects.requireNonNull(tree, "tree cannot be null.");
         this.treeModel = Objects.requireNonNull(treeModel, "treeModel cannot be null.");
         this.viewModel = Objects.requireNonNull(viewModel, "viewModel cannot be null.");

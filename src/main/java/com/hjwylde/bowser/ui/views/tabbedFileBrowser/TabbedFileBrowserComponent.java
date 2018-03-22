@@ -3,8 +3,7 @@ package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 import com.github.robtimus.filesystems.ftp.FTPEnvironment;
 import com.hjwylde.bowser.io.file.FileSystemFactory;
 import com.hjwylde.bowser.ui.dialogs.FtpConnectionDialog;
-import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowserBuilder;
-import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowserView;
+import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowser;
 import com.hjwylde.bowser.ui.views.scrollable.Scrollable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,7 +69,7 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
     }
 
     private void addTab(@NotNull FileSystem fileSystem) {
-        FileBrowserView fileBrowserView = new FileBrowserBuilder()
+        FileBrowser.View fileBrowserView = FileBrowser.builder()
                 .fileSystem(fileSystem)
                 .build();
 
