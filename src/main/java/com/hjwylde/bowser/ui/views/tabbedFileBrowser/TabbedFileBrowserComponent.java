@@ -3,7 +3,6 @@ package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 import com.github.robtimus.filesystems.ftp.FTPEnvironment;
 import com.hjwylde.bowser.io.file.FileSystemFactory;
 import com.hjwylde.bowser.ui.dialogs.FtpConnectionDialog;
-import com.hjwylde.bowser.ui.views.View;
 import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowserBuilder;
 import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowserView;
 import com.hjwylde.bowser.ui.views.scrollable.ScrollableView;
@@ -21,18 +20,19 @@ import java.nio.file.FileSystems;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class TabbedFileBrowserView implements View {
-    private final static @NotNull Logger LOGGER = LogManager.getLogger(TabbedFileBrowserView.class.getSimpleName());
+final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
+    private final static @NotNull Logger LOGGER = LogManager.getLogger(TabbedFileBrowserComponent.class.getSimpleName());
 
     private final @NotNull JTabbedPane tabbedPane;
 
     private final @NotNull FileSystemFactory fileSystemFactory;
 
-    TabbedFileBrowserView(@NotNull JTabbedPane tabbedPane, @NotNull FileSystemFactory fileSystemFactory) {
+    TabbedFileBrowserComponent(@NotNull JTabbedPane tabbedPane, @NotNull FileSystemFactory fileSystemFactory) {
         this.tabbedPane = Objects.requireNonNull(tabbedPane, "tabbedPane cannot be null.");
         this.fileSystemFactory = Objects.requireNonNull(fileSystemFactory, "fileSystemFactory cannot be null.");
     }
 
+    @Override
     public void addFtpTab() {
         FtpConnectionDialog dialog = FtpConnectionDialog.builder()
                 .parent(tabbedPane)
@@ -51,6 +51,7 @@ public final class TabbedFileBrowserView implements View {
         addTab(mFileSystem.get());
     }
 
+    @Override
     public void addTab() {
         addTab(fileSystemFactory.getFileSystem());
     }
@@ -60,6 +61,7 @@ public final class TabbedFileBrowserView implements View {
         return tabbedPane;
     }
 
+    @Override
     public void removeCurrentTab() {
         Component component = tabbedPane.getSelectedComponent();
         if (component != null) {

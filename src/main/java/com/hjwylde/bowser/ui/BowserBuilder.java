@@ -1,7 +1,7 @@
 package com.hjwylde.bowser.ui;
 
 import com.hjwylde.bowser.modules.LocaleModule;
-import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowserView;
+import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowser;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ public final class BowserBuilder {
 
     private final @NotNull JFrame frame = new JFrame();
 
-    private TabbedFileBrowserView tabbedFileBrowserView;
+    private TabbedFileBrowser.View tabbedFileBrowserView;
 
     private boolean built = false;
 
@@ -50,7 +50,7 @@ public final class BowserBuilder {
         return new BowserFrame(frame);
     }
 
-    public @NotNull BowserBuilder tabbedFileBrowserView(@NotNull TabbedFileBrowserView tabbedFileBrowserView) {
+    public @NotNull BowserBuilder tabbedFileBrowserView(@NotNull TabbedFileBrowser.View tabbedFileBrowserView) {
         this.tabbedFileBrowserView = Objects.requireNonNull(tabbedFileBrowserView);
 
         return this;

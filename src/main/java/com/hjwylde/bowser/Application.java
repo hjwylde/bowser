@@ -4,8 +4,7 @@ import com.hjwylde.bowser.io.file.DefaultFileSystemFactory;
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.BowserBuilder;
 import com.hjwylde.bowser.ui.BowserFrame;
-import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowserBuilder;
-import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowserView;
+import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -39,8 +38,8 @@ public final class Application {
                 .build();
     }
 
-    private static @NotNull TabbedFileBrowserView buildTabbedFileBrowserView() {
-        TabbedFileBrowserView tabbedFileBrowserView = new TabbedFileBrowserBuilder()
+    private static @NotNull TabbedFileBrowser.View buildTabbedFileBrowserView() {
+        TabbedFileBrowser.View tabbedFileBrowserView = TabbedFileBrowser.builder()
                 .fileSystemFactory(DefaultFileSystemFactory.getInstance())
                 .build();
 
