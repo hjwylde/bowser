@@ -8,16 +8,16 @@ import javax.swing.*;
 /**
  * A {@link View} that wraps another {@link View} in a scrollable component.
  */
-public final class ScrollableView implements View {
+final class ScrollableComponent implements Scrollable.View {
     private final @NotNull JComponent component;
 
     /**
-     * Creates a new {@link ScrollableView} that wraps the given {@link View}.
+     * Creates a new {@link ScrollableComponent} that wraps the given {@link View}.
      *
      * @param view the view to wrap.
      * @throws NullPointerException if view is null.
      */
-    public ScrollableView(@NotNull View view) {
+    ScrollableComponent(@NotNull View view) {
         component = new JScrollPane(view.getComponent());
     }
 

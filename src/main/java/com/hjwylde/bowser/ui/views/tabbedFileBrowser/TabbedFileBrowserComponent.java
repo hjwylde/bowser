@@ -5,7 +5,7 @@ import com.hjwylde.bowser.io.file.FileSystemFactory;
 import com.hjwylde.bowser.ui.dialogs.FtpConnectionDialog;
 import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowserBuilder;
 import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowserView;
-import com.hjwylde.bowser.ui.views.scrollable.ScrollableView;
+import com.hjwylde.bowser.ui.views.scrollable.Scrollable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -74,7 +74,9 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
                 .fileSystem(fileSystem)
                 .build();
 
-        ScrollableView scrollableView = new ScrollableView(fileBrowserView);
+        Scrollable.View scrollableView = Scrollable.builder()
+                .view(fileBrowserView)
+                .build();
         JComponent component = scrollableView.getComponent();
 
         // TODO (hjw): Dynamically set the tab name
