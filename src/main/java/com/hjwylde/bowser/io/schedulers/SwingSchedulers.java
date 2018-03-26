@@ -1,4 +1,4 @@
-package io.reactivex.schedulers;
+package com.hjwylde.bowser.io.schedulers;
 
 import io.reactivex.Scheduler;
 

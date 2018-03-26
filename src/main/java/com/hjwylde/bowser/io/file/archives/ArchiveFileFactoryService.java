@@ -1,6 +1,5 @@
-package com.hjwylde.bowser.services;
+package com.hjwylde.bowser.io.file.archives;
 
-import com.hjwylde.bowser.io.file.archives.ArchiveFileFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;

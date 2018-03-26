@@ -2,7 +2,7 @@ package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import com.hjwylde.bowser.io.file.archives.ArchiveFile;
 import com.hjwylde.bowser.io.file.archives.ArchiveFileFactory;
-import com.hjwylde.bowser.services.ArchiveFileFactoryService;
+import com.hjwylde.bowser.io.file.archives.ArchiveFileFactoryService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
