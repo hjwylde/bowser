@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui;
+package com.hjwylde.bowser.ui.frames.bowser;
 
 import org.jetbrains.annotations.NotNull;
 

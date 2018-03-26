@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui;
+package com.hjwylde.bowser.ui.frames.bowser;
 
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowser;
@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An uninstantiable namespace.
@@ -34,11 +35,11 @@ public final class Bowser {
     }
 
     public static final class Builder {
+        private final @NotNull AtomicBoolean built = new AtomicBoolean(false);
+
         private final @NotNull JFrame frame = new JFrame();
 
         private TabbedFileBrowser.View tabbedFileBrowserView;
-
-        private boolean built = false;
 
         private Builder() {
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -55,13 +56,9 @@ public final class Bowser {
          * @throws IllegalStateException if tabbedFileBrowserView is null.
          */
         public @NotNull BowserFrame build() {
-            // I'm not sure of the best way to do this. I could look at frame#isVisible, or perhaps there are other
-            // methods as well. Given I don't know the corner cases here, using a variable seems the safest option.
-            if (built) {
+            if (built.getAndSet(true)) {
                 throw new IllegalStateException("A BowserFrame may only be built once.");
             }
-
-            built = true;
 
             if (tabbedFileBrowserView == null) {
                 throw new IllegalStateException("tabbedFileBrowser cannot be null.");

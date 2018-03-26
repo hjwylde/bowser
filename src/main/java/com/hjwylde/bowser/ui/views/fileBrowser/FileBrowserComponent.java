@@ -43,10 +43,12 @@ public final class FileBrowserComponent implements FileBrowser.View {
 
     private void initialiseActionMap() {
         tree.getActionMap().put(FileBrowserAction.OPEN, new OpenAction());
+        tree.getActionMap().put(FileBrowserAction.PREVIEW, new PreviewAction());
     }
 
     private void initialiseInputMap() {
         tree.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), FileBrowserAction.OPEN);
+        tree.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), FileBrowserAction.PREVIEW);
     }
 
     private void initialiseListeners() {

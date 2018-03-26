@@ -2,8 +2,8 @@ package com.hjwylde.bowser;
 
 import com.hjwylde.bowser.io.file.DefaultFileSystemFactory;
 import com.hjwylde.bowser.modules.LocaleModule;
-import com.hjwylde.bowser.ui.Bowser;
-import com.hjwylde.bowser.ui.BowserFrame;
+import com.hjwylde.bowser.ui.frames.bowser.Bowser;
+import com.hjwylde.bowser.ui.frames.bowser.BowserFrame;
 import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

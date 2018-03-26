@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A custom dialog that requests a host, username and password from the user. These details are intended to be used in
@@ -27,6 +28,8 @@ public final class FtpConnectionDialog {
     private final @NotNull JTextField hostField = new JTextField();
     private final @NotNull JTextField usernameField = new JTextField();
     private final @NotNull JPasswordField passwordField = new JPasswordField();
+
+    private final @NotNull AtomicBoolean shown = new AtomicBoolean(false);
 
     private FtpConnectionDialog(Component parent) {
         this.parent = parent;
@@ -61,6 +64,10 @@ public final class FtpConnectionDialog {
      * @return the result.
      */
     public int show() {
+        if (shown.getAndSet(true)) {
+            throw new IllegalStateException("An FtpConnectionDialog may only be shown once.");
+        }
+
         JLabel hostLabel = new JLabel(RESOURCES.getString(RESOURCE_HOST));
         JLabel usernameLabel = new JLabel(RESOURCES.getString(RESOURCE_USERNAME));
         JLabel passwordLabel = new JLabel(RESOURCES.getString(RESOURCE_PASSWORD));
