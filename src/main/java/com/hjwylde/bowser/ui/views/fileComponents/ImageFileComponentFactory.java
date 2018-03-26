@@ -11,6 +11,7 @@ import java.util.List;
  * A {@link FileComponentFactory} that supports creating image {@link FileComponent}s ("image/jpeg", "image/png" files).
  */
 @AutoService(FileComponentFactory.class)
+@SuppressWarnings("unused")
 public final class ImageFileComponentFactory implements FileComponentFactory<ImageFileComponent> {
     private static final List<String> SUPPORTED_CONTENT_TYPES = Arrays.asList("image/jpeg", "image/png");
 

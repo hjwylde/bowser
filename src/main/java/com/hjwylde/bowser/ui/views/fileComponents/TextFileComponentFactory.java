@@ -10,6 +10,7 @@ import java.util.List;
  * A {@link FileComponentFactory} that supports creating text {@link FileComponent}s ("text/plain" files).
  */
 @AutoService(FileComponentFactory.class)
+@SuppressWarnings("unused")
 public final class TextFileComponentFactory implements FileComponentFactory<TextFileComponent> {
     private static final List<String> SUPPORTED_CONTENT_TYPES = Collections.singletonList("text/plain");
 

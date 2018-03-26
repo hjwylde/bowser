@@ -14,7 +14,7 @@ import java.util.zip.ZipInputStream;
 /**
  * An {@link ArchiveFile} that supports the ZIP file format.
  */
-public final class ZipArchiveFile implements ArchiveFile {
+final class ZipArchiveFile implements ArchiveFile {
     private final Path path;
 
     ZipArchiveFile(@NotNull Path path) {
@@ -32,7 +32,7 @@ public final class ZipArchiveFile implements ArchiveFile {
 
         try (InputStream in = Files.newInputStream(path);
              BufferedInputStream bin = new BufferedInputStream(in);
-             ZipInputStream zin = new ZipInputStream(bin);
+             ZipInputStream zin = new ZipInputStream(bin)
         ) {
             for (ZipEntry entry = zin.getNextEntry(); entry != null; entry = zin.getNextEntry()) {
                 Path entryPath = destination.resolve(entry.getName());

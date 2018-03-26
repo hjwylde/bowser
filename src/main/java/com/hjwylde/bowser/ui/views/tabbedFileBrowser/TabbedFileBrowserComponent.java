@@ -31,6 +31,9 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         this.fileSystemFactory = Objects.requireNonNull(fileSystemFactory, "fileSystemFactory cannot be null.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addFtpTab() {
         FtpConnectionDialog dialog = FtpConnectionDialog.builder()
@@ -50,16 +53,25 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         addTab(mFileSystem.get());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addTab() {
         addTab(fileSystemFactory.getFileSystem());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @NotNull JComponent getComponent() {
         return tabbedPane;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeCurrentTab() {
         Component component = tabbedPane.getSelectedComponent();

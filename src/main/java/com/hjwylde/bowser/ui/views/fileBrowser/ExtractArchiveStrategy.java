@@ -3,8 +3,6 @@ package com.hjwylde.bowser.ui.views.fileBrowser;
 import com.hjwylde.bowser.io.file.archives.ArchiveFile;
 import com.hjwylde.bowser.io.file.archives.ArchiveFileFactory;
 import com.hjwylde.bowser.io.file.archives.ArchiveFileFactoryService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -13,23 +11,27 @@ import java.util.Objects;
 import java.util.Optional;
 
 final class ExtractArchiveStrategy implements OpenStrategy {
-    private static final @NotNull Logger LOGGER = LogManager.getLogger(ExtractArchiveStrategy.class.getSimpleName());
-
     private final @NotNull ArchiveFileFactoryService archiveFileFactoryService;
 
     ExtractArchiveStrategy() {
         this(ArchiveFileFactoryService.getInstance());
     }
 
-    ExtractArchiveStrategy(@NotNull ArchiveFileFactoryService archiveFileFactoryService) {
+    private ExtractArchiveStrategy(@NotNull ArchiveFileFactoryService archiveFileFactoryService) {
         this.archiveFileFactoryService = Objects.requireNonNull(archiveFileFactoryService, "archiveFileFactoryService cannot be null.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSupported(@NotNull Path file) {
         return getArchiveFileFactory(file).isPresent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void openFile(@NotNull Path file) throws IOException {
         Optional<ArchiveFileFactory> mArchiveFileFactory = getArchiveFileFactory(file);

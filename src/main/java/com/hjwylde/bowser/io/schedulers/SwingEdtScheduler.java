@@ -22,6 +22,9 @@ final class SwingEdtScheduler extends Scheduler {
         return INSTANCE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Worker createWorker() {
         return new SwingEdtWorker();

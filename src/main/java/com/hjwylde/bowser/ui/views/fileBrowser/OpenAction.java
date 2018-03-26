@@ -8,7 +8,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 final class OpenAction extends AbstractAction {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(OpenAction.class.getSimpleName());
@@ -21,13 +24,12 @@ final class OpenAction extends AbstractAction {
     private final @NotNull List<OpenStrategy> openStrategies;
 
     OpenAction() {
-        this(DEFAULT_OPEN_STRATEGIES);
+        this.openStrategies = new ArrayList<>(DEFAULT_OPEN_STRATEGIES);
     }
 
-    OpenAction(@NotNull List<OpenStrategy> openStrategies) {
-        this.openStrategies = Objects.requireNonNull(new ArrayList<>(openStrategies));
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void actionPerformed(ActionEvent event) {
         if (!(event.getSource() instanceof JTree)) {

@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
  * {@link BowserFrame}. This class is responsible for setting the title and any global application settings, while the
  * frame is responsible for displaying and interacting with the user.
  */
-public final class Application {
+final class Application {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(Application.class.getSimpleName());
 
     private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(Application.class.getName(), LocaleModule.provideLocale());

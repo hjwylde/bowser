@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.util.Objects;
 
 class TextFileComponent implements FileComponent {
     private final @NotNull JTextPane textPane = new JTextPane();

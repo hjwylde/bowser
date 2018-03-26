@@ -7,12 +7,18 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 final class OpenWithAssociatedApplicationStrategy implements OpenStrategy {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSupported(@NotNull Path file) {
         // Let the file system try determine whether there is a default associated application for this file type.
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void openFile(@NotNull Path file) throws IOException {
         if (!Desktop.isDesktopSupported()) {

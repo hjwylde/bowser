@@ -10,9 +10,8 @@ import java.util.Objects;
  * it.
  */
 public final class BowserFrame {
-    private final @NotNull JFrame frame;
-
     BowserFrame(@NotNull JFrame frame) {
-        this.frame = Objects.requireNonNull(frame, "frame cannot be null.");
+        // Frame is unused right now
+        Objects.requireNonNull(frame, "frame cannot be null.");
     }
 }

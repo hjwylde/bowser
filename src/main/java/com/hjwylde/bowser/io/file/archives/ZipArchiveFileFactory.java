@@ -8,11 +8,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * An {@link ArchiveFileFactory} that supports creating {@link ZipArchiveFile}s ("application/zip" files).
+ * An {@link ArchiveFileFactory} that supports creating ZIP {@link ArchiveFile}s ("application/zip" files).
  */
 @AutoService(ArchiveFileFactory.class)
+@SuppressWarnings("unused")
 public final class ZipArchiveFileFactory implements ArchiveFileFactory<ZipArchiveFile> {
-    private static final List<String> SUPPORTED_CONTENT_TYPES = Collections.singletonList("application/zip");
+    private static final @NotNull List<String> SUPPORTED_CONTENT_TYPES = Collections.singletonList("application/zip");
 
     /**
      * {@inheritDoc}

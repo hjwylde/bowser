@@ -23,11 +23,17 @@ final class FileTreeNode extends DefaultMutableTreeNode {
         return Files.isDirectory(filePath);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isLeaf() {
         return !isDirectory();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         if (filePath.getFileName() != null) {

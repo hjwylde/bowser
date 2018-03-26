@@ -36,6 +36,9 @@ public final class FileBrowserComponent implements FileBrowser.View {
         initialiseRootNode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @NotNull JComponent getComponent() {
         return tree;
@@ -70,16 +73,25 @@ public final class FileBrowserComponent implements FileBrowser.View {
             this.parent = Objects.requireNonNull(parent, "parent cannot be null.");
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onComplete() {
             tree.expandPath(new TreePath(parent));
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onError(Throwable e) {
             LOGGER.warn(e.getMessage(), e);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onNext(Path path) {
             MutableTreeNode child = new FileTreeNode(path);
@@ -88,6 +100,9 @@ public final class FileBrowserComponent implements FileBrowser.View {
             treeModel.insertNodeInto(child, parent, index);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onSubscribe(Disposable d) {
             // TODO (hjw): How to detect when a component is destroyed? We wish to cancel any requests if the results
@@ -96,10 +111,16 @@ public final class FileBrowserComponent implements FileBrowser.View {
     }
 
     private final class OnTreeExpansionListener implements TreeExpansionListener {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void treeCollapsed(TreeExpansionEvent event) {
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void treeExpanded(TreeExpansionEvent event) {
             TreePath treePath = event.getPath();
