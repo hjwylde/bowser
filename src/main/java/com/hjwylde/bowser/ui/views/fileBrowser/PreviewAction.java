@@ -25,6 +25,7 @@ final class PreviewAction extends AbstractAction {
         FileTreeNode node = (FileTreeNode) tree.getLastSelectedPathComponent();
 
         Path file = node.getFilePath();
+        // TODO (hjw): This is an expensive operation, it should be backgrounded.
         previewFile(file, getFrame(tree));
     }
 

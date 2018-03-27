@@ -44,6 +44,8 @@ final class OpenAction extends AbstractAction {
 
         Path file = node.getFilePath();
         try {
+            // TODO (hjw): This is delegating to a foreign object, I'm not sure if action events are posted on a
+            // background thread, so it would be safer to background it myself.
             openFile(file);
         } catch (IOException e) {
             LOGGER.warn(e.getMessage(), e);

@@ -93,11 +93,13 @@ public final class Bowser {
 
             JMenuItem newTabMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_NEW_TAB), KeyEvent.VK_T);
             newTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            // TODO (hjw): This is potentially an expensive operation, it should be backgrounded.
             newTabMenuItem.addActionListener(e -> tabbedFileBrowserView.addTab());
             fileMenu.add(newTabMenuItem);
 
             JMenuItem newFtpTabMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_NEW_FTP_TAB), KeyEvent.VK_Y);
             newFtpTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            // TODO (hjw): This is potentially an expensive operation, it should be backgrounded.
             newFtpTabMenuItem.addActionListener(e -> tabbedFileBrowserView.addFtpTab());
             fileMenu.add(newFtpTabMenuItem);
 

@@ -78,6 +78,9 @@ public final class FilePreview {
             }
 
             try {
+                // TODO (hjw): This is potentially quite bad, it would be better if the factory took an input stream and
+                // dealt with potentially large files itself, rather than introducing the possibility of running out of
+                // memory by loading the entire file here.
                 FileComponentFactory fileComponentFactory = getFileComponentFactory();
                 byte[] data = Files.readAllBytes(file);
 
