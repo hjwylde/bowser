@@ -42,11 +42,9 @@ final class ZipArchiveFile implements ArchiveFile {
                     Files.createDirectories(parent);
                 }
 
-                if (entry.isDirectory()) {
-                    continue;
+                if (!entry.isDirectory()) {
+                    Files.copy(zin, entryPath);
                 }
-
-                Files.copy(zin, entryPath);
 
                 zin.closeEntry();
             }

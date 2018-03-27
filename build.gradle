@@ -1,5 +1,16 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'org.junit.platform.gradle.plugin'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -17,4 +28,8 @@ dependencies {
     compile 'org.apache.logging.log4j:log4j-api:2.11.0'
     compile 'org.apache.logging.log4j:log4j-core:2.11.0'
     compile 'org.jetbrains:annotations:16.0.1'
+    testCompile 'com.google.jimfs:jimfs:1.1'
+    testCompile 'org.mockito:mockito-core:2.17.0'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.0.3'
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.0.3'
 }
