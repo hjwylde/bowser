@@ -11,6 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import java.nio.file.FileSystem;
+import java.nio.file.Path;
+import java.util.Optional;
 
 /**
  * {@link FileBrowser} provides the interfaces to create and use a component that displays a file tree. The file tree is
@@ -30,6 +32,12 @@ public final class FileBrowser {
     }
 
     public interface View extends com.hjwylde.bowser.ui.views.View {
+        /**
+         * Gets the currently selected path. If no path is selected, then {@link Optional#empty()} is returned.
+         *
+         * @return the currently selected path, or {@link Optional#empty()}.
+         */
+        Optional<Path> getSelectedPath();
     }
 
     @NotThreadSafe

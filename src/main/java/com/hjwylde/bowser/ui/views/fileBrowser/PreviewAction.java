@@ -1,6 +1,8 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import com.hjwylde.bowser.ui.dialogs.FilePreviewDialog;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.Immutable;
@@ -8,10 +10,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.nio.file.Path;
+import java.util.Optional;
 
 @Immutable
 final class PreviewAction extends AbstractAction {
-    PreviewAction() {
+    private static final @NotNull Logger LOGGER = LogManager.getLogger(PreviewAction.class.getSimpleName());
+
+    private final @NotNull FileBrowser.View view;
+
+    PreviewAction(@NotNull FileBrowser.View view) {
+        this.view = view;
     }
 
     /**
@@ -19,16 +27,15 @@ final class PreviewAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-        if (!(event.getSource() instanceof JTree)) {
-            throw new IllegalArgumentException("event source must be an instance of JTree, instead it was " + event.getSource().getClass());
+        Optional<Path> mPath = view.getSelectedPath();
+        if (!mPath.isPresent()) {
+            LOGGER.debug("PreviewAction called while no path is selected, doing nothing");
+            return;
         }
 
-        JTree tree = (JTree) event.getSource();
-        FileTreeNode node = (FileTreeNode) tree.getLastSelectedPathComponent();
-
-        Path file = node.getFilePath();
+        Path path = mPath.get();
         // TODO (hjw): This is an expensive operation, it should be backgrounded.
-        previewFile(file, getFrame(tree));
+        previewFile(path, getFrame(view.getComponent()));
     }
 
     private @NotNull JFrame getFrame(@NotNull Component component) {

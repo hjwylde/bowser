@@ -8,6 +8,7 @@ import javax.annotation.concurrent.Immutable;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,10 @@ final class OpenAction extends AbstractAction {
 
     private final @NotNull List<OpenStrategy> openStrategies = DEFAULT_OPEN_STRATEGIES;
 
-    OpenAction() {
+    private final @NotNull FileBrowser.View view;
+
+    OpenAction(@NotNull FileBrowser.View view) {
+        this.view = view;
     }
 
     /**
@@ -32,21 +36,22 @@ final class OpenAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-        if (!(event.getSource() instanceof JTree)) {
-            throw new IllegalArgumentException("event source must be an instance of JTree, instead it was " + event.getSource().getClass());
-        }
-
-        JTree tree = (JTree) event.getSource();
-        FileTreeNode node = (FileTreeNode) tree.getLastSelectedPathComponent();
-        if (node.isDirectory()) {
+        Optional<Path> mPath = view.getSelectedPath();
+        if (!mPath.isPresent()) {
+            LOGGER.debug("OpenAction called while no path is selected, doing nothing");
             return;
         }
 
-        Path file = node.getFilePath();
+        Path path = mPath.get();
+        if (Files.isDirectory(path)) {
+            LOGGER.debug("OpenAction called on a directory, doing nothing");
+            return;
+        }
+
         try {
             // TODO (hjw): This is delegating to a foreign object, I'm not sure if action events are posted on a
             // background thread, so it would be safer to background it myself.
-            openFile(file);
+            openFile(path);
         } catch (IOException e) {
             LOGGER.warn(e.getMessage(), e);
         }

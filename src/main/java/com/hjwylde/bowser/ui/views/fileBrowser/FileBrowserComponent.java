@@ -16,6 +16,7 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.KeyEvent;
 import java.nio.file.Path;
+import java.util.Optional;
 
 @NotThreadSafe
 public final class FileBrowserComponent implements FileBrowser.View {
@@ -45,9 +46,22 @@ public final class FileBrowserComponent implements FileBrowser.View {
         return tree;
     }
 
+    @Override
+    public Optional<Path> getSelectedPath() {
+        Object selectedPathComponent = tree.getLastSelectedPathComponent();
+        if (selectedPathComponent == null) {
+            return Optional.empty();
+        }
+
+        FileTreeNode node = (FileTreeNode) selectedPathComponent;
+
+        return Optional.of(node.getFilePath());
+    }
+
     private void initialiseActionMap() {
-        tree.getActionMap().put(FileBrowserAction.OPEN, new OpenAction());
-        tree.getActionMap().put(FileBrowserAction.PREVIEW, new PreviewAction());
+        // TODO (hjw): Cyclic references -> is it possible to avoid this?
+        tree.getActionMap().put(FileBrowserAction.OPEN, new OpenAction(this));
+        tree.getActionMap().put(FileBrowserAction.PREVIEW, new PreviewAction(this));
     }
 
     private void initialiseInputMap() {
