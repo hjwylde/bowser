@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +37,7 @@ public final class FilePreview {
     public interface View extends com.hjwylde.bowser.ui.views.View {
     }
 
+    @NotThreadSafe
     public static final class Builder {
         private Path file;
 

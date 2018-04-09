@@ -5,6 +5,7 @@ import com.hjwylde.bowser.io.file.RxFiles;
 import com.hjwylde.bowser.modules.RxFilesModule;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -31,6 +32,7 @@ public final class FileBrowser {
     public interface View extends com.hjwylde.bowser.ui.views.View {
     }
 
+    @NotThreadSafe
     public static final class Builder {
         private FileSystem fileSystem;
 

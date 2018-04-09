@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -16,6 +17,7 @@ import javax.swing.tree.TreePath;
 import java.awt.event.KeyEvent;
 import java.nio.file.Path;
 
+@NotThreadSafe
 public final class FileBrowserComponent implements FileBrowser.View {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(FileBrowserComponent.class.getSimpleName());
 
@@ -65,6 +67,7 @@ public final class FileBrowserComponent implements FileBrowser.View {
                 .subscribe(new OnGetChildrenObserver(node));
     }
 
+    @NotThreadSafe
     private final class OnGetChildrenObserver implements Observer<Path> {
         private final @NotNull MutableTreeNode parent;
 
@@ -109,6 +112,7 @@ public final class FileBrowserComponent implements FileBrowser.View {
         }
     }
 
+    @NotThreadSafe
     private final class OnTreeExpansionListener implements TreeExpansionListener {
         /**
          * {@inheritDoc}
@@ -144,6 +148,5 @@ public final class FileBrowserComponent implements FileBrowser.View {
         private boolean isPopulated(FileTreeNode node) {
             return node.isLeaf() || node.getChildCount() > 0;
         }
-
     }
 }

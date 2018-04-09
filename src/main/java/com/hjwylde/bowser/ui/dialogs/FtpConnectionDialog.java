@@ -3,10 +3,10 @@ package com.hjwylde.bowser.ui.dialogs;
 import com.hjwylde.bowser.modules.LocaleModule;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A custom dialog that requests a host, username and password from the user. These details are intended to be used in
@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>
  * N.B., no error handling is performed here, it is up to the user of this class to verify the contents of the fields.
  */
+@NotThreadSafe
 public final class FtpConnectionDialog {
     public static final int OK_OPTION = JOptionPane.OK_OPTION;
 
@@ -29,7 +30,7 @@ public final class FtpConnectionDialog {
     private final @NotNull JTextField usernameField = new JTextField();
     private final @NotNull JPasswordField passwordField = new JPasswordField();
 
-    private final @NotNull AtomicBoolean shown = new AtomicBoolean(false);
+    private boolean shown = false;
 
     private FtpConnectionDialog(Component parent) {
         this.parent = parent;
@@ -64,9 +65,11 @@ public final class FtpConnectionDialog {
      * @return the result.
      */
     public int show() {
-        if (shown.getAndSet(true)) {
+        if (shown) {
             throw new IllegalStateException("An FtpConnectionDialog may only be shown once.");
         }
+
+        shown = true;
 
         JLabel hostLabel = new JLabel(RESOURCES.getString(RESOURCE_HOST));
         JLabel usernameLabel = new JLabel(RESOURCES.getString(RESOURCE_USERNAME));
@@ -85,6 +88,7 @@ public final class FtpConnectionDialog {
     /**
      * An {@link FtpConnectionDialog} builder. There are no requirements to building an {@link FtpConnectionDialog}.
      */
+    @NotThreadSafe
     public static final class Builder {
         private Component parent;
 

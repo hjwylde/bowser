@@ -2,10 +2,12 @@ package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+@Immutable
 final class FileTreeNode extends DefaultMutableTreeNode {
     // We are intentionally not using the parent's userObject as it is mutable
     private final @NotNull Path filePath;

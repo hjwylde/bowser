@@ -3,6 +3,7 @@ package com.hjwylde.bowser.ui.views.fileComponents;
 import com.google.auto.service.AutoService;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * A {@link FileComponentFactory} that supports creating image {@link FileComponent}s ("image/jpeg", "image/png" files).
  */
 @AutoService(FileComponentFactory.class)
+@Immutable
 @SuppressWarnings("unused")
 public final class ImageFileComponentFactory implements FileComponentFactory<ImageFileComponent> {
     private static final List<String> SUPPORTED_CONTENT_TYPES = Arrays.asList("image/jpeg", "image/png");

@@ -4,15 +4,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Immutable
 final class OpenAction extends AbstractAction {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(OpenAction.class.getSimpleName());
 
@@ -21,10 +22,9 @@ final class OpenAction extends AbstractAction {
             new OpenWithAssociatedApplicationStrategy()
     );
 
-    private final @NotNull List<OpenStrategy> openStrategies;
+    private final @NotNull List<OpenStrategy> openStrategies = DEFAULT_OPEN_STRATEGIES;
 
     OpenAction() {
-        this.openStrategies = new ArrayList<>(DEFAULT_OPEN_STRATEGIES);
     }
 
     /**

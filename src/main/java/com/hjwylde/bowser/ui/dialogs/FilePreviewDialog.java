@@ -4,15 +4,16 @@ import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.views.filePreview.FilePreview;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A custom dialog that displays a preview of a file. This preview functionality is very similar to that of Finder. This
  * dialog defers UI logic to the {@link FilePreview} builder and view.
  */
+@NotThreadSafe
 public final class FilePreviewDialog {
     private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(FilePreviewDialog.class.getName(), LocaleModule.provideLocale());
     private static final @NotNull String RESOURCE_TITLE = "title";
@@ -21,7 +22,7 @@ public final class FilePreviewDialog {
 
     private final @NotNull Path file;
 
-    private final @NotNull AtomicBoolean shown = new AtomicBoolean(false);
+    private boolean shown = false;
 
     private FilePreviewDialog(@NotNull JFrame parent, @NotNull Path file) {
         this.parent = parent;
@@ -38,12 +39,17 @@ public final class FilePreviewDialog {
     }
 
     /**
-     * Shows the dialog. This blocks the UI until the user closes the preview.
+     * Shows the dialog. This blocks the UI until the user closes the preview. This method may only be called once. Any
+     * repeated calls will result in a {@link IllegalStateException}.
+     *
+     * @throws IllegalStateException if called repeatedly.
      */
     public void show() {
-        if (shown.getAndSet(true)) {
+        if (shown) {
             throw new IllegalStateException("A FilePreviewDialog may only be shown once.");
         }
+
+        shown = true;
 
         JDialog dialog = new JDialog(parent, RESOURCES.getString(RESOURCE_TITLE), true);
 
@@ -63,6 +69,7 @@ public final class FilePreviewDialog {
     /**
      * An {@link FilePreviewDialog} builder. There are no requirements to building an {@link FilePreviewDialog}.
      */
+    @NotThreadSafe
     public static final class Builder {
         private JFrame parent;
 

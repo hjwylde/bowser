@@ -5,10 +5,12 @@ import com.hjwylde.bowser.io.file.archives.ArchiveFileFactory;
 import com.hjwylde.bowser.io.file.archives.ArchiveFileFactoryService;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
+@Immutable
 final class ExtractArchiveStrategy implements OpenStrategy {
     private final @NotNull ArchiveFileFactoryService archiveFileFactoryService;
 

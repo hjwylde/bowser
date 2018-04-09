@@ -2,6 +2,7 @@ package com.hjwylde.bowser.io.file.archives;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +14,7 @@ import java.util.zip.ZipInputStream;
 /**
  * An {@link ArchiveFile} that supports the ZIP file format.
  */
+@Immutable
 final class ZipArchiveFile implements ArchiveFile {
     private final Path path;
 

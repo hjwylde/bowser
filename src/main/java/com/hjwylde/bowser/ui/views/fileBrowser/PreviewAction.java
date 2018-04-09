@@ -3,11 +3,13 @@ package com.hjwylde.bowser.ui.views.fileBrowser;
 import com.hjwylde.bowser.ui.dialogs.FilePreviewDialog;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.nio.file.Path;
 
+@Immutable
 final class PreviewAction extends AbstractAction {
     PreviewAction() {
     }

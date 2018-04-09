@@ -3,6 +3,7 @@ package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 import com.hjwylde.bowser.io.file.FileSystemFactory;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.nio.file.FileSystem;
 
@@ -42,6 +43,7 @@ public final class TabbedFileBrowser {
         void removeCurrentTab();
     }
 
+    @NotThreadSafe
     public static final class Builder {
         private final @NotNull JTabbedPane tabbedPane = new JTabbedPane();
 

@@ -5,6 +5,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Timer;
@@ -12,6 +14,7 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@Immutable
 final class SwingEdtScheduler extends Scheduler {
     private static final @NotNull SwingEdtScheduler INSTANCE = new SwingEdtScheduler();
 
@@ -33,6 +36,7 @@ final class SwingEdtScheduler extends Scheduler {
     /**
      * A flag-like disposable, useful for marking actions, e.g., "stop".
      */
+    @ThreadSafe
     private static class BooleanDisposable implements Disposable {
         private final @NotNull AtomicBoolean disposed = new AtomicBoolean(false);
 
@@ -47,6 +51,7 @@ final class SwingEdtScheduler extends Scheduler {
         }
     }
 
+    @ThreadSafe
     private static final class SwingEdtWorker extends Worker {
         private final @NotNull CompositeDisposable disposables = new CompositeDisposable();
 

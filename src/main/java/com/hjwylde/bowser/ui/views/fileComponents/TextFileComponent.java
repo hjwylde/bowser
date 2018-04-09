@@ -2,9 +2,11 @@ package com.hjwylde.bowser.ui.views.fileComponents;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+@NotThreadSafe
 class TextFileComponent implements FileComponent {
     private final @NotNull JTextPane textPane = new JTextPane();
 

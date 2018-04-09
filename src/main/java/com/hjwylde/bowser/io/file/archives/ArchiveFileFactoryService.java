@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,6 +16,7 @@ import java.util.stream.StreamSupport;
  * Uses the {@link ServiceLoader} pattern to load all visible {@link ArchiveFileFactory}s on the class path. Additional
  * {@link ArchiveFileFactory}s added will be automatically picked up.
  */
+@Immutable
 public final class ArchiveFileFactoryService {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(ArchiveFileFactoryService.class.getSimpleName());
 

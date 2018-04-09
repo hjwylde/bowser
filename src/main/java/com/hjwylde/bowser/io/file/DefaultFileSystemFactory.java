@@ -2,6 +2,7 @@ package com.hjwylde.bowser.io.file;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 
@@ -11,6 +12,7 @@ import java.nio.file.FileSystems;
  *
  * @see FileSystems#getDefault()
  */
+@Immutable
 public final class DefaultFileSystemFactory implements FileSystemFactory {
     private static final @NotNull FileSystemFactory INSTANCE = new DefaultFileSystemFactory();
 

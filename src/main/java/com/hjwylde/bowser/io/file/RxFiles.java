@@ -5,6 +5,7 @@ import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
@@ -17,6 +18,7 @@ import java.nio.file.Path;
  * The benefit of this class is to background a lot of the file operations on a different {@link Scheduler}. This is
  * important as different {@link FileSystem}s may have expensive IO operations.
  */
+@Immutable
 public final class RxFiles {
     /**
      * Retrieves the immediate children (files and directories) of the given parent.

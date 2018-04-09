@@ -4,11 +4,11 @@ import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowser;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An uninstantiable namespace.
@@ -33,12 +33,13 @@ public final class Bowser {
         return new Builder();
     }
 
+    @NotThreadSafe
     public static final class Builder {
-        private final @NotNull AtomicBoolean built = new AtomicBoolean(false);
-
         private final @NotNull JFrame frame = new JFrame();
 
         private TabbedFileBrowser.View tabbedFileBrowserView;
+
+        private boolean built = false;
 
         private Builder() {
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -55,9 +56,11 @@ public final class Bowser {
          * @throws IllegalStateException if tabbedFileBrowserView is null.
          */
         public @NotNull BowserFrame build() {
-            if (built.getAndSet(true)) {
+            if (built) {
                 throw new IllegalStateException("A BowserFrame may only be built once.");
             }
+
+            built = true;
 
             if (tabbedFileBrowserView == null) {
                 throw new IllegalStateException("tabbedFileBrowser cannot be null.");

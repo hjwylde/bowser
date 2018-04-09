@@ -2,11 +2,14 @@ package com.hjwylde.bowser.ui.views.fileComponents;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
+
 /**
  * An empty {@link FileComponentFactory}. This factory generates a text component that informs the user that preview
  * functionality is unavailable. This is useful for files or directories that are unsupported, or when an exception
  * occurs in trying to display a specific file.
  */
+@Immutable
 public final class EmptyFileComponentFactory implements FileComponentFactory<EmptyFileComponent> {
     private static final @NotNull EmptyFileComponentFactory INSTANCE = new EmptyFileComponentFactory();
 

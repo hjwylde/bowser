@@ -6,9 +6,11 @@ import com.hjwylde.bowser.io.schedulers.SwingSchedulers;
 import io.reactivex.Observable;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+@Immutable
 final class FileBrowserViewModel {
     private final @NotNull RxFiles rxFiles;
     private final @NotNull RxFileSystem rxFileSystem;

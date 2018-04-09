@@ -4,6 +4,7 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 
@@ -12,6 +13,7 @@ import java.nio.file.Path;
  * on a different {@link io.reactivex.Scheduler}. This is important as different {@link FileSystem}s may have expensive
  * IO operations.
  */
+@Immutable
 public final class RxFileSystem {
     private final @NotNull FileSystem fileSystem;
 

@@ -2,6 +2,8 @@ package com.hjwylde.bowser.ui.views.scrollable;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.NotThreadSafe;
+
 /**
  * {@link Scrollable} provides the interfaces to create and use a component that wraps another component in a scrolling
  * pane. This is useful to compose components when they can be arbitrarily large and need to fit in a small application
@@ -23,6 +25,7 @@ public final class Scrollable {
     public interface View extends com.hjwylde.bowser.ui.views.View {
     }
 
+    @NotThreadSafe
     public static final class Builder {
         private com.hjwylde.bowser.ui.views.View view;
 

@@ -2,10 +2,12 @@ package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.concurrent.Immutable;
 import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Path;
 
+@Immutable
 final class OpenWithAssociatedApplicationStrategy implements OpenStrategy {
     /**
      * {@inheritDoc}
