@@ -1,5 +1,6 @@
 package com.hjwylde.bowser.ui.frames.bowser;
 
+import com.hjwylde.bowser.io.file.DefaultFileSystemFactory;
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowser;
 import org.jetbrains.annotations.NotNull;
@@ -37,8 +38,6 @@ public final class Bowser {
     public static final class Builder {
         private final @NotNull JFrame frame = new JFrame();
 
-        private TabbedFileBrowser.View tabbedFileBrowserView;
-
         private boolean built = false;
 
         private Builder() {
@@ -62,23 +61,16 @@ public final class Bowser {
 
             built = true;
 
-            if (tabbedFileBrowserView == null) {
-                throw new IllegalStateException("tabbedFileBrowser cannot be null.");
-            }
-
+            TabbedFileBrowser.View tabbedFileBrowserView = buildTabbedFileBrowserView();
             frame.add(tabbedFileBrowserView.getComponent());
-            frame.setJMenuBar(buildMenuBar());
+
+            JMenuBar menuBar = buildMenuBar(tabbedFileBrowserView);
+            frame.setJMenuBar(menuBar);
 
             frame.pack();
             frame.setVisible(true);
 
             return new BowserFrame(frame);
-        }
-
-        public @NotNull Builder tabbedFileBrowserView(@NotNull TabbedFileBrowser.View tabbedFileBrowserView) {
-            this.tabbedFileBrowserView = tabbedFileBrowserView;
-
-            return this;
         }
 
         public @NotNull Builder title(@NotNull String title) {
@@ -87,7 +79,7 @@ public final class Bowser {
             return this;
         }
 
-        private @NotNull JMenuBar buildMenuBar() {
+        private @NotNull JMenuBar buildMenuBar(@NotNull TabbedFileBrowser.View tabbedFileBrowserView) {
             JMenuBar menuBar = new JMenuBar();
 
             JMenu fileMenu = new JMenu(RESOURCES.getString(RESOURCE_FILE));
@@ -113,6 +105,16 @@ public final class Bowser {
             fileMenu.add(closeTabMenuItem);
 
             return menuBar;
+        }
+
+        private @NotNull TabbedFileBrowser.View buildTabbedFileBrowserView() {
+            TabbedFileBrowser.View tabbedFileBrowserView = TabbedFileBrowser.builder()
+                    .fileSystemFactory(DefaultFileSystemFactory.getInstance())
+                    .build();
+
+            tabbedFileBrowserView.addTab();
+
+            return tabbedFileBrowserView;
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.hjwylde.bowser;
 
-import com.hjwylde.bowser.io.file.DefaultFileSystemFactory;
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.frames.bowser.Bowser;
 import com.hjwylde.bowser.ui.frames.bowser.BowserFrame;
@@ -45,18 +44,7 @@ final class Application {
     private static @NotNull BowserFrame build() {
         return Bowser.builder()
                 .title(getTitle())
-                .tabbedFileBrowserView(buildTabbedFileBrowserView())
                 .build();
-    }
-
-    private static @NotNull TabbedFileBrowser.View buildTabbedFileBrowserView() {
-        TabbedFileBrowser.View tabbedFileBrowserView = TabbedFileBrowser.builder()
-                .fileSystemFactory(DefaultFileSystemFactory.getInstance())
-                .build();
-
-        tabbedFileBrowserView.addTab();
-
-        return tabbedFileBrowserView;
     }
 
     private static @NotNull String getTitle() {
