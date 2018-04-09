@@ -1,6 +1,5 @@
 package com.hjwylde.bowser.io.file.archives;
 
-import com.google.auto.service.AutoService;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.Immutable;
@@ -11,7 +10,6 @@ import java.util.List;
 /**
  * An {@link ArchiveFileFactory} that supports creating ZIP {@link ArchiveFile}s ("application/zip" files).
  */
-@AutoService(ArchiveFileFactory.class)
 @Immutable
 @SuppressWarnings("unused")
 public final class ZipArchiveFileFactory implements ArchiveFileFactory<ZipArchiveFile> {

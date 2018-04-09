@@ -23,7 +23,6 @@ repositories {
 
 dependencies {
     compile 'com.github.robtimus:ftp-fs:1.2.1'
-    compile 'com.google.auto.service:auto-service:1.0-rc4'
     compile 'com.google.code.findbugs:jsr305:3.0.2'
     compile 'io.reactivex.rxjava2:rxjava:2.1.10'
     compile 'org.apache.logging.log4j:log4j-api:2.11.0'
