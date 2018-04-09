@@ -10,7 +10,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import java.nio.file.FileSystem;
-import java.util.Objects;
 
 /**
  * {@link FileBrowser} provides the interfaces to create and use a component that displays a file tree. The file tree is
@@ -63,7 +62,7 @@ public final class FileBrowser {
         }
 
         public @NotNull Builder fileSystem(@NotNull FileSystem fileSystem) {
-            this.fileSystem = Objects.requireNonNull(fileSystem, "fileSystem cannot be null.");
+            this.fileSystem = fileSystem;
 
             return this;
         }

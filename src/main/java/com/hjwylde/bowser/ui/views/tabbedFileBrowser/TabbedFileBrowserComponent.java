@@ -16,7 +16,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
-import java.util.Objects;
 import java.util.Optional;
 
 final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
@@ -27,8 +26,8 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
     private final @NotNull FileSystemFactory fileSystemFactory;
 
     TabbedFileBrowserComponent(@NotNull JTabbedPane tabbedPane, @NotNull FileSystemFactory fileSystemFactory) {
-        this.tabbedPane = Objects.requireNonNull(tabbedPane, "tabbedPane cannot be null.");
-        this.fileSystemFactory = Objects.requireNonNull(fileSystemFactory, "fileSystemFactory cannot be null.");
+        this.tabbedPane = tabbedPane;
+        this.fileSystemFactory = fileSystemFactory;
     }
 
     /**

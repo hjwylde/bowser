@@ -48,11 +48,6 @@ class TabbedFileBrowserTests {
 
                     assertEquals(builder, result);
                 }
-
-                @Test
-                void throwsNullPointerExceptionWhenNull() {
-                    assertThrows(NullPointerException.class, () -> builder.fileSystemFactory(null));
-                }
             }
         }
     }

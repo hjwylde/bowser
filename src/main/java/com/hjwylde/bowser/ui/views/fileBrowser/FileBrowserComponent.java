@@ -15,7 +15,6 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.KeyEvent;
 import java.nio.file.Path;
-import java.util.Objects;
 
 public final class FileBrowserComponent implements FileBrowser.View {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(FileBrowserComponent.class.getSimpleName());
@@ -26,9 +25,9 @@ public final class FileBrowserComponent implements FileBrowser.View {
     private final @NotNull FileBrowserViewModel viewModel;
 
     FileBrowserComponent(@NotNull JTree tree, @NotNull DefaultTreeModel treeModel, @NotNull FileBrowserViewModel viewModel) {
-        this.tree = Objects.requireNonNull(tree, "tree cannot be null.");
-        this.treeModel = Objects.requireNonNull(treeModel, "treeModel cannot be null.");
-        this.viewModel = Objects.requireNonNull(viewModel, "viewModel cannot be null.");
+        this.tree = tree;
+        this.treeModel = treeModel;
+        this.viewModel = viewModel;
 
         initialiseListeners();
         initialiseInputMap();
@@ -70,7 +69,7 @@ public final class FileBrowserComponent implements FileBrowser.View {
         private final @NotNull MutableTreeNode parent;
 
         private OnGetChildrenObserver(@NotNull MutableTreeNode parent) {
-            this.parent = Objects.requireNonNull(parent, "parent cannot be null.");
+            this.parent = parent;
         }
 
         /**

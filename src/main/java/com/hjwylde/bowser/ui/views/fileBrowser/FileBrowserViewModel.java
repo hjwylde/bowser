@@ -8,15 +8,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 
 final class FileBrowserViewModel {
     private final @NotNull RxFiles rxFiles;
     private final @NotNull RxFileSystem rxFileSystem;
 
     FileBrowserViewModel(@NotNull RxFiles rxFiles, @NotNull RxFileSystem rxFileSystem) {
-        this.rxFiles = Objects.requireNonNull(rxFiles, "rxFiles cannot be null.");
-        this.rxFileSystem = Objects.requireNonNull(rxFileSystem, "rxFileSystem cannot be null.");
+        this.rxFiles = rxFiles;
+        this.rxFileSystem = rxFileSystem;
     }
 
     public @NotNull Observable<? extends Path> getChildren(@NotNull Path parent) {

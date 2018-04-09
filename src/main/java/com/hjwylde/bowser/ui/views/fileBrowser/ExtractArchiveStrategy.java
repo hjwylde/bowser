@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.Optional;
 
 final class ExtractArchiveStrategy implements OpenStrategy {
@@ -18,7 +17,7 @@ final class ExtractArchiveStrategy implements OpenStrategy {
     }
 
     private ExtractArchiveStrategy(@NotNull ArchiveFileFactoryService archiveFileFactoryService) {
-        this.archiveFileFactoryService = Objects.requireNonNull(archiveFileFactoryService, "archiveFileFactoryService cannot be null.");
+        this.archiveFileFactoryService = archiveFileFactoryService;
     }
 
     /**

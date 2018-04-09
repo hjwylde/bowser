@@ -48,11 +48,6 @@ class ScrollableTests {
 
                     assertEquals(builder, result);
                 }
-
-                @Test
-                void throwsNullPointerExceptionWhenNull() {
-                    assertThrows(NullPointerException.class, () -> builder.view(null));
-                }
             }
         }
     }

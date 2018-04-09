@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -61,7 +60,7 @@ public final class FilePreview {
         }
 
         public @NotNull Builder file(@NotNull Path file) {
-            this.file = Objects.requireNonNull(file, "file cannot be null.");
+            this.file = file;
 
             return this;
         }

@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
-import java.util.Objects;
 
 /**
  * An RxJava wrapper around {@link FileSystem}. The benefit of this class is to background a lot of the file operations
@@ -17,7 +16,7 @@ public final class RxFileSystem {
     private final @NotNull FileSystem fileSystem;
 
     private RxFileSystem(@NotNull FileSystem fileSystem) {
-        this.fileSystem = Objects.requireNonNull(fileSystem, "fileSystem cannot be null.");
+        this.fileSystem = fileSystem;
     }
 
     /**

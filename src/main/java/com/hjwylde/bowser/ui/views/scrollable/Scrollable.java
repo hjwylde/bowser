@@ -2,8 +2,6 @@ package com.hjwylde.bowser.ui.views.scrollable;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 /**
  * {@link Scrollable} provides the interfaces to create and use a component that wraps another component in a scrolling
  * pane. This is useful to compose components when they can be arbitrarily large and need to fit in a small application
@@ -47,7 +45,7 @@ public final class Scrollable {
         }
 
         public @NotNull Builder view(@NotNull com.hjwylde.bowser.ui.views.View view) {
-            this.view = Objects.requireNonNull(view, "view cannot be null.");
+            this.view = view;
 
             return this;
         }

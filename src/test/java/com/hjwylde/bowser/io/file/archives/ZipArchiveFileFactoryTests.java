@@ -24,11 +24,6 @@ class ZipArchiveFileFactoryTests {
 
             assertNotNull(archiveFile);
         }
-
-        @Test
-        void returnsFalseWhenNullPath() {
-            assertThrows(NullPointerException.class, () -> FACTORY.createArchiveFile(null));
-        }
     }
 
     @Nested

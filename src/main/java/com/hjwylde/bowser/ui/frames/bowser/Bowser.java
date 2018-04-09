@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -74,7 +73,7 @@ public final class Bowser {
         }
 
         public @NotNull Builder tabbedFileBrowserView(@NotNull TabbedFileBrowser.View tabbedFileBrowserView) {
-            this.tabbedFileBrowserView = Objects.requireNonNull(tabbedFileBrowserView);
+            this.tabbedFileBrowserView = tabbedFileBrowserView;
 
             return this;
         }

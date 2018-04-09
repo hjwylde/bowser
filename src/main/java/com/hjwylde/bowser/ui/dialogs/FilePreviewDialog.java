@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -24,9 +23,9 @@ public final class FilePreviewDialog {
 
     private final @NotNull AtomicBoolean shown = new AtomicBoolean(false);
 
-    private FilePreviewDialog(JFrame parent, @NotNull Path file) {
-        this.parent = Objects.requireNonNull(parent, "parent cannot be null");
-        this.file = Objects.requireNonNull(file, "file cannot be null.");
+    private FilePreviewDialog(@NotNull JFrame parent, @NotNull Path file) {
+        this.parent = parent;
+        this.file = file;
     }
 
     /**
@@ -88,7 +87,7 @@ public final class FilePreviewDialog {
          * @return this builder.
          */
         public @NotNull Builder file(@NotNull Path file) {
-            this.file = Objects.requireNonNull(file, "file cannot be null.");
+            this.file = file;
 
             return this;
         }

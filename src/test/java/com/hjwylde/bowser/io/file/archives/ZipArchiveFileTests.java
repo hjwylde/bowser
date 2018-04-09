@@ -81,10 +81,5 @@ class ZipArchiveFileTests {
         void init() {
             destination = fileSystem.getPath("/", "destination/");
         }
-
-        @Test
-        void throwsNullPointerExceptionWhenNull() {
-            assertThrows(NullPointerException.class, () -> file.extract(null));
-        }
     }
 }

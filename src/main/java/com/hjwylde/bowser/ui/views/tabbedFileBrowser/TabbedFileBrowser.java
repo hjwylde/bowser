@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.nio.file.FileSystem;
-import java.util.Objects;
 
 /**
  * {@link TabbedFileBrowser} provides the interfaces to create and use a component that adds/removes different file
@@ -69,7 +68,7 @@ public final class TabbedFileBrowser {
         }
 
         public @NotNull Builder fileSystemFactory(@NotNull FileSystemFactory fileSystemFactory) {
-            this.fileSystemFactory = Objects.requireNonNull(fileSystemFactory, "fileSystemFactory cannot be null.");
+            this.fileSystemFactory = fileSystemFactory;
 
             return this;
         }
