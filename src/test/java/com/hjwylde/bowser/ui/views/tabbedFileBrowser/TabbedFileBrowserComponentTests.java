@@ -1,5 +1,6 @@
 package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 
+import com.google.common.jimfs.Jimfs;
 import com.hjwylde.bowser.io.file.FileSystemFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +29,7 @@ class TabbedFileBrowserComponentTests {
         tabbedPane = spy(JTabbedPane.class);
         fileSystemFactory = mock(FileSystemFactory.class);
 
-        fileSystem = spy(FileSystem.class);
+        fileSystem = Jimfs.newFileSystem();
         when(fileSystemFactory.getFileSystem()).thenReturn(fileSystem);
 
         component = new TabbedFileBrowserComponent(tabbedPane, fileSystemFactory);

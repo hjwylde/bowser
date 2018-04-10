@@ -17,6 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.Optional;
 
 @NotThreadSafe
@@ -51,7 +52,11 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
             return;
         }
 
-        addTab(mFileSystem.get());
+        // TODO (hjw): This method for determining the starting path doesn't quite feel right here, needs re-thinking
+        FileSystem fileSystem = mFileSystem.get();
+        Path startingPath = fileSystem.getRootDirectories().iterator().next();
+
+        addTab(startingPath);
     }
 
     /**
@@ -59,7 +64,11 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
      */
     @Override
     public void addTab() {
-        addTab(fileSystemFactory.getFileSystem());
+        // TODO (hjw): This method for determining the starting path doesn't quite feel right here, needs re-thinking
+        FileSystem fileSystem = fileSystemFactory.getFileSystem();
+        Path startingPath = fileSystem.getRootDirectories().iterator().next();
+
+        addTab(startingPath, fileSystem);
     }
 
     /**
@@ -81,9 +90,9 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         }
     }
 
-    private void addTab(@NotNull FileSystem fileSystem) {
+    private void addTab(@NotNull Path startingPath) {
         FileBrowser.View fileBrowserView = FileBrowser.builder()
-                .fileSystem(fileSystem)
+                .startingPath(startingPath)
                 .build();
 
         Scrollable.View scrollableView = Scrollable.builder()

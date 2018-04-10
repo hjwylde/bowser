@@ -1,16 +1,10 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
-import com.hjwylde.bowser.io.file.RxFileSystem;
 import com.hjwylde.bowser.io.file.RxFiles;
 import com.hjwylde.bowser.modules.RxFilesModule;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
-import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -37,42 +31,36 @@ public final class FileBrowser {
          *
          * @return the currently selected path, or {@link Optional#empty()}.
          */
-        Optional<Path> getSelectedPath();
+        @NotNull Optional<Path> getSelectedPath();
     }
 
     @NotThreadSafe
     public static final class Builder {
-        private FileSystem fileSystem;
+        private Path startingPath;
 
         private Builder() {
         }
 
         /**
-         * Builds and returns a new {@link FileBrowser.View}. The file browser view must have a file system to
+         * Builds and returns a new {@link FileBrowser.View}. The file browser view must have a starting path to
          * reference.
          *
          * @return a new {@link FileBrowser.View}.
-         * @throws IllegalStateException if fileSystem is null.
+         * @throws IllegalStateException if startingPath is null.
          */
         public @NotNull View build() {
-            if (fileSystem == null) {
-                throw new IllegalStateException("fileSystem must be set.");
+            if (startingPath == null) {
+                throw new IllegalStateException("startingPath must be set.");
             }
 
-            TreeNode rootNode = new DefaultMutableTreeNode();
-            DefaultTreeModel treeModel = new DefaultTreeModel(rootNode);
-            JTree tree = new JTree(treeModel);
-            tree.setRootVisible(false);
-
             RxFiles rxFiles = RxFilesModule.provideRxFiles();
-            RxFileSystem rxFileSystem = RxFileSystem.forFileSystem(fileSystem);
-            FileBrowserViewModel viewModel = new FileBrowserViewModel(rxFiles, rxFileSystem);
+            FileBrowserViewModel viewModel = new FileBrowserViewModel(rxFiles);
 
-            return new FileBrowserComponent(tree, treeModel, viewModel);
+            return new FileBrowserComponent(startingPath, viewModel);
         }
 
-        public @NotNull Builder fileSystem(@NotNull FileSystem fileSystem) {
-            this.fileSystem = fileSystem;
+        public @NotNull Builder startingPath(@NotNull Path startingPath) {
+            this.startingPath = startingPath;
 
             return this;
         }
