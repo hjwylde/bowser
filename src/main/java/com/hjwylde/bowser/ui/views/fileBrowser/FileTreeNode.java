@@ -20,10 +20,6 @@ final class FileTreeNode extends DefaultMutableTreeNode {
         return filePath;
     }
 
-    public boolean isDirectory() {
-        return Files.isDirectory(filePath);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -43,5 +39,9 @@ final class FileTreeNode extends DefaultMutableTreeNode {
             // The fileName is null when dealing with a root directory
             return filePath.getRoot().toString();
         }
+    }
+
+    private boolean isDirectory() {
+        return Files.isDirectory(filePath);
     }
 }
