@@ -8,7 +8,10 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ public final class FileBrowserComponent implements FileBrowser.View {
         directory = startingPath;
         this.viewModel = viewModel;
 
+        initialiseMouseListener();
         initialiseInputMap();
         initialiseActionMap();
 
@@ -81,6 +85,21 @@ public final class FileBrowserComponent implements FileBrowser.View {
     private void initialiseInputMap() {
         list.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), FileBrowserAction.OPEN);
         list.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), FileBrowserAction.PREVIEW);
+    }
+
+    private void initialiseMouseListener() {
+        list.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() != 2) {
+                    return;
+                }
+
+                ActionEvent event = new ActionEvent(e, ActionEvent.ACTION_PERFORMED, "");
+
+                list.getActionMap().get(FileBrowserAction.OPEN).actionPerformed(event);
+            }
+        });
     }
 
     private void notifyDirectoryChangeListeners() {
