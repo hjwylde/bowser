@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 interface OpenStrategy {
-    boolean isSupported(@NotNull Path file);
+    boolean isSupported(@NotNull Path path);
 
-    void openFile(@NotNull Path file) throws IOException;
+    void open(@NotNull Path path) throws IOException;
 }

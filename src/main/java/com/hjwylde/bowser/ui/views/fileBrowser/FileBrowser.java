@@ -42,6 +42,14 @@ public final class FileBrowser {
          * @return the currently selected path, or {@link Optional#empty()}.
          */
         @NotNull Optional<Path> getSelectedPath();
+
+        /**
+         * Sets the current directory to the provided path. The view is to deal with asynchronously finding the
+         * directory's children and refreshing the listing.
+         *
+         * @param directory the new directory for listing.
+         */
+        void setDirectory(@NotNull Path directory);
     }
 
     @NotThreadSafe
