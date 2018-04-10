@@ -41,15 +41,6 @@ class TabbedFileBrowserComponentTests {
     }
 
     @Nested
-    class AddFtpTab {
-        // TODO (hjw): This method is difficult to test. I believe this is a sign that perhaps I should inject the
-        // handler (a dependency) for creating the FTP connection dialog. Or perhaps I should refactor it to take
-        // arguments and let the action handler deal with how to query the host/username/password from the user.
-        // The fact that calling this method currently blocks the thread with a dialog is a huge sign that something
-        // needs to change here.
-    }
-
-    @Nested
     class AddTab {
         @Test
         void addsNewTab() {
@@ -62,10 +53,17 @@ class TabbedFileBrowserComponentTests {
         }
 
         @Test
-        void getsFileSystemFromFactory() {
+        void getsFileSystemFromFactoryWhenNoneProvided() {
             component.addTab();
 
             verify(fileSystemFactory).getFileSystem();
+        }
+
+        @Test
+        void usesFileSystemWhenProvided() {
+            component.addTab(fileSystem);
+
+            verifyZeroInteractions(fileSystemFactory);
         }
     }
 

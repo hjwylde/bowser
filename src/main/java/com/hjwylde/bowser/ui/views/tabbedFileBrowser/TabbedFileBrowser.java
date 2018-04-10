@@ -27,10 +27,9 @@ public final class TabbedFileBrowser {
 
     public interface View extends com.hjwylde.bowser.ui.views.View {
         /**
-         * Connects to a new FTP file system and adds a browser tab. It is up to individual subclasses to determine how
-         * and where the FTP connection details are gathered.
+         * Adds a browser tab using the given file system.
          */
-        void addFtpTab();
+        void addTab(@NotNull FileSystem fileSystem);
 
         /**
          * Adds a browser tab using the default file system factory.
