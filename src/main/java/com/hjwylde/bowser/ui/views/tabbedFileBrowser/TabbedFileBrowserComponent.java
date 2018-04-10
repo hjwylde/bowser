@@ -17,12 +17,16 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Iterator;
 import java.util.Optional;
 
 @NotThreadSafe
 final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
-    private final static @NotNull Logger LOGGER = LogManager.getLogger(TabbedFileBrowserComponent.class.getSimpleName());
+    private static final @NotNull Logger LOGGER = LogManager.getLogger(TabbedFileBrowserComponent.class.getSimpleName());
+
+    private static final @NotNull String USER_HOME = System.getProperty("user.home");
 
     private final @NotNull JTabbedPane tabbedPane;
 
@@ -49,14 +53,11 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
 
         Optional<FileSystem> mFileSystem = getFileSystem(dialog);
         if (!mFileSystem.isPresent()) {
+            LOGGER.debug("Unable to create a file system from user inputs, doing nothing");
             return;
         }
 
-        // TODO (hjw): This method for determining the starting path doesn't quite feel right here, needs re-thinking
-        FileSystem fileSystem = mFileSystem.get();
-        Path startingPath = fileSystem.getRootDirectories().iterator().next();
-
-        addTab(startingPath);
+        addTab(mFileSystem.get());
     }
 
     /**
@@ -64,11 +65,7 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
      */
     @Override
     public void addTab() {
-        // TODO (hjw): This method for determining the starting path doesn't quite feel right here, needs re-thinking
-        FileSystem fileSystem = fileSystemFactory.getFileSystem();
-        Path startingPath = fileSystem.getRootDirectories().iterator().next();
-
-        addTab(startingPath, fileSystem);
+        addTab(fileSystemFactory.getFileSystem());
     }
 
     /**
@@ -90,14 +87,21 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         }
     }
 
-    private void addTab(@NotNull Path startingPath) {
+    private void addTab(@NotNull FileSystem fileSystem) {
+        Optional<Path> mStartingPath = selectStartingPath(fileSystem);
+        if (!mStartingPath.isPresent()) {
+            LOGGER.debug("Unable to select a starting path for the file system, doing nothing");
+            return;
+        }
+
         FileBrowser.View fileBrowserView = FileBrowser.builder()
-                .startingPath(startingPath)
+                .startingPath(mStartingPath.get())
                 .build();
 
         Scrollable.View scrollableView = Scrollable.builder()
                 .view(fileBrowserView)
                 .build();
+
         JComponent component = scrollableView.getComponent();
 
         // TODO (hjw): Dynamically set the tab name
@@ -119,5 +123,23 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         }
 
         return Optional.empty();
+    }
+
+    private @NotNull Optional<Path> selectStartingPath(@NotNull FileSystem fileSystem) {
+        // Default to the user home directory first
+        Path path = fileSystem.getPath(USER_HOME);
+        if (Files.exists(path)) {
+            return Optional.of(path);
+        }
+
+        Iterator<Path> it = fileSystem.getRootDirectories().iterator();
+        if (!it.hasNext()) {
+            return Optional.empty();
+        }
+
+        // Else, display the first root directory available
+        // It's unlikely that there will be more than one root directory available. Windows is the only common situation
+        // that this occurs in, and for that scenario we'd expect the USER_HOME path to exist.
+        return Optional.of(it.next());
     }
 }
