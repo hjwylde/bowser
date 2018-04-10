@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 @NotThreadSafe
 public final class FileBrowserComponent implements FileBrowser.View {
@@ -21,14 +22,27 @@ public final class FileBrowserComponent implements FileBrowser.View {
     private final @NotNull DefaultListModel<FileNode> listModel = new DefaultListModel<>();
     private final @NotNull JList<FileNode> list = new JList<>(listModel);
 
+    private final @NotNull List<Consumer<Path>> directoryChangeListeners = new ArrayList<>();
+
     private final @NotNull FileBrowserViewModel viewModel;
 
+    private @NotNull Path directory;
+
     FileBrowserComponent(@NotNull Path startingPath, @NotNull FileBrowserViewModel viewModel) {
+        directory = startingPath;
         this.viewModel = viewModel;
 
         initialiseInputMap();
         initialiseActionMap();
-        initialiseList(startingPath);
+
+        setDirectory(directory);
+    }
+
+    @Override
+    public void addDirectoryChangeListener(@NotNull Consumer<Path> listener) {
+        directoryChangeListeners.add(listener);
+
+        listener.accept(directory);
     }
 
     /**
@@ -52,6 +66,12 @@ public final class FileBrowserComponent implements FileBrowser.View {
         return Optional.of(fileNode.getPath());
     }
 
+    @Override
+    public void setDirectory(@NotNull Path directory) {
+        viewModel.getChildren(directory)
+                .subscribe(new OnGetChildrenObserver(directory));
+    }
+
     private void initialiseActionMap() {
         // TODO (hjw): Cyclic references -> is it possible to avoid this?
         list.getActionMap().put(FileBrowserAction.OPEN, new OpenAction(this));
@@ -63,14 +83,19 @@ public final class FileBrowserComponent implements FileBrowser.View {
         list.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), FileBrowserAction.PREVIEW);
     }
 
-    private void initialiseList(@NotNull Path startingPath) {
-        viewModel.getChildren(startingPath)
-                .subscribe(new OnGetChildrenObserver());
+    private void notifyDirectoryChangeListeners() {
+        directoryChangeListeners.forEach(listener -> listener.accept(directory));
     }
 
     @NotThreadSafe
     private final class OnGetChildrenObserver implements Observer<Path> {
+        private final @NotNull Path directory;
+
         private final @NotNull List<FileNode> fileNodes = new ArrayList<>();
+
+        OnGetChildrenObserver(@NotNull Path directory) {
+            this.directory = directory;
+        }
 
         /**
          * {@inheritDoc}
@@ -80,6 +105,9 @@ public final class FileBrowserComponent implements FileBrowser.View {
             listModel.clear();
 
             fileNodes.forEach(listModel::addElement);
+
+            FileBrowserComponent.this.directory = directory;
+            notifyDirectoryChangeListeners();
         }
 
         /**

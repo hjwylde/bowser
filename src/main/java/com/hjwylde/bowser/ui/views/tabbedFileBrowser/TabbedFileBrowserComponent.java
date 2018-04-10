@@ -94,8 +94,10 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
             return;
         }
 
+        Path startingPath = mStartingPath.get();
+
         FileBrowser.View fileBrowserView = FileBrowser.builder()
-                .startingPath(mStartingPath.get())
+                .startingPath(startingPath)
                 .build();
 
         Scrollable.View scrollableView = Scrollable.builder()
@@ -104,9 +106,17 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
 
         JComponent component = scrollableView.getComponent();
 
-        // TODO (hjw): Dynamically set the tab name
-        tabbedPane.addTab("Tab", component);
+        tabbedPane.addTab("", component);
         tabbedPane.setSelectedComponent(component);
+
+        fileBrowserView.addDirectoryChangeListener(directory -> {
+            int index = tabbedPane.indexOfComponent(component);
+            if (index != -1) {
+                Path fileName = directory.getFileName() != null ? directory.getFileName() : directory;
+
+                tabbedPane.setTitleAt(index, fileName.toString());
+            }
+        });
     }
 
     private Optional<FileSystem> getFileSystem(FtpConnectionDialog dialog) {

@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.concurrent.NotThreadSafe;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * {@link FileBrowser} provides the interfaces to create and use a component that displays a file tree. The file tree is
@@ -26,6 +27,15 @@ public final class FileBrowser {
     }
 
     public interface View extends com.hjwylde.bowser.ui.views.View {
+        /**
+         * Adds a directory change listener. The listener will be informed of the new directory path whenever the file
+         * browser changes the current directory listing. When a listener is first added, it is immediately informed of
+         * the current directory path.
+         *
+         * @param listener the listener.
+         */
+        void addDirectoryChangeListener(@NotNull Consumer<Path> listener);
+
         /**
          * Gets the currently selected path. If no path is selected, then {@link Optional#empty()} is returned.
          *
