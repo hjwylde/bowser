@@ -3,8 +3,6 @@ package com.hjwylde.bowser.ui.views.fileComponents;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.Immutable;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A {@link FileComponentFactory} that supports creating text {@link FileComponent}s ("text/plain" files).
@@ -12,7 +10,7 @@ import java.util.List;
 @Immutable
 @SuppressWarnings("unused")
 public final class TextFileComponentFactory implements FileComponentFactory<TextFileComponent> {
-    private static final List<String> SUPPORTED_CONTENT_TYPES = Collections.singletonList("text/plain");
+    private static final String SUPPORTED_CONTENT_TYPE = "text/";
 
     /**
      * {@inheritDoc}
@@ -29,6 +27,6 @@ public final class TextFileComponentFactory implements FileComponentFactory<Text
      */
     @Override
     public boolean isSupportedContentType(@NotNull String contentType) {
-        return SUPPORTED_CONTENT_TYPES.contains(contentType);
+        return contentType.startsWith(SUPPORTED_CONTENT_TYPE);
     }
 }
