@@ -50,6 +50,8 @@ final class NewFtpTabAction implements Runnable {
                 .withCredentials(dialog.getUsername(), dialog.getPassword());
 
         try {
+            // TODO (hjw): A file system should be closed when finished with, somehow I need to ensure that we close
+            // this one.
             URI uri = new URI(dialog.getHost());
             FileSystem fileSystem = FileSystems.newFileSystem(uri, env);
 
