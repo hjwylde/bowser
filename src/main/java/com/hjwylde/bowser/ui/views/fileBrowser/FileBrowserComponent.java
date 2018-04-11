@@ -1,5 +1,6 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
+import com.hjwylde.bowser.modules.LocaleModule;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import org.apache.logging.log4j.LogManager;
@@ -16,11 +17,15 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 @NotThreadSafe
 public final class FileBrowserComponent implements FileBrowser.View {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(FileBrowserComponent.class.getSimpleName());
+
+    private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(FileBrowserComponent.class.getName(), LocaleModule.provideLocale());
+    private static final @NotNull String RESOURCE_ERROR_BROWSING_PATH = "errorBrowsingPath";
 
     private final @NotNull DefaultListModel<FileNode> listModel = new DefaultListModel<>();
     private final @NotNull JList<FileNode> list = new JList<>(listModel);
@@ -133,8 +138,11 @@ public final class FileBrowserComponent implements FileBrowser.View {
          * {@inheritDoc}
          */
         @Override
-        public void onError(Throwable e) {
+        public void onError(Throwable t) {
+            Exception e = new Exception(RESOURCES.getString(RESOURCE_ERROR_BROWSING_PATH), t);
             LOGGER.warn(e.getMessage(), e);
+
+            handleError(e);
         }
 
         /**

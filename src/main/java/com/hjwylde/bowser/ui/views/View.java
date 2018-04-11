@@ -15,4 +15,15 @@ public interface View {
      * @return the root Swing component.
      */
     @NotNull JComponent getComponent();
+
+    /**
+     * Handles the given error from the perspective of the UI. By default, this means the error is displayed to the user
+     * in a dialog.
+     *
+     * @param t the error to handle.
+     */
+    default void handleError(@NotNull Throwable t) {
+        // TODO (hjw): Localise the error title
+        JOptionPane.showMessageDialog(getComponent(), t.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }

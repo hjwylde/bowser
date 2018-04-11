@@ -1,6 +1,7 @@
 package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 
 import com.hjwylde.bowser.io.file.FileSystemFactory;
+import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowser;
 import com.hjwylde.bowser.ui.views.scrollable.Scrollable;
 import org.apache.logging.log4j.LogManager;
@@ -10,15 +11,20 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 @NotThreadSafe
 final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(TabbedFileBrowserComponent.class.getSimpleName());
+
+    private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(TabbedFileBrowserComponent.class.getName(), LocaleModule.provideLocale());
+    private static final @NotNull String RESOURCE_ERROR_NO_STARTING_PATH = "errorNoStartingPath";
 
     private static final @NotNull String USER_HOME = System.getProperty("user.home");
 
@@ -46,7 +52,11 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
     public void addTab(@NotNull FileSystem fileSystem) {
         Optional<Path> mStartingPath = selectStartingPath(fileSystem);
         if (!mStartingPath.isPresent()) {
-            LOGGER.debug("Unable to select a starting path for the file system, doing nothing");
+            Exception e = new Exception(RESOURCES.getString(RESOURCE_ERROR_NO_STARTING_PATH));
+            LOGGER.warn(e.getMessage(), e);
+
+            handleError(e);
+
             return;
         }
 
@@ -95,6 +105,7 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
     }
 
     private @NotNull Optional<Path> selectStartingPath(@NotNull FileSystem fileSystem) {
+        // TODO (hjw): Background this method
         // Default to the user home directory first
         Path path = fileSystem.getPath(USER_HOME);
         if (Files.exists(path)) {
