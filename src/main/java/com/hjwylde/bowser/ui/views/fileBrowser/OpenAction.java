@@ -26,7 +26,6 @@ final class OpenAction extends AbstractAction {
 
         openStrategies = Arrays.asList(
                 new ChangeDirectoryStrategy(view),
-                new ExtractArchiveStrategy(),
                 new OpenWithAssociatedApplicationStrategy()
         );
     }
