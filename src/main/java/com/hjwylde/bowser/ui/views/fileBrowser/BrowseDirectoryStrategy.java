@@ -7,10 +7,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @NotThreadSafe
-final class ChangeDirectoryStrategy implements OpenStrategy {
+final class BrowseDirectoryStrategy implements OpenStrategy {
     private final @NotNull FileBrowser.View view;
 
-    ChangeDirectoryStrategy(FileBrowser.View view) {
+    BrowseDirectoryStrategy(@NotNull FileBrowser.View view) {
         this.view = view;
     }
 
