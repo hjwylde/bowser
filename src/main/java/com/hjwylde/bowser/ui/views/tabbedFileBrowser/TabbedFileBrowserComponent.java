@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -1,26 +1,35 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
-import com.hjwylde.bowser.io.file.RxFiles;
-import com.hjwylde.bowser.io.schedulers.SwingSchedulers;
-import io.reactivex.Observable;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.Immutable;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.stream.Stream;
 
 @Immutable
 final class FileBrowserViewModel {
-    private final @NotNull RxFiles rxFiles;
-
-    FileBrowserViewModel(@NotNull RxFiles rxFiles) {
-        this.rxFiles = rxFiles;
+    FileBrowserViewModel() {
     }
 
-    public @NotNull Observable<? extends Path> getChildren(@NotNull Path parent) {
-        return rxFiles.getChildren(parent)
-                .filter(child -> !Files.isHidden(child))
-                .sorted()
-                .observeOn(SwingSchedulers.edt());
+    public @NotNull CompletableFuture<Stream<Path>> getChildren(@NotNull Path parent) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return Files.list(parent)
+                        .filter(child -> {
+                            try {
+                                return !Files.isHidden(child);
+                            } catch (IOException e) {
+                                return false;
+                            }
+                        })
+                        .sorted();
+            } catch (IOException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 }

@@ -1,7 +1,5 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
-import com.hjwylde.bowser.io.file.RxFiles;
-import com.hjwylde.bowser.modules.RxFilesModule;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
@@ -71,8 +69,7 @@ public final class FileBrowser {
                 throw new IllegalStateException("startingPath must be set.");
             }
 
-            RxFiles rxFiles = RxFilesModule.provideRxFiles();
-            FileBrowserViewModel viewModel = new FileBrowserViewModel(rxFiles);
+            FileBrowserViewModel viewModel = new FileBrowserViewModel();
 
             return new FileBrowserComponent(startingPath, viewModel);
         }

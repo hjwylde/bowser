@@ -14,7 +14,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 @NotThreadSafe

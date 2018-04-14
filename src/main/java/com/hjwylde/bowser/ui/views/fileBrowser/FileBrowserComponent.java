@@ -1,8 +1,7 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import com.hjwylde.bowser.modules.LocaleModule;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import com.hjwylde.bowser.util.concurrent.SwingExecutors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 @NotThreadSafe
 public final class FileBrowserComponent implements FileBrowser.View {
@@ -77,8 +78,10 @@ public final class FileBrowserComponent implements FileBrowser.View {
 
     @Override
     public void setDirectory(@NotNull Path directory) {
+        OnGetChildrenObserver handler = new OnGetChildrenObserver(directory);
+
         viewModel.getChildren(directory)
-                .subscribe(new OnGetChildrenObserver(directory));
+                .handleAsync(handler, SwingExecutors.edt());
     }
 
     private void initialiseActionMap() {
@@ -112,10 +115,8 @@ public final class FileBrowserComponent implements FileBrowser.View {
     }
 
     @NotThreadSafe
-    private final class OnGetChildrenObserver implements Observer<Path> {
+    private final class OnGetChildrenObserver implements BiFunction<Stream<Path>, Throwable, Void> {
         private final @NotNull Path directory;
-
-        private final @NotNull List<FileNode> fileNodes = new ArrayList<>();
 
         OnGetChildrenObserver(@NotNull Path directory) {
             this.directory = directory;
@@ -125,41 +126,31 @@ public final class FileBrowserComponent implements FileBrowser.View {
          * {@inheritDoc}
          */
         @Override
-        public void onComplete() {
-            listModel.clear();
+        public Void apply(Stream<Path> pathStream, Throwable throwable) {
+            if (pathStream != null) {
+                onSuccess(pathStream);
+            } else if (throwable != null) {
+                onError(throwable);
+            }
 
-            fileNodes.forEach(listModel::addElement);
-
-            FileBrowserComponent.this.directory = directory;
-            notifyDirectoryChangeListeners();
+            return null;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void onError(Throwable t) {
+        private void onError(@NotNull Throwable t) {
             Exception e = new Exception(RESOURCES.getString(RESOURCE_ERROR_BROWSING_PATH), t);
             LOGGER.warn(e.getMessage(), e);
 
             handleError(e);
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void onNext(Path path) {
-            fileNodes.add(new FileNode(path));
-        }
+        private void onSuccess(@NotNull Stream<Path> pathStream) {
+            listModel.clear();
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void onSubscribe(Disposable d) {
-            // TODO (hjw): How to detect when a component is destroyed? We wish to cancel any requests if the results
-            // are to be ignored.
+            pathStream.map(FileNode::new)
+                    .forEach(listModel::addElement);
+
+            FileBrowserComponent.this.directory = directory;
+            notifyDirectoryChangeListeners();
         }
     }
 }
