@@ -85,7 +85,8 @@ final class OpenAction extends AbstractAction {
         private void onError(@NotNull Throwable throwable) {
             LOGGER.warn(throwable.getMessage(), throwable);
 
-            view.handleError(throwable);
+            // throwable is a CompletionException, let's handle the actual cause
+            view.handleError(throwable.getCause());
         }
     }
 }

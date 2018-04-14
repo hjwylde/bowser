@@ -83,7 +83,8 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         private void onError(@NotNull Throwable throwable) {
             LOGGER.warn(throwable.getMessage(), throwable);
 
-            handleError(throwable);
+            // throwable is a CompletionException, let's handle the actual cause
+            handleError(throwable.getCause());
         }
 
         private void onSuccess(@NotNull Path path) {
