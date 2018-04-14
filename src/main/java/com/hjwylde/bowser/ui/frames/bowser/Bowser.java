@@ -52,7 +52,6 @@ public final class Bowser {
          *
          * @return the built and shown {@link BowserFrame}.
          * @throws IllegalStateException if called repeatedly.
-         * @throws IllegalStateException if tabbedFileBrowserView is null.
          */
         public @NotNull BowserFrame build() {
             if (built) {

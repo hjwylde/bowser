@@ -17,7 +17,6 @@ final class ScrollableComponent implements Scrollable.View {
      * Creates a new {@link ScrollableComponent} that wraps the given {@link View}.
      *
      * @param view the view to wrap.
-     * @throws NullPointerException if view is null.
      */
     ScrollableComponent(@NotNull View view) {
         component = new JScrollPane(view.getComponent());

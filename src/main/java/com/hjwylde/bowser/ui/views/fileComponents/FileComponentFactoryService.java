@@ -42,8 +42,7 @@ public final class FileComponentFactoryService {
      * {@link FileComponentFactory} can be found.
      *
      * @param file the file to support.
-     * @return an {@link FileComponentFactory} that supports the given file, or nothing.
-     * @throws NullPointerException if file is null.
+     * @return a {@link FileComponentFactory} that supports the given file, or nothing.
      */
     public @NotNull Optional<FileComponentFactory> getFileComponentFactory(@NotNull Path file) {
         Optional<String> mContentType = getContentType(file);

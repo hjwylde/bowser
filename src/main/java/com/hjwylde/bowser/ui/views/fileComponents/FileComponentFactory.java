@@ -14,7 +14,6 @@ public interface FileComponentFactory<E extends FileComponent> {
      *
      * @param data the data for the component
      * @return a new file component.
-     * @throws NullPointerException if data is null.
      */
     @NotNull E createFileComponent(@NotNull byte[] data);
 
