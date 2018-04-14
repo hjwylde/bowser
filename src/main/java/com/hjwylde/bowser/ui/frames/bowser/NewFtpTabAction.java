@@ -60,7 +60,9 @@ final class NewFtpTabAction implements Runnable {
         try {
             // TODO (hjw): A file system should be closed when finished with, somehow I need to ensure that we close
             // this one.
-            URI uri = new URI(dialog.getHost());
+            // Trim trailing "/"s; the FtpFileSystem library considers them a path and does not support it.
+            String host = dialog.getHost().replaceAll("/+$", "");
+            URI uri = new URI(host);
 
             return FileSystems.newFileSystem(uri, env);
         } catch (IOException | URISyntaxException e) {

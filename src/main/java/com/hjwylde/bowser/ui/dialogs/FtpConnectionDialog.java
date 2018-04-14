@@ -24,6 +24,8 @@ public final class FtpConnectionDialog {
     private static final @NotNull String RESOURCE_TITLE = "title";
     private static final @NotNull String RESOURCE_USERNAME = "username";
 
+    private static final @NotNull String DEFAULT_USERNAME = "anonymous";
+
     private final Component parent;
 
     private final @NotNull JTextField hostField = new JTextField();
@@ -54,7 +56,11 @@ public final class FtpConnectionDialog {
     }
 
     public @NotNull String getUsername() {
-        return usernameField.getText().trim();
+        String username = usernameField.getText().trim();
+        if (username.isEmpty()) {
+            username = DEFAULT_USERNAME;
+        }
+        return username;
     }
 
 
