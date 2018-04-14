@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
-import java.util.function.BiFunction;
+import java.util.function.BiConsumer;
 
 @NotThreadSafe
 final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
@@ -44,10 +44,10 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
      */
     @Override
     public void addTab(@NotNull FileSystem fileSystem) {
-        OnSelectStartingPathObserver handler = new OnSelectStartingPathObserver();
+        OnSelectStartingPathConsumer handler = new OnSelectStartingPathConsumer();
 
         viewModel.selectStartingPath(fileSystem)
-                .handleAsync(handler, SwingExecutors.edt());
+                .whenCompleteAsync(handler, SwingExecutors.edt());
     }
 
     /**
@@ -70,16 +70,14 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
     }
 
     @NotThreadSafe
-    private final class OnSelectStartingPathObserver implements BiFunction<Path, Throwable, Void> {
+    private final class OnSelectStartingPathConsumer implements BiConsumer<Path, Throwable> {
         @Override
-        public Void apply(Path path, Throwable throwable) {
+        public void accept(Path path, Throwable throwable) {
             if (path != null) {
                 onSuccess(path);
             } else if (throwable != null) {
                 onError(throwable);
             }
-
-            return null;
         }
 
         private void onError(@NotNull Throwable throwable) {

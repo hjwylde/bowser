@@ -2,12 +2,15 @@ package com.hjwylde.bowser.ui.dialogs;
 
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.views.filePreview.FilePreview;
+import com.hjwylde.bowser.util.concurrent.SwingExecutors;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 /**
  * A custom dialog that displays a preview of a file. This preview functionality is very similar to that of Finder. This
@@ -19,14 +22,14 @@ public final class FilePreviewDialog {
     private static final @NotNull String RESOURCE_TITLE = "title";
 
     private final @NotNull JFrame parent;
-
-    private final @NotNull Path file;
+    private final @NotNull JDialog dialog;
 
     private boolean shown = false;
 
     private FilePreviewDialog(@NotNull JFrame parent, @NotNull Path file) {
         this.parent = parent;
-        this.file = file;
+
+        dialog = buildDialog(file);
     }
 
     /**
@@ -51,19 +54,22 @@ public final class FilePreviewDialog {
 
         shown = true;
 
-        JDialog dialog = new JDialog(parent, RESOURCES.getString(RESOURCE_TITLE), true);
-
-        // TODO (hjw): Display a loading component, background the actual IO operations, then replace the loading
-        // component with the result
-        FilePreview.View filePreviewView = FilePreview.builder()
-                .file(file)
-                .build();
-
-        dialog.getContentPane().add(filePreviewView.getComponent());
-
         dialog.pack();
         dialog.setLocationRelativeTo(parent);
         dialog.setVisible(true);
+    }
+
+    private @NotNull JDialog buildDialog(@NotNull Path file) {
+        JDialog dialog = new JDialog(parent, RESOURCES.getString(RESOURCE_TITLE), true);
+
+        // TODO (hjw): Display a loading component, then replace the loading component with the result
+        JPanel panel = new JPanel();
+        dialog.getContentPane().add(panel);
+
+        CompletableFuture.supplyAsync(() -> FilePreview.builder().file(file).build())
+                .thenAcceptAsync(new OnFilePreviewBuiltConsumer(panel), SwingExecutors.edt());
+
+        return dialog;
     }
 
     /**
@@ -109,6 +115,22 @@ public final class FilePreviewDialog {
             this.parent = parent;
 
             return this;
+        }
+    }
+
+    @NotThreadSafe
+    private final class OnFilePreviewBuiltConsumer implements Consumer<FilePreview.View> {
+        private final @NotNull JPanel panel;
+
+        private OnFilePreviewBuiltConsumer(@NotNull JPanel panel) {
+            this.panel = panel;
+        }
+
+        @Override
+        public void accept(FilePreview.View view) {
+            panel.removeAll();
+
+            panel.add(view.getComponent());
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import com.hjwylde.bowser.modules.LocaleModule;
+import com.hjwylde.bowser.util.concurrent.SwingExecutors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.function.BiConsumer;
 
 @NotThreadSafe
 final class OpenAction extends AbstractAction {
@@ -47,16 +51,14 @@ final class OpenAction extends AbstractAction {
             return;
         }
 
-        Path path = mPath.get();
-        try {
-            // TODO (hjw): This is delegating to a foreign object, I'm not sure if action events are posted on a
-            // background thread, so it would be safer to background it myself.
-            open(path);
-        } catch (IOException e) {
-            LOGGER.warn(e.getMessage(), e);
-
-            view.handleError(e);
-        }
+        CompletableFuture.runAsync(() -> {
+            Path path = mPath.get();
+            try {
+                open(path);
+            } catch (IOException e) {
+                throw new CompletionException(e);
+            }
+        }).whenCompleteAsync(new OnOpenConsumer(), SwingExecutors.edt());
     }
 
     private void open(@NotNull Path path) throws IOException {
@@ -69,5 +71,21 @@ final class OpenAction extends AbstractAction {
         }
 
         mOpenStrategy.get().open(path);
+    }
+
+    @NotThreadSafe
+    private final class OnOpenConsumer implements BiConsumer<Void, Throwable> {
+        @Override
+        public void accept(Void aVoid, Throwable throwable) {
+            if (throwable != null) {
+                onError(throwable);
+            }
+        }
+
+        private void onError(@NotNull Throwable throwable) {
+            LOGGER.warn(throwable.getMessage(), throwable);
+
+            view.handleError(throwable);
+        }
     }
 }

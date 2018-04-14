@@ -1,6 +1,7 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import com.hjwylde.bowser.ui.dialogs.FilePreviewDialog;
+import com.hjwylde.bowser.util.concurrent.SwingExecutors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Immutable
 final class PreviewAction extends AbstractAction {
@@ -33,21 +35,21 @@ final class PreviewAction extends AbstractAction {
             return;
         }
 
-        Path path = mPath.get();
-        // TODO (hjw): This is an expensive operation, it should be backgrounded.
-        previewFile(path, getFrame(view.getComponent()));
+        CompletableFuture.supplyAsync(() -> {
+            Path path = mPath.get();
+
+            return buildFilePreviewDialog(path, getFrame(view.getComponent()));
+        }).thenAcceptAsync(FilePreviewDialog::show, SwingExecutors.edt());
+    }
+
+    private FilePreviewDialog buildFilePreviewDialog(@NotNull Path file, @NotNull JFrame parent) {
+        return FilePreviewDialog.builder()
+                .file(file)
+                .parent(parent)
+                .build();
     }
 
     private @NotNull JFrame getFrame(@NotNull Component component) {
         return (JFrame) SwingUtilities.getWindowAncestor(component);
-    }
-
-    private void previewFile(@NotNull Path file, @NotNull JFrame parent) {
-        FilePreviewDialog filePreviewDialog = FilePreviewDialog.builder()
-                .parent(parent)
-                .file(file)
-                .build();
-
-        filePreviewDialog.show();
     }
 }

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.function.BiFunction;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -78,10 +78,10 @@ public final class FileBrowserComponent implements FileBrowser.View {
 
     @Override
     public void setDirectory(@NotNull Path directory) {
-        OnGetChildrenObserver handler = new OnGetChildrenObserver(directory);
+        OnGetChildrenConsumer handler = new OnGetChildrenConsumer(directory);
 
         viewModel.getChildren(directory)
-                .handleAsync(handler, SwingExecutors.edt());
+                .whenCompleteAsync(handler, SwingExecutors.edt());
     }
 
     private void initialiseActionMap() {
@@ -115,10 +115,10 @@ public final class FileBrowserComponent implements FileBrowser.View {
     }
 
     @NotThreadSafe
-    private final class OnGetChildrenObserver implements BiFunction<Stream<Path>, Throwable, Void> {
+    private final class OnGetChildrenConsumer implements BiConsumer<Stream<Path>, Throwable> {
         private final @NotNull Path directory;
 
-        OnGetChildrenObserver(@NotNull Path directory) {
+        OnGetChildrenConsumer(@NotNull Path directory) {
             this.directory = directory;
         }
 
@@ -126,14 +126,12 @@ public final class FileBrowserComponent implements FileBrowser.View {
          * {@inheritDoc}
          */
         @Override
-        public Void apply(Stream<Path> pathStream, Throwable throwable) {
+        public void accept(Stream<Path> pathStream, Throwable throwable) {
             if (pathStream != null) {
                 onSuccess(pathStream);
             } else if (throwable != null) {
                 onError(throwable);
             }
-
-            return null;
         }
 
         private void onError(@NotNull Throwable throwable) {

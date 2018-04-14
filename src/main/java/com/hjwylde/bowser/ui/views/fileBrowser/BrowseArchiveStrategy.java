@@ -34,7 +34,8 @@ final class BrowseArchiveStrategy implements OpenStrategy {
 
     @Override
     public boolean isSupported(@NotNull Path path) {
-        return !Files.isDirectory(path) && getContentType(path).filter(BROWSABLE_CONTENT_TYPES::contains).isPresent();
+        return !Files.isDirectory(path) &&
+                getContentType(path).filter(BROWSABLE_CONTENT_TYPES::contains).isPresent();
 
     }
 
