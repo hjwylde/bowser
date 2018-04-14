@@ -1,6 +1,5 @@
 package com.hjwylde.bowser.ui.views.filePreview;
 
-import com.hjwylde.bowser.ui.views.fileComponents.EmptyFileComponentFactory;
 import com.hjwylde.bowser.ui.views.fileComponents.FileComponent;
 import com.hjwylde.bowser.ui.views.fileComponents.FileComponentFactory;
 import com.hjwylde.bowser.ui.views.fileComponents.FileComponentFactoryService;
