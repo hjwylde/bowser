@@ -136,8 +136,8 @@ public final class FileBrowserComponent implements FileBrowser.View {
             return null;
         }
 
-        private void onError(@NotNull Throwable t) {
-            Exception e = new Exception(RESOURCES.getString(RESOURCE_ERROR_BROWSING_PATH), t);
+        private void onError(@NotNull Throwable throwable) {
+            Exception e = new Exception(RESOURCES.getString(RESOURCE_ERROR_BROWSING_PATH), throwable);
             LOGGER.warn(e.getMessage(), e);
 
             handleError(e);

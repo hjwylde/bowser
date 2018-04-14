@@ -44,12 +44,9 @@ public final class TabbedFileBrowser {
 
     @NotThreadSafe
     public static final class Builder {
-        private final @NotNull JTabbedPane tabbedPane = new JTabbedPane();
-
         private FileSystemFactory fileSystemFactory;
 
         private Builder() {
-            tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         }
 
         /**
@@ -65,7 +62,12 @@ public final class TabbedFileBrowser {
                 throw new IllegalStateException("fileSystemFactory cannot be null.");
             }
 
-            return new TabbedFileBrowserComponent(tabbedPane, fileSystemFactory);
+            JTabbedPane tabbedPane = new JTabbedPane();
+            tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+            TabbedFileBrowserViewModel viewModel = new TabbedFileBrowserViewModel();
+
+            return new TabbedFileBrowserComponent(tabbedPane, fileSystemFactory, viewModel);
         }
 
         public @NotNull Builder fileSystemFactory(@NotNull FileSystemFactory fileSystemFactory) {
