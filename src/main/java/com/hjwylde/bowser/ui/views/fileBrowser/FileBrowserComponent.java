@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 @NotThreadSafe
 public final class FileBrowserComponent implements FileBrowser.View {
@@ -110,7 +109,7 @@ public final class FileBrowserComponent implements FileBrowser.View {
     }
 
     @NotThreadSafe
-    private final class OnGetChildrenConsumer implements BiConsumer<Stream<Path>, Throwable> {
+    private final class OnGetChildrenConsumer implements BiConsumer<List<Path>, Throwable> {
         private final @NotNull Path directory;
 
         OnGetChildrenConsumer(@NotNull Path directory) {
@@ -121,9 +120,9 @@ public final class FileBrowserComponent implements FileBrowser.View {
          * {@inheritDoc}
          */
         @Override
-        public void accept(Stream<Path> pathStream, Throwable throwable) {
-            if (pathStream != null) {
-                onSuccess(pathStream);
+        public void accept(List<Path> paths, Throwable throwable) {
+            if (paths != null) {
+                onSuccess(paths);
             } else if (throwable != null) {
                 onError(throwable);
             }
@@ -136,11 +135,10 @@ public final class FileBrowserComponent implements FileBrowser.View {
             handleError(throwable.getCause());
         }
 
-        private void onSuccess(@NotNull Stream<Path> pathStream) {
+        private void onSuccess(@NotNull List<Path> paths) {
             listModel.clear();
 
-            pathStream.map(FileNode::new)
-                    .forEach(listModel::addElement);
+            paths.forEach(path -> listModel.addElement(new FileNode(path)));
 
             FileBrowserComponent.this.directory = directory;
             notifyDirectoryChangeListeners();
