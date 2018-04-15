@@ -26,11 +26,11 @@ public final class ImageFileComponentFactory implements FileComponentFactory<Ima
      */
     @Override
     public @NotNull ImageFileComponent createFileComponent(@NotNull InputStream in) throws IOException {
-        RestrictedInputStream lin = new RestrictedInputStream(in, MAX_BYTES);
+        RestrictedInputStream rin = new RestrictedInputStream(in, MAX_BYTES);
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[1024];
-            for (int count = lin.read(buffer); count >= 0; count = lin.read(buffer)) {
+            for (int count = rin.read(buffer); count >= 0; count = rin.read(buffer)) {
                 out.write(buffer, 0, count);
             }
 

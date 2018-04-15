@@ -21,8 +21,8 @@ class TabbedFileBrowserTests {
     class StaticClasses {
         @Nested
         class Builder {
-            private TabbedFileBrowser.Builder builder = TabbedFileBrowser.builder();
-            private com.hjwylde.bowser.io.file.FileSystemFactory factory = mock(com.hjwylde.bowser.io.file.FileSystemFactory.class);
+            private final TabbedFileBrowser.Builder builder = TabbedFileBrowser.builder();
+            private final com.hjwylde.bowser.io.file.FileSystemFactory factory = mock(com.hjwylde.bowser.io.file.FileSystemFactory.class);
 
             @Nested
             class Build {

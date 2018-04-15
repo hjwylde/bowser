@@ -14,11 +14,17 @@ final class BrowseDirectoryStrategy implements OpenStrategy {
         this.view = view;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSupported(@NotNull Path path) {
         return Files.isDirectory(path);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void open(@NotNull Path path) {
         view.setDirectory(path);

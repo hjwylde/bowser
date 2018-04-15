@@ -22,8 +22,8 @@ public final class TextFileComponentFactory implements FileComponentFactory<Text
      */
     @Override
     public @NotNull TextFileComponent createFileComponent(@NotNull InputStream in) throws IOException {
-        RestrictedInputStream lin = new RestrictedInputStream(in, MAX_BYTES);
-        InputStreamReader inr = new InputStreamReader(lin);
+        RestrictedInputStream rin = new RestrictedInputStream(in, MAX_BYTES);
+        InputStreamReader inr = new InputStreamReader(rin);
         BufferedReader br = new BufferedReader(inr);
 
         try {

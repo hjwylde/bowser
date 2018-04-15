@@ -7,6 +7,10 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * An {@link InputStream} that counts and limits the number of bytes that are read. The main use case for this class is
+ * to help support and prevent reading files that would be too large to hold in memory.
+ */
 @NotThreadSafe
 public final class RestrictedInputStream extends FilterInputStream {
     private final int limit;
@@ -14,12 +18,21 @@ public final class RestrictedInputStream extends FilterInputStream {
     private int count;
     private int mark;
 
+    /**
+     * Creates a new {@link RestrictedInputStream} that wraps the given one, with the given limit (in bytes).
+     *
+     * @param in    the input stream to wrap.
+     * @param limit the read limit in bytes.
+     */
     public RestrictedInputStream(@NotNull InputStream in, int limit) {
         super(in);
 
         this.limit = limit;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void mark(int readlimit) {
         super.mark(readlimit);
@@ -27,6 +40,9 @@ public final class RestrictedInputStream extends FilterInputStream {
         mark = count;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int read(@NotNull byte[] b) throws IOException {
         int r = super.read(b);
@@ -38,6 +54,9 @@ public final class RestrictedInputStream extends FilterInputStream {
         return r;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int read(@NotNull byte[] b, int off, int len) throws IOException {
         int r = super.read(b, off, len);
@@ -49,6 +68,9 @@ public final class RestrictedInputStream extends FilterInputStream {
         return r;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int read() throws IOException {
         int r = super.read();
@@ -60,6 +82,9 @@ public final class RestrictedInputStream extends FilterInputStream {
         return r;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void reset() throws IOException {
         super.reset();
@@ -67,6 +92,9 @@ public final class RestrictedInputStream extends FilterInputStream {
         count = mark;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long skip(long n) throws IOException {
         long l = super.skip(n);

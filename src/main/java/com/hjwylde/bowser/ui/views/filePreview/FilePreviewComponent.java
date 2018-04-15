@@ -43,6 +43,9 @@ final class FilePreviewComponent implements FilePreview.View {
         return fileComponentFactory.createFileComponent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clearFile() {
         setFileComponent(EMPTY_FILE_COMPONENT);
@@ -56,6 +59,9 @@ final class FilePreviewComponent implements FilePreview.View {
         return panel;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setFile(@NotNull Path file) {
         CompletableFuture.supplyAsync(() -> buildFileComponent(file))
@@ -93,6 +99,9 @@ final class FilePreviewComponent implements FilePreview.View {
 
     @NotThreadSafe
     private final class OnFileComponentBuiltConsumer implements BiConsumer<FileComponent, Throwable> {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void accept(FileComponent fileComponent, Throwable throwable) {
             if (fileComponent != null) {

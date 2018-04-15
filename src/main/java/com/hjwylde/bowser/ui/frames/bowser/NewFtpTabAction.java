@@ -39,6 +39,9 @@ final class NewFtpTabAction implements Runnable {
         this.view = view;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run() {
         FtpConnectionDialog dialog = FtpConnectionDialog.builder()
@@ -62,7 +65,9 @@ final class NewFtpTabAction implements Runnable {
     private FileSystem getFileSystem(FtpConnectionDialog dialog) throws IOException {
         try {
             // TODO (hjw): A file system should be closed when finished with, somehow I need to ensure that we close
-            // this one.
+            // this one. It would be best to support lifecycle-like methods for the application and individual file
+            // browsers.
+
             // Trim trailing "/"s; the FtpFileSystem library considers them a path and does not support it.
             String host = dialog.getHost().replaceAll("/+$", "");
             URI uri = new URI(host);
@@ -93,6 +98,9 @@ final class NewFtpTabAction implements Runnable {
 
     @NotThreadSafe
     private final class OnGetFileSystemConsumer implements BiConsumer<FileSystem, Throwable> {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void accept(FileSystem fileSystem, Throwable throwable) {
             if (fileSystem != null) {

@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 class ScrollableComponentTests {
-    private View view = mock(View.class);
-    private ScrollableComponent component = new ScrollableComponent(view);
+    private final View view = mock(View.class);
+    private final ScrollableComponent component = new ScrollableComponent(view);
 
     @Nested
     class GetComponent {

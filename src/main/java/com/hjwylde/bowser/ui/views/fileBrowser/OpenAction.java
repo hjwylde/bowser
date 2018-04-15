@@ -70,11 +70,16 @@ final class OpenAction extends AbstractAction {
             throw new IOException(RESOURCES.getString(RESOURCE_ERROR_NO_OPEN_STRATEGY_FOUND));
         }
 
-        mOpenStrategy.get().open(path);
+        OpenStrategy openStrategy = mOpenStrategy.get();
+
+        openStrategy.open(path);
     }
 
     @NotThreadSafe
     private final class OnOpenConsumer implements BiConsumer<Void, Throwable> {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void accept(Void aVoid, Throwable throwable) {
             if (throwable != null) {

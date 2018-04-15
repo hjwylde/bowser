@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 @NotThreadSafe
-class TextFileComponent implements FileComponent {
+final class TextFileComponent implements FileComponent {
     private final @NotNull JTextPane textPane = new JTextPane();
 
     TextFileComponent(@NotNull String text) {

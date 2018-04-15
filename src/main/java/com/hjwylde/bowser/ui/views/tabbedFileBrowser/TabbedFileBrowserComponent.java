@@ -71,6 +71,9 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
 
     @NotThreadSafe
     private final class OnSelectStartingPathConsumer implements BiConsumer<Path, Throwable> {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void accept(Path path, Throwable throwable) {
             if (path != null) {

@@ -47,14 +47,29 @@ public final class FtpConnectionDialog {
         return new Builder();
     }
 
+    /**
+     * Gets the host from the user input.
+     *
+     * @return the host.
+     */
     public @NotNull String getHost() {
         return hostField.getText().trim();
     }
 
+    /**
+     * Gets the password from the user input.
+     *
+     * @return the password.
+     */
     public @NotNull char[] getPassword() {
         return passwordField.getPassword();
     }
 
+    /**
+     * Gets the username from the user input, or a default ("anonymous") if absent.
+     *
+     * @return the username or "anonymous".
+     */
     public @NotNull String getUsername() {
         String username = usernameField.getText().trim();
         if (username.isEmpty()) {

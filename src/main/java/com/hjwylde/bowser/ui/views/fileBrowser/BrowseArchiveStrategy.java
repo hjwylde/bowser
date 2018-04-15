@@ -32,6 +32,9 @@ final class BrowseArchiveStrategy implements OpenStrategy {
         this.view = view;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSupported(@NotNull Path path) {
         return !Files.isDirectory(path) &&
@@ -39,6 +42,9 @@ final class BrowseArchiveStrategy implements OpenStrategy {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void open(@NotNull Path path) throws IOException {
         // TODO (hjw): A file system should be closed when finished with, somehow I need to ensure that we close this

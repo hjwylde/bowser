@@ -22,7 +22,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 @NotThreadSafe
-public final class FileBrowserComponent implements FileBrowser.View {
+final class FileBrowserComponent implements FileBrowser.View {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(FileBrowserComponent.class.getSimpleName());
 
     private final @NotNull JComponent root;
@@ -57,6 +57,9 @@ public final class FileBrowserComponent implements FileBrowser.View {
         setDirectory(directory);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addDirectoryChangeListener(@NotNull Consumer<Path> listener) {
         directoryChangeListeners.add(listener);
@@ -85,6 +88,9 @@ public final class FileBrowserComponent implements FileBrowser.View {
         return Optional.of(fileNode.getPath());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setDirectory(@NotNull Path directory) {
         OnGetChildrenConsumer handler = new OnGetChildrenConsumer(directory);
@@ -108,6 +114,9 @@ public final class FileBrowserComponent implements FileBrowser.View {
 
     private void initialiseMouseListener() {
         list.addMouseListener(new MouseAdapter() {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() != 2) {
@@ -164,6 +173,9 @@ public final class FileBrowserComponent implements FileBrowser.View {
 
     @NotThreadSafe
     private final class OnListSelectionChangeListener implements ListSelectionListener {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void valueChanged(ListSelectionEvent e) {
             JList list = (JList) e.getSource();

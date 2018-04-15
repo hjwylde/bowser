@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
  * occurs in trying to display a specific file.
  */
 @Immutable
-public final class EmptyFileComponentFactory implements FileComponentFactory<FileComponent> {
+final class EmptyFileComponentFactory implements FileComponentFactory<FileComponent> {
     private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(EmptyFileComponentFactory.class.getName(), LocaleModule.provideLocale());
     private static final @NotNull String RESOURCE_EMPTY_LABEL = "emptyLabel";
 
@@ -44,18 +44,18 @@ public final class EmptyFileComponentFactory implements FileComponentFactory<Fil
         return createFileComponent();
     }
 
+    public @NotNull FileComponent createFileComponent() {
+        TextFileComponentFactory fileComponentFactory = new TextFileComponentFactory();
+        String text = RESOURCES.getString(RESOURCE_EMPTY_LABEL);
+
+        return fileComponentFactory.createFileComponent(text);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean isSupportedContentType(@NotNull String contentType) {
         return true;
-    }
-
-    @NotNull FileComponent createFileComponent() {
-        TextFileComponentFactory fileComponentFactory = new TextFileComponentFactory();
-        String text = RESOURCES.getString(RESOURCE_EMPTY_LABEL);
-
-        return fileComponentFactory.createFileComponent(text);
     }
 }

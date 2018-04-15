@@ -21,8 +21,8 @@ class ScrollableTests {
     class StaticClasses {
         @Nested
         class Builder {
-            private Scrollable.Builder builder = Scrollable.builder();
-            private Scrollable.View view = mock(Scrollable.View.class);
+            private final Scrollable.Builder builder = Scrollable.builder();
+            private final Scrollable.View view = mock(Scrollable.View.class);
 
             @Nested
             class Build {

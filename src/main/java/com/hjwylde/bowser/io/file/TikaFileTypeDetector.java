@@ -17,6 +17,9 @@ import java.nio.file.spi.FileTypeDetector;
 public class TikaFileTypeDetector extends FileTypeDetector {
     private final @NotNull Tika tika = new Tika();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String probeContentType(Path path) throws IOException {
         return tika.detect(path);
