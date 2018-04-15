@@ -20,38 +20,34 @@ If there are any issues with Windows or Linux, please let me know and I can try 
 
 The following features are implemented:
 * Browsing files (with tabs)
-* Browsing FTP files (this only partially works, I talk about this more below)
-* Previewing files (plain/text, image/jpeg, image/png)
+* Browsing archive files (application/zip)
+* Browsing FTP servers
+* Previewing files (text/\*, image/jpeg, image/png)
 * Opening files (Any supported by the operating system)
-* Extracting archive files (application/zip)
 
 To browse files:
-* Use either the arrow keys or mouse to navigate the file tree
-* N.B., directory refreshing has not been implemented. If you wish to see changes in the file tree,
-  you will need to open a new tab.
+* Use the arrow keys and either enter, or the mouse, to navigate into a directory
+* Use backspace to navigate up to the parent directory
 
 To open/close new tabs:
-* Use CMD/CTRL+t and CMD/CTRL+w to open/close tabs respectively.
+* Use CMD/CTRL+t and CMD/CTRL+w to open/close tabs respectively
 
-To browse FTP files:
+To browse archive files:
+* Open the archive file just as you would a regular directory
+
+To browse FTP servers:
 * Open a new FTP connection dialog (Under "File", "New FTP Tab", or CMD/CTRL+y)
 * Enter in the host, username and password, click "Ok". This will open a new FTP tab and load the
-  FTP file system. N.B., it is extremely slow and does not work that well, I have left this in as a
-  "demo" of how I would like to implement FTP file browsing, but I would not call this usable yet.
+  FTP file system. N.B., it is rather slow depending on the target FTP server, and I was unable to
+  properly use it for a local FTP server. There are also some features the library does not support
+  which makes some of the experience less than ideal.
 
 To preview files:
-* Select a file in the file tree
-* Press space
+* Select a file in the file tree (it will preview in the split pane on the right)
 
 To open files:
 * Select a file in the file tree
-* Press enter. This will automatically open the file using the default associated application unless
-  it is a ZIP file.
-
-To extract archive files:
-* Select a ZIP file in the file tree
-* Press enter. This will automatically extract the ZIP file into the current folder. N.B., this
-  won't trigger a refresh on the file tree, you will need to do this yourself.
+* Press enter. This will automatically open the file using the default associated application.
 
 ## My thoughts
 
@@ -77,15 +73,12 @@ What I struggled with:
   last.
 
 Future features I would add before I consider this production ready:
-* Support better shortcuts (tabbing between tabs, space to close preview mode, keys to navigate file
-  tree while in preview mode)
-* Display relevant errors to the user (e.g., if something goes wrong with unarchiving a file, or
-  previewing a file)
+* Support better shortcuts (e.g., tabbing between tabs)
+* Display relevant errors to the user (while an error is displayed to the user, it would be nice to
+  provide them with more information than just "Something went wrong")
 * Ensure interaction with the application is documented and all shortcuts can be found and learnt
-* Dynamically refresh the file tree when the file system changes
+* Dynamically refresh the current directory when the file system changes
 * Re-use view model results for tabs that refer to the same file system
-* Ensure FTP works and is efficient
-* Ensure all potentially long-running actions are backgrounded and have progress bars/loading
-  images. Currently there are a number of calls to `Files` which, depending upon the underlying file
-  system, could be quite expensive.
-* Ensure FTP can preview/open/extract files
+* Ensure all potentially long-running actions have progress bars/loading images.
+* Ensure FTP works well and is efficient
+* Ensure FTP can open files
