@@ -15,8 +15,8 @@ import java.io.InputStream;
 public final class RestrictedInputStream extends FilterInputStream {
     private final int limit;
 
-    private int count;
-    private int mark;
+    private int count = 0;
+    private int mark = 0;
 
     /**
      * Creates a new {@link RestrictedInputStream} that wraps the given one, with the given limit (in bytes).
@@ -46,7 +46,7 @@ public final class RestrictedInputStream extends FilterInputStream {
     @Override
     public int read(@NotNull byte[] b) throws IOException {
         int r = super.read(b);
-        if (r > 0) {
+        if (r >= 0) {
             count += r;
             checkLimit();
         }
@@ -60,7 +60,7 @@ public final class RestrictedInputStream extends FilterInputStream {
     @Override
     public int read(@NotNull byte[] b, int off, int len) throws IOException {
         int r = super.read(b, off, len);
-        if (r > 0) {
+        if (r >= 0) {
             count += r;
             checkLimit();
         }
@@ -74,7 +74,7 @@ public final class RestrictedInputStream extends FilterInputStream {
     @Override
     public int read() throws IOException {
         int r = super.read();
-        if (r > 0) {
+        if (r >= 0) {
             count++;
             checkLimit();
         }
