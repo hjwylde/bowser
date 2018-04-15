@@ -14,6 +14,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Immutable
 final class FileBrowserViewModel {
@@ -41,8 +42,8 @@ final class FileBrowserViewModel {
 
     public @NotNull CompletableFuture<List<Path>> getChildren(@NotNull Path parent) {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                return Files.list(parent)
+            try (Stream<Path> paths = Files.list(parent)) {
+                return paths
                         .filter(VISIBLE_FILE_FILTER)
                         .sorted()
                         .collect(Collectors.toList());
