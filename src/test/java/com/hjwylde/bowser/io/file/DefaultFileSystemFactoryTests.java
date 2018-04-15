@@ -20,18 +20,4 @@ class DefaultFileSystemFactoryTests {
             assertEquals(FileSystems.getDefault(), fileSystem);
         }
     }
-
-    @Nested
-    class StaticMethods {
-        @Nested
-        class GetInstance {
-            @Test
-            void returnsSingletonInstance() {
-                FileSystemFactory instance = DefaultFileSystemFactory.getInstance();
-                FileSystemFactory secondInstance = DefaultFileSystemFactory.getInstance();
-
-                assertEquals(instance, secondInstance);
-            }
-        }
-    }
 }

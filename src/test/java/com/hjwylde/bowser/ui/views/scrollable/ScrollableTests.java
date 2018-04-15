@@ -1,28 +1,26 @@
 package com.hjwylde.bowser.ui.views.scrollable;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
 class ScrollableTests {
     @Nested
-    class Builder {
-        @Test
-        void returnsBuilder() {
-            Scrollable.Builder builder = Scrollable.builder();
-
-            assertNotNull(builder);
-        }
-    }
-
-    @Nested
     class StaticClasses {
         @Nested
         class Builder {
-            private final Scrollable.Builder builder = Scrollable.builder();
-            private final Scrollable.View view = mock(Scrollable.View.class);
+            private Scrollable.Builder builder;
+            private Scrollable.View view;
+
+            @BeforeEach
+            void init() {
+                builder = Scrollable.builder();
+                view = mock(Scrollable.View.class);
+            }
 
             @Nested
             class Build {
@@ -36,17 +34,7 @@ class ScrollableTests {
 
                 @Test
                 void throwsIllegalStateExceptionWhenViewNull() {
-                    assertThrows(IllegalStateException.class, () -> builder.build());
-                }
-            }
-
-            @Nested
-            class View {
-                @Test
-                void returnsThis() {
-                    Scrollable.Builder result = builder.view(view);
-
-                    assertEquals(builder, result);
+                    assertThrows(IllegalStateException.class, builder::build);
                 }
             }
         }
