@@ -38,6 +38,13 @@ public final class FileBrowser {
         void addDirectoryChangeListener(@NotNull Consumer<Path> listener);
 
         /**
+         * Gets the current directory.
+         *
+         * @return the current directory.
+         */
+        @NotNull Path getDirectory();
+
+        /**
          * Gets the currently selected path. If no path is selected, then {@link Optional#empty()} is returned.
          *
          * @return the currently selected path, or {@link Optional#empty()}.

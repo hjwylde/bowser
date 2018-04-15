@@ -79,6 +79,14 @@ final class FileBrowserComponent implements FileBrowser.View {
      * {@inheritDoc}
      */
     @Override
+    public @NotNull Path getDirectory() {
+        return directory;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public @NotNull Optional<Path> getSelectedPath() {
         FileNode fileNode = list.getSelectedValue();
         if (fileNode == null) {
@@ -102,6 +110,7 @@ final class FileBrowserComponent implements FileBrowser.View {
     private void initialiseActionMap() {
         // TODO (hjw): Cyclic references -> is it possible to avoid this?
         list.getActionMap().put(FileBrowserAction.OPEN, new OpenAction(this));
+        list.getActionMap().put(FileBrowserAction.PREVIOUS, new PreviousAction(this));
     }
 
     private void initialiseFilePreviewListener() {
@@ -110,6 +119,7 @@ final class FileBrowserComponent implements FileBrowser.View {
 
     private void initialiseInputMap() {
         list.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), FileBrowserAction.OPEN);
+        list.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), FileBrowserAction.PREVIOUS);
     }
 
     private void initialiseMouseListener() {
