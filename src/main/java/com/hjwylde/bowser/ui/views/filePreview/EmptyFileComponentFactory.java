@@ -7,6 +7,7 @@ import com.hjwylde.bowser.ui.views.fileComponents.TextFileComponentFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.Immutable;
+import java.io.InputStream;
 import java.util.ResourceBundle;
 
 /**
@@ -29,23 +30,18 @@ public final class EmptyFileComponentFactory implements FileComponentFactory<Fil
      *
      * @return the singleton instance.
      */
-    public static @NotNull FileComponentFactory<? extends FileComponent> getInstance() {
+    public static @NotNull EmptyFileComponentFactory getInstance() {
         return INSTANCE;
     }
 
     /**
      * {@inheritDoc}
      * <p>
-     * N.B., in this subclass {@code data} is unused and it is acceptable to pass an empty {@code byte} array.
+     * N.B., in this subclass {@code in} is unused and it is acceptable to pass an empty input stream.
      */
     @Override
-    public @NotNull FileComponent createFileComponent(@NotNull byte[] data) {
-        TextFileComponentFactory fileComponentFactory = new TextFileComponentFactory();
-
-        String content = RESOURCES.getString(RESOURCE_EMPTY_LABEL);
-        FileComponent fileComponent = fileComponentFactory.createFileComponent(content.getBytes());
-
-        return fileComponent;
+    public @NotNull FileComponent createFileComponent(@NotNull InputStream ignored) {
+        return createFileComponent();
     }
 
     /**
@@ -54,5 +50,12 @@ public final class EmptyFileComponentFactory implements FileComponentFactory<Fil
     @Override
     public boolean isSupportedContentType(@NotNull String contentType) {
         return true;
+    }
+
+    @NotNull FileComponent createFileComponent() {
+        TextFileComponentFactory fileComponentFactory = new TextFileComponentFactory();
+        String text = RESOURCES.getString(RESOURCE_EMPTY_LABEL);
+
+        return fileComponentFactory.createFileComponent(text);
     }
 }

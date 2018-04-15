@@ -50,8 +50,8 @@ public final class FileComponentFactoryService {
         return mContentType.flatMap(
                 contentType -> StreamSupport
                         .stream(loader.spliterator(), false)
-                        .filter(factory -> factory.isSupportedContentType(contentType)
-                        ).findFirst());
+                        .filter(factory -> factory.isSupportedContentType(contentType))
+                        .findFirst());
     }
 
     private @NotNull Optional<String> getContentType(@NotNull Path file) {

@@ -1,8 +1,11 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
+import com.hjwylde.bowser.ui.views.filePreview.FilePreview;
+import com.hjwylde.bowser.ui.views.scrollable.Scrollable;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
+import javax.swing.*;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -69,9 +72,21 @@ public final class FileBrowser {
                 throw new IllegalStateException("startingPath must be set.");
             }
 
+            DefaultListModel<FileNode> listModel = new DefaultListModel<>();
+            JList<FileNode> list = new JList<>(listModel);
+
+            FilePreview.View filePreviewView = FilePreview.builder().build();
+            Scrollable.View scrollableFilePreviewView = Scrollable.builder()
+                    .view(filePreviewView)
+                    .build();
+
+            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, list, scrollableFilePreviewView.getComponent());
+            splitPane.setDividerLocation(0.5);
+            splitPane.setResizeWeight(0.5);
+
             FileBrowserViewModel viewModel = new FileBrowserViewModel();
 
-            return new FileBrowserComponent(startingPath, viewModel);
+            return new FileBrowserComponent(splitPane, list, listModel, filePreviewView, startingPath, viewModel);
         }
 
         public @NotNull Builder startingPath(@NotNull Path startingPath) {

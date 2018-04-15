@@ -1,5 +1,6 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
+import com.hjwylde.bowser.ui.views.filePreview.FilePreview;
 import com.hjwylde.bowser.util.concurrent.SwingExecutors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -22,8 +25,11 @@ import java.util.function.Consumer;
 public final class FileBrowserComponent implements FileBrowser.View {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(FileBrowserComponent.class.getSimpleName());
 
-    private final @NotNull DefaultListModel<FileNode> listModel = new DefaultListModel<>();
-    private final @NotNull JList<FileNode> list = new JList<>(listModel);
+    private final @NotNull JComponent root;
+    private final @NotNull JList<FileNode> list;
+    private final @NotNull DefaultListModel<FileNode> listModel;
+
+    private final @NotNull FilePreview.View filePreviewView;
 
     private final @NotNull List<Consumer<Path>> directoryChangeListeners = new ArrayList<>();
 
@@ -31,11 +37,20 @@ public final class FileBrowserComponent implements FileBrowser.View {
 
     private @NotNull Path directory;
 
-    FileBrowserComponent(@NotNull Path startingPath, @NotNull FileBrowserViewModel viewModel) {
+    // TODO (hjw): There are a lot of arguments here, and this class is now responsible for dealing with updating the
+    // browser and preview. Perhaps there is a parent concept that could be factored out to separate out the concerns?
+    FileBrowserComponent(@NotNull JComponent root, @NotNull JList<FileNode> list,
+                         @NotNull DefaultListModel<FileNode> listModel, @NotNull FilePreview.View filePreviewView,
+                         @NotNull Path startingPath, @NotNull FileBrowserViewModel viewModel) {
+        this.root = root;
+        this.list = list;
+        this.listModel = listModel;
+        this.filePreviewView = filePreviewView;
         directory = startingPath;
         this.viewModel = viewModel;
 
         initialiseMouseListener();
+        initialiseFilePreviewListener();
         initialiseInputMap();
         initialiseActionMap();
 
@@ -54,7 +69,7 @@ public final class FileBrowserComponent implements FileBrowser.View {
      */
     @Override
     public @NotNull JComponent getComponent() {
-        return list;
+        return root;
     }
 
     /**
@@ -81,12 +96,14 @@ public final class FileBrowserComponent implements FileBrowser.View {
     private void initialiseActionMap() {
         // TODO (hjw): Cyclic references -> is it possible to avoid this?
         list.getActionMap().put(FileBrowserAction.OPEN, new OpenAction(this));
-        list.getActionMap().put(FileBrowserAction.PREVIEW, new PreviewAction(this));
+    }
+
+    private void initialiseFilePreviewListener() {
+        list.addListSelectionListener(new OnListSelectionChangeListener());
     }
 
     private void initialiseInputMap() {
         list.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), FileBrowserAction.OPEN);
-        list.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), FileBrowserAction.PREVIEW);
     }
 
     private void initialiseMouseListener() {
@@ -142,6 +159,21 @@ public final class FileBrowserComponent implements FileBrowser.View {
 
             FileBrowserComponent.this.directory = directory;
             notifyDirectoryChangeListeners();
+        }
+    }
+
+    @NotThreadSafe
+    private final class OnListSelectionChangeListener implements ListSelectionListener {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            JList list = (JList) e.getSource();
+
+            FileNode fileNode = (FileNode) list.getSelectedValue();
+            if (fileNode != null) {
+                filePreviewView.setFile(fileNode.getPath());
+            } else {
+                filePreviewView.clearFile();
+            }
         }
     }
 }
