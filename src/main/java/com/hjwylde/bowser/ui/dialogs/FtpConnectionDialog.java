@@ -6,6 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -48,11 +51,22 @@ public final class FtpConnectionDialog {
     }
 
     /**
+     * Gets the host from the user input as a URI.
+     *
+     * @return the host.
+     */
+    public @NotNull URI getHost() throws URISyntaxException {
+        URI uri = getUri();
+
+        return new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), null, null, null);
+    }
+
+    /**
      * Gets the host from the user input.
      *
      * @return the host.
      */
-    public @NotNull String getHost() {
+    public @NotNull String getHostInput() {
         return hostField.getText().trim();
     }
 
@@ -61,8 +75,20 @@ public final class FtpConnectionDialog {
      *
      * @return the password.
      */
-    public @NotNull char[] getPassword() {
+    public @NotNull char[] getPasswordInput() {
         return passwordField.getPassword();
+    }
+
+    public @NotNull Optional<String> getPath() {
+        try {
+            URI uri = getUri();
+
+            return Optional.ofNullable(uri.getPath());
+        } catch (URISyntaxException ignored) {
+            // Ignored, this exception is thrown when #getHost() is called.
+        }
+
+        return Optional.empty();
     }
 
     /**
@@ -70,14 +96,13 @@ public final class FtpConnectionDialog {
      *
      * @return the username or "anonymous".
      */
-    public @NotNull String getUsername() {
+    public @NotNull String getUsernameInput() {
         String username = usernameField.getText().trim();
         if (username.isEmpty()) {
             username = DEFAULT_USERNAME;
         }
         return username;
     }
-
 
     /**
      * Shows the dialog. This blocks the UI until the user either accepts or cancels. The result can be captured and
@@ -104,6 +129,10 @@ public final class FtpConnectionDialog {
                 RESOURCES.getString(RESOURCE_TITLE),
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private @NotNull URI getUri() throws URISyntaxException {
+        return new URI(getHostInput());
     }
 
     /**

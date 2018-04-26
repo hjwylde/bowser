@@ -16,8 +16,10 @@ import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -59,7 +61,7 @@ final class NewFtpTabAction implements Runnable {
             } catch (IOException e) {
                 throw new CompletionException(e);
             }
-        }).whenCompleteAsync(new OnGetFileSystemConsumer(), SwingExecutors.edt());
+        }).whenCompleteAsync(new OnGetFileSystemConsumer(dialog), SwingExecutors.edt());
     }
 
     private FileSystem getFileSystem(FtpConnectionDialog dialog) throws IOException {
@@ -68,14 +70,12 @@ final class NewFtpTabAction implements Runnable {
             // this one. It would be best to support lifecycle-like methods for the application and individual file
             // browsers.
 
-            // Trim trailing "/"s; the FtpFileSystem library considers them a path and does not support it.
-            String host = dialog.getHost().replaceAll("/+$", "");
-            URI uri = new URI(host);
+            URI uri = dialog.getHost();
 
             // We need to manually check the scheme here. FileSystems assumes that the scheme is non-null, but
             // unfortunately an input such as "foo" is considered a valid URI, but has no scheme.
             if (!SUPPORTED_FTP_SCHEMES.contains(uri.getScheme())) {
-                throw new URISyntaxException(dialog.getHost(), "Unsupported URI scheme");
+                throw new URISyntaxException(dialog.getHostInput(), "Unsupported URI scheme");
             }
 
             // TODO (hjw): There is a bug in the FTPFileSystemProvider which prevents a file system from being re-used
@@ -85,7 +85,7 @@ final class NewFtpTabAction implements Runnable {
                 return FileSystems.getFileSystem(uri);
             } catch (FileSystemNotFoundException ignored) {
                 FTPEnvironment env = new FTPEnvironment()
-                        .withCredentials(dialog.getUsername(), dialog.getPassword());
+                        .withCredentials(dialog.getUsernameInput(), dialog.getPasswordInput());
 
                 return FileSystems.newFileSystem(uri, env);
             }
@@ -98,6 +98,12 @@ final class NewFtpTabAction implements Runnable {
 
     @NotThreadSafe
     private final class OnGetFileSystemConsumer implements BiConsumer<FileSystem, Throwable> {
+        private final @NotNull FtpConnectionDialog dialog;
+
+        private OnGetFileSystemConsumer(@NotNull FtpConnectionDialog dialog) {
+            this.dialog = dialog;
+        }
+
         /**
          * {@inheritDoc}
          */
@@ -118,7 +124,15 @@ final class NewFtpTabAction implements Runnable {
         }
 
         private void onSuccess(@NotNull FileSystem fileSystem) {
-            view.addTab(fileSystem);
+            Optional<String> mPath = dialog.getPath();
+
+            if (mPath.isPresent()) {
+                Path path = fileSystem.getPath(mPath.get());
+
+                view.addTab(path);
+            } else {
+                view.addTab(fileSystem);
+            }
         }
     }
 }

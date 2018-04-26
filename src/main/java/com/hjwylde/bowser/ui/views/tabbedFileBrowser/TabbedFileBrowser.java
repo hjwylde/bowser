@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.nio.file.FileSystem;
+import java.nio.file.Path;
 
 /**
  * {@link TabbedFileBrowser} provides the interfaces to create and use a component that adds/removes different file
@@ -26,6 +27,11 @@ public final class TabbedFileBrowser {
     }
 
     public interface View extends com.hjwylde.bowser.ui.views.View {
+        /**
+         * Adds a browser tab using the given starting path. The file system is taken from the path.
+         */
+        void addTab(@NotNull Path path);
+
         /**
          * Adds a browser tab using the given file system.
          */

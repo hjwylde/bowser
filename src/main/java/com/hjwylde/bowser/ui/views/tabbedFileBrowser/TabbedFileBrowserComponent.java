@@ -38,6 +38,27 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         addTab(fileSystemFactory.getFileSystem());
     }
 
+    @Override
+    public void addTab(@NotNull Path path) {
+        FileBrowser.View fileBrowserView = FileBrowser.builder()
+                .startingPath(path)
+                .build();
+
+        JComponent component = fileBrowserView.getComponent();
+
+        tabbedPane.addTab("", component);
+        tabbedPane.setSelectedComponent(component);
+
+        fileBrowserView.addDirectoryChangeListener(directory -> {
+            int index = tabbedPane.indexOfComponent(component);
+            if (index != -1) {
+                Path fileName = directory.getFileName() != null ? directory.getFileName() : directory;
+
+                tabbedPane.setTitleAt(index, fileName.toString());
+            }
+        });
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -90,23 +111,7 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         }
 
         private void onSuccess(@NotNull Path path) {
-            FileBrowser.View fileBrowserView = FileBrowser.builder()
-                    .startingPath(path)
-                    .build();
-
-            JComponent component = fileBrowserView.getComponent();
-
-            tabbedPane.addTab("", component);
-            tabbedPane.setSelectedComponent(component);
-
-            fileBrowserView.addDirectoryChangeListener(directory -> {
-                int index = tabbedPane.indexOfComponent(component);
-                if (index != -1) {
-                    Path fileName = directory.getFileName() != null ? directory.getFileName() : directory;
-
-                    tabbedPane.setTitleAt(index, fileName.toString());
-                }
-            });
+            addTab(path);
         }
     }
 }
