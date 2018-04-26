@@ -1,7 +1,6 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import com.hjwylde.bowser.ui.views.filePreview.FilePreview;
-import com.hjwylde.bowser.ui.views.scrollable.Scrollable;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
@@ -67,6 +66,15 @@ public final class FileBrowser {
         private Builder() {
         }
 
+        private static @NotNull JComponent wrapInsideScrollPane(@NotNull JComponent component) {
+            JScrollPane scrollableComponent = new JScrollPane(component);
+            scrollableComponent.setBorder(null);
+            scrollableComponent.getHorizontalScrollBar().setUnitIncrement(16);
+            scrollableComponent.getVerticalScrollBar().setUnitIncrement(16);
+
+            return scrollableComponent;
+        }
+
         /**
          * Builds and returns a new {@link FileBrowser.View}. The file browser view must have a starting path to
          * reference.
@@ -81,13 +89,12 @@ public final class FileBrowser {
 
             DefaultListModel<FileNode> listModel = new DefaultListModel<>();
             JList<FileNode> list = new JList<>(listModel);
+            JComponent scrollableList = wrapInsideScrollPane(list);
 
             FilePreview.View filePreviewView = FilePreview.builder().build();
-            Scrollable.View scrollableFilePreviewView = Scrollable.builder()
-                    .view(filePreviewView)
-                    .build();
+            JComponent scrollableFilePreview = wrapInsideScrollPane(filePreviewView.getComponent());
 
-            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, list, scrollableFilePreviewView.getComponent());
+            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollableList, scrollableFilePreview);
             splitPane.setDividerLocation(0.5);
             splitPane.setResizeWeight(0.5);
 

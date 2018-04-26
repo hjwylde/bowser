@@ -2,7 +2,6 @@ package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 
 import com.hjwylde.bowser.io.file.FileSystemFactory;
 import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowser;
-import com.hjwylde.bowser.ui.views.scrollable.Scrollable;
 import com.hjwylde.bowser.util.concurrent.SwingExecutors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -95,11 +94,7 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
                     .startingPath(path)
                     .build();
 
-            Scrollable.View scrollableView = Scrollable.builder()
-                    .view(fileBrowserView)
-                    .build();
-
-            JComponent component = scrollableView.getComponent();
+            JComponent component = fileBrowserView.getComponent();
 
             tabbedPane.addTab("", component);
             tabbedPane.setSelectedComponent(component);
