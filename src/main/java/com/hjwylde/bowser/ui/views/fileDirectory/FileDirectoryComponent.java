@@ -110,12 +110,10 @@ final class FileDirectoryComponent implements FileDirectory.View {
     private void initialiseActionMap() {
         // TODO (hjw): Cyclic references -> is it possible to avoid this?
         list.getActionMap().put(FileDirectoryAction.OPEN, new OpenAction(this));
-        list.getActionMap().put(FileDirectoryAction.PREVIOUS, new PreviousAction(this));
     }
 
     private void initialiseInputMap() {
         list.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), FileDirectoryAction.OPEN);
-        list.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), FileDirectoryAction.PREVIOUS);
     }
 
     private void initialiseMouseListener() {

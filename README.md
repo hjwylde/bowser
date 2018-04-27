@@ -27,7 +27,7 @@ The following features are implemented:
 
 To browse files:
 * Use the arrow keys and either enter, or the mouse, to navigate into a directory
-* Use backspace to navigate up to the parent directory
+* Use the "Back" and "Forward" buttons to navigate back and forth in browsing history
 
 To open/close new tabs:
 * Use CMD/CTRL+t and CMD/CTRL+w to open/close tabs respectively
