@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui.views.fileBrowser;
+package com.hjwylde.bowser.ui.views.fileDirectory;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -9,9 +9,9 @@ import java.nio.file.Path;
 
 @NotThreadSafe
 final class PreviousAction extends AbstractAction {
-    private final @NotNull FileBrowser.View view;
+    private final @NotNull FileDirectory.View view;
 
-    PreviousAction(@NotNull FileBrowser.View view) {
+    PreviousAction(@NotNull FileDirectory.View view) {
         this.view = view;
     }
 

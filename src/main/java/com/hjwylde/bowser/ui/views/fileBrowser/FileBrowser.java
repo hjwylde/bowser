@@ -1,12 +1,12 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
+import com.hjwylde.bowser.ui.views.fileDirectory.FileDirectory;
 import com.hjwylde.bowser.ui.views.filePreview.FilePreview;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -35,28 +35,6 @@ public final class FileBrowser {
          * @param listener the listener.
          */
         void addDirectoryChangeListener(@NotNull Consumer<Path> listener);
-
-        /**
-         * Gets the current directory.
-         *
-         * @return the current directory.
-         */
-        @NotNull Path getDirectory();
-
-        /**
-         * Gets the currently selected path. If no path is selected, then {@link Optional#empty()} is returned.
-         *
-         * @return the currently selected path, or {@link Optional#empty()}.
-         */
-        @NotNull Optional<Path> getSelectedPath();
-
-        /**
-         * Sets the current directory to the provided path. The view is to deal with asynchronously finding the
-         * directory's children and refreshing the listing.
-         *
-         * @param directory the new directory for listing.
-         */
-        void setDirectory(@NotNull Path directory);
     }
 
     @NotThreadSafe
@@ -87,20 +65,19 @@ public final class FileBrowser {
                 throw new IllegalStateException("startingPath must be set.");
             }
 
-            DefaultListModel<FileNode> listModel = new DefaultListModel<>();
-            JList<FileNode> list = new JList<>(listModel);
-            JComponent scrollableList = wrapInsideScrollPane(list);
+            FileDirectory.View fileDirectoryView = FileDirectory.builder()
+                    .startingPath(startingPath)
+                    .build();
+            JComponent scrollableFileDirectory = wrapInsideScrollPane(fileDirectoryView.getComponent());
 
             FilePreview.View filePreviewView = FilePreview.builder().build();
             JComponent scrollableFilePreview = wrapInsideScrollPane(filePreviewView.getComponent());
 
-            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollableList, scrollableFilePreview);
+            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollableFileDirectory, scrollableFilePreview);
             splitPane.setDividerLocation(0.5);
             splitPane.setResizeWeight(0.5);
 
-            FileBrowserViewModel viewModel = new FileBrowserViewModel();
-
-            return new FileBrowserComponent(splitPane, list, listModel, filePreviewView, startingPath, viewModel);
+            return new FileBrowserComponent(splitPane, fileDirectoryView, filePreviewView);
         }
 
         public @NotNull Builder startingPath(@NotNull Path startingPath) {

@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui.views.fileBrowser;
+package com.hjwylde.bowser.ui.views.fileDirectory;
 
 import com.hjwylde.bowser.modules.LocaleModule;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +15,7 @@ import java.util.*;
 
 @NotThreadSafe
 final class BrowseArchiveStrategy implements OpenStrategy {
-    private static final @NotNull Logger LOGGER = LogManager.getLogger(FileBrowserComponent.class.getSimpleName());
+    private static final @NotNull Logger LOGGER = LogManager.getLogger(FileDirectoryComponent.class.getSimpleName());
 
     private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(BrowseArchiveStrategy.class.getName(), LocaleModule.provideLocale());
     private static final @NotNull String RESOURCE_ERROR = "error";
@@ -26,9 +26,9 @@ final class BrowseArchiveStrategy implements OpenStrategy {
             "application/zip"
     );
 
-    private final @NotNull FileBrowser.View view;
+    private final @NotNull FileDirectory.View view;
 
-    BrowseArchiveStrategy(@NotNull FileBrowser.View view) {
+    BrowseArchiveStrategy(@NotNull FileDirectory.View view) {
         this.view = view;
     }
 
@@ -49,7 +49,7 @@ final class BrowseArchiveStrategy implements OpenStrategy {
     public void open(@NotNull Path path) throws IOException {
         // TODO (hjw): A file system should be closed when finished with, somehow I need to ensure that we close this
         // one. I have an idea about how to do this: I would like to store more information about the current state and
-        // history in the FileBrowserComponent. When going back in the history (exiting the archive browser) it would be
+        // history in the FileDirectoryComponent. When going back in the history (exiting the archive browser) it would be
         // possible to close the file system. Likewise, when closing a tab it should close the file system if it's not
         // being used by another tab.
         try {

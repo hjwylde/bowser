@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui.views.fileBrowser;
+package com.hjwylde.bowser.ui.views.fileDirectory;
 
 import com.hjwylde.bowser.modules.LocaleModule;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Immutable
-final class FileBrowserViewModel {
-    private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(FileBrowserViewModel.class.getName(), LocaleModule.provideLocale());
+final class FileDirectoryViewModel {
+    private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(FileDirectoryViewModel.class.getName(), LocaleModule.provideLocale());
     private static final @NotNull String RESOURCE_ERROR_BROWSING_PATH = "errorBrowsingPath";
 
     private static final @NotNull Predicate<Path> VISIBLE_FILE_FILTER = path -> {
@@ -37,10 +37,10 @@ final class FileBrowserViewModel {
         }
     };
 
-    FileBrowserViewModel() {
+    FileDirectoryViewModel() {
     }
 
-    public @NotNull CompletableFuture<List<Path>> getChildren(@NotNull Path parent) {
+    @NotNull CompletableFuture<List<Path>> getChildren(@NotNull Path parent) {
         return CompletableFuture.supplyAsync(() -> {
             try (Stream<Path> paths = Files.list(parent)) {
                 return paths

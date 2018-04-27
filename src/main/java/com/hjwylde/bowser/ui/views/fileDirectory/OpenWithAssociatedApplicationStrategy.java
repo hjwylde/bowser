@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui.views.fileBrowser;
+package com.hjwylde.bowser.ui.views.fileDirectory;
 
 import com.hjwylde.bowser.modules.LocaleModule;
 import org.jetbrains.annotations.NotNull;

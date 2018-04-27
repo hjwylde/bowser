@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui.views.fileBrowser;
+package com.hjwylde.bowser.ui.views.fileDirectory;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -8,9 +8,9 @@ import java.nio.file.Path;
 
 @NotThreadSafe
 final class BrowseDirectoryStrategy implements OpenStrategy {
-    private final @NotNull FileBrowser.View view;
+    private final @NotNull FileDirectory.View view;
 
-    BrowseDirectoryStrategy(@NotNull FileBrowser.View view) {
+    BrowseDirectoryStrategy(@NotNull FileDirectory.View view) {
         this.view = view;
     }
 

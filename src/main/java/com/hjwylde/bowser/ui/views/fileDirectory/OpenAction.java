@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui.views.fileBrowser;
+package com.hjwylde.bowser.ui.views.fileDirectory;
 
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.util.concurrent.SwingExecutors;
@@ -26,11 +26,11 @@ final class OpenAction extends AbstractAction {
     private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(OpenAction.class.getName(), LocaleModule.provideLocale());
     private static final @NotNull String RESOURCE_ERROR_NO_OPEN_STRATEGY_FOUND = "errorNoOpenStrategyFound";
 
-    private final @NotNull FileBrowser.View view;
+    private final @NotNull FileDirectory.View view;
 
     private final @NotNull List<OpenStrategy> openStrategies;
 
-    OpenAction(@NotNull FileBrowser.View view) {
+    OpenAction(@NotNull FileDirectory.View view) {
         this.view = view;
 
         openStrategies = Arrays.asList(
