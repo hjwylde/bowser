@@ -1,5 +1,6 @@
 package com.hjwylde.bowser.ui.views.filePreview;
 
+import com.hjwylde.bowser.modules.ExecutorServiceModule;
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.views.fileComponents.FileComponent;
 import com.hjwylde.bowser.ui.views.fileComponents.FileComponentFactory;
@@ -64,7 +65,7 @@ final class FilePreviewComponent implements FilePreview.View {
      */
     @Override
     public void setFile(@NotNull Path file) {
-        CompletableFuture.supplyAsync(() -> buildFileComponent(file))
+        CompletableFuture.supplyAsync(() -> buildFileComponent(file), ExecutorServiceModule.provideExecutorService())
                 .whenCompleteAsync(new OnFileComponentBuiltConsumer(), SwingExecutors.edt());
     }
 

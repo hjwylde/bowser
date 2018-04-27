@@ -1,5 +1,6 @@
 package com.hjwylde.bowser.ui.views.fileDirectory;
 
+import com.hjwylde.bowser.modules.ExecutorServiceModule;
 import com.hjwylde.bowser.modules.LocaleModule;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,6 +53,6 @@ final class FileDirectoryViewModel {
 
                 throw new CompletionException(e2);
             }
-        });
+        }, ExecutorServiceModule.provideExecutorService());
     }
 }

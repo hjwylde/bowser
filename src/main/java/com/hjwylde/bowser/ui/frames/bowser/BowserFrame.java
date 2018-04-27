@@ -1,11 +1,14 @@
 package com.hjwylde.bowser.ui.frames.bowser;
 
+import com.hjwylde.bowser.modules.ExecutorServiceModule;
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowser;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.Immutable;
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ResourceBundle;
 
 /**
@@ -27,6 +30,16 @@ public final class BowserFrame {
         this.tabbedFileBrowserView = tabbedFileBrowserView;
 
         initialiseTabChangeListener();
+        initialiseDismissListener();
+    }
+
+    private void initialiseDismissListener() {
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                ExecutorServiceModule.provideExecutorService().shutdown();
+            }
+        });
     }
 
     private void initialiseTabChangeListener() {

@@ -1,6 +1,7 @@
 package com.hjwylde.bowser.ui.frames.bowser;
 
 import com.github.robtimus.filesystems.ftp.FTPEnvironment;
+import com.hjwylde.bowser.modules.ExecutorServiceModule;
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.ui.dialogs.FtpConnectionDialog;
 import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowser;
@@ -13,10 +14,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystemNotFoundException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +59,9 @@ final class NewFtpTabAction implements Runnable {
             } catch (IOException e) {
                 throw new CompletionException(e);
             }
-        }).whenCompleteAsync(new OnGetFileSystemConsumer(dialog), SwingExecutors.edt());
+        }, ExecutorServiceModule.provideExecutorService()).whenCompleteAsync(
+                new OnGetFileSystemConsumer(dialog), SwingExecutors.edt()
+        );
     }
 
     private FileSystem getFileSystem(FtpConnectionDialog dialog) throws IOException {
@@ -91,7 +91,7 @@ final class NewFtpTabAction implements Runnable {
             }
         } catch (URISyntaxException e) {
             throw new IOException(RESOURCES.getString(RESOURCE_ERROR_BAD_HOST), e);
-        } catch (IOException e) {
+        } catch (FileSystemAlreadyExistsException | IOException e) {
             throw new IOException(RESOURCES.getString(RESOURCE_ERROR_UNABLE_TO_CREATE_FILE_SYSTEM), e);
         }
     }

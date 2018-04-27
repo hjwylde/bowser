@@ -1,5 +1,6 @@
 package com.hjwylde.bowser.ui.views.fileDirectory;
 
+import com.hjwylde.bowser.modules.ExecutorServiceModule;
 import com.hjwylde.bowser.modules.LocaleModule;
 import com.hjwylde.bowser.util.concurrent.SwingExecutors;
 import org.apache.logging.log4j.LogManager;
@@ -58,7 +59,9 @@ final class OpenAction extends AbstractAction {
             } catch (IOException e) {
                 throw new CompletionException(e);
             }
-        }).whenCompleteAsync(new OnOpenConsumer(), SwingExecutors.edt());
+        }, ExecutorServiceModule.provideExecutorService()).whenCompleteAsync(
+                new OnOpenConsumer(), SwingExecutors.edt()
+        );
     }
 
     private void open(@NotNull Path path) throws IOException {

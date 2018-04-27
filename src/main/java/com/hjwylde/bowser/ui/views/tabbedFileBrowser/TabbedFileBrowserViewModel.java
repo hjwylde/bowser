@@ -1,5 +1,6 @@
 package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 
+import com.hjwylde.bowser.modules.ExecutorServiceModule;
 import com.hjwylde.bowser.modules.LocaleModule;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,6 +43,6 @@ final class TabbedFileBrowserViewModel {
             // It's unlikely that there will be more than one root directory available. Windows is the only common situation
             // that this occurs in, and for that scenario we'd expect the USER_HOME path to exist.
             return it.next();
-        });
+        }, ExecutorServiceModule.provideExecutorService());
     }
 }
