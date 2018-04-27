@@ -20,6 +20,7 @@ public final class Bowser {
     private static final @NotNull String RESOURCE_FILE = "file";
     private static final @NotNull String RESOURCE_NEW_FTP_TAB = "newFtpTab";
     private static final @NotNull String RESOURCE_NEW_TAB = "newTab";
+    private static final @NotNull String RESOURCE_OPEN = "open";
 
     private Bowser() {
     }
@@ -93,6 +94,11 @@ public final class Bowser {
             newFtpTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             newFtpTabMenuItem.addActionListener(e -> new NewFtpTabAction(tabbedFileBrowserView).run());
             fileMenu.add(newFtpTabMenuItem);
+
+            JMenuItem openMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_OPEN), KeyEvent.VK_O);
+            openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            openMenuItem.addActionListener(e -> new OpenAction(tabbedFileBrowserView).run());
+            fileMenu.add(openMenuItem);
 
             fileMenu.addSeparator();
 
