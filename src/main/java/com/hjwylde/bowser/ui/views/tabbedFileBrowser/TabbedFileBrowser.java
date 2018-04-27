@@ -69,12 +69,14 @@ public final class TabbedFileBrowser {
                 throw new IllegalStateException("fileSystemFactory cannot be null.");
             }
 
-            // TODO (hjw): Localise the button name
+            // TODO (hjw): Localise the button names
             JButton navigateBackButton = new JButton("Back");
+            JButton navigateForwardButton = new JButton("Forward");
 
             JPanel buttonsPanel = new JPanel();
             buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
             buttonsPanel.add(navigateBackButton);
+            buttonsPanel.add(navigateForwardButton);
 
             JTabbedPane tabbedPane = new JTabbedPane();
             tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -85,7 +87,9 @@ public final class TabbedFileBrowser {
 
             TabbedFileBrowserViewModel viewModel = new TabbedFileBrowserViewModel();
 
-            return new TabbedFileBrowserComponent(panel, navigateBackButton, tabbedPane, fileSystemFactory, viewModel);
+            return new TabbedFileBrowserComponent(
+                    panel, navigateBackButton, navigateForwardButton, tabbedPane, fileSystemFactory, viewModel
+            );
         }
 
         public @NotNull Builder fileSystemFactory(@NotNull FileSystemFactory fileSystemFactory) {

@@ -29,15 +29,17 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
 
     private final @NotNull FileSystemFactory fileSystemFactory;
 
+    // TODO (hjw): Find a better way to deal with the navigation buttons. Perhaps these need to be a separate component
     TabbedFileBrowserComponent(@NotNull JComponent root, @NotNull JButton navigateBackButton,
-                               @NotNull JTabbedPane tabbedPane, @NotNull FileSystemFactory fileSystemFactory,
+                               @NotNull JButton navigateForwardButton, @NotNull JTabbedPane tabbedPane,
+                               @NotNull FileSystemFactory fileSystemFactory,
                                @NotNull TabbedFileBrowserViewModel viewModel) {
         this.root = root;
         this.tabbedPane = tabbedPane;
         this.fileSystemFactory = fileSystemFactory;
         this.viewModel = viewModel;
 
-        initialiseNavigateBackButton(navigateBackButton);
+        initialiseNavigationButtons(navigateBackButton, navigateForwardButton);
     }
 
     /**
@@ -111,11 +113,17 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         return Optional.of(fileBrowserViews.get(index));
     }
 
-    private void initialiseNavigateBackButton(JButton navigateBackButton) {
+    private void initialiseNavigationButtons(@NotNull JButton navigateBackButton, @NotNull JButton navigateForwardButton) {
         navigateBackButton.addActionListener(e -> {
             Optional<FileBrowser.View> mFileBrowserView = getCurrentFileBrowserView();
 
             mFileBrowserView.ifPresent(FileBrowser.View::navigateBack);
+        });
+
+        navigateForwardButton.addActionListener(e -> {
+            Optional<FileBrowser.View> mFileBrowserView = getCurrentFileBrowserView();
+
+            mFileBrowserView.ifPresent(FileBrowser.View::navigateForward);
         });
     }
 

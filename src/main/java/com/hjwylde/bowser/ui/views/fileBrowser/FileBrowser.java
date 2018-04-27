@@ -40,6 +40,12 @@ public final class FileBrowser {
          * Navigates back a directory. This has no effect if the file browser is currently pointing to the root.
          */
         void navigateBack();
+
+        /**
+         * Navigates forward a directory. This has no effect if the file browser is currently pointing at the last
+         * state.
+         */
+        void navigateForward();
     }
 
     @NotThreadSafe
