@@ -62,8 +62,9 @@ final class FileBrowserComponent implements FileBrowser.View {
      */
     @Override
     public void navigateBack() {
-        // Do nothing if at the root directory
+        // Attempt to navigate up to the parent
         if (currentState <= 0) {
+            navigateUp();
             return;
         }
 
@@ -107,5 +108,22 @@ final class FileBrowserComponent implements FileBrowser.View {
                 filePreviewView.clearFile();
             }
         });
+    }
+
+    private void navigateUp() {
+        if (currentState < 0) {
+            return;
+        }
+
+        Path directory = fileDirectoryState.get(currentState);
+        Path parent = directory.getParent();
+
+        // Do nothing if at the root directory
+        if (directory.equals(parent)) {
+            return;
+        }
+
+        fileDirectoryState.add(currentState, parent);
+        fileDirectoryView.setDirectory(parent);
     }
 }
