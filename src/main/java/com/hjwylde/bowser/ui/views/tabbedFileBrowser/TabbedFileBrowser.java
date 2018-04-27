@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
+import java.awt.*;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 
@@ -68,12 +69,23 @@ public final class TabbedFileBrowser {
                 throw new IllegalStateException("fileSystemFactory cannot be null.");
             }
 
+            // TODO (hjw): Localise the button name
+            JButton navigateBackButton = new JButton("Back");
+
+            JPanel buttonsPanel = new JPanel();
+            buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+            buttonsPanel.add(navigateBackButton);
+
             JTabbedPane tabbedPane = new JTabbedPane();
             tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.add(buttonsPanel, BorderLayout.PAGE_START);
+            panel.add(tabbedPane);
+
             TabbedFileBrowserViewModel viewModel = new TabbedFileBrowserViewModel();
 
-            return new TabbedFileBrowserComponent(tabbedPane, fileSystemFactory, viewModel);
+            return new TabbedFileBrowserComponent(panel, navigateBackButton, tabbedPane, fileSystemFactory, viewModel);
         }
 
         public @NotNull Builder fileSystemFactory(@NotNull FileSystemFactory fileSystemFactory) {

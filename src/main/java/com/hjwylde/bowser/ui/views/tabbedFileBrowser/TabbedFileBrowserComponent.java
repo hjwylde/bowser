@@ -9,25 +9,35 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
-import java.awt.*;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 @NotThreadSafe
 final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(TabbedFileBrowserComponent.class.getSimpleName());
 
+    private final @NotNull JComponent root;
     private final @NotNull JTabbedPane tabbedPane;
+
+    private final @NotNull List<FileBrowser.View> fileBrowserViews = new ArrayList<>();
 
     private final @NotNull TabbedFileBrowserViewModel viewModel;
 
     private final @NotNull FileSystemFactory fileSystemFactory;
 
-    TabbedFileBrowserComponent(@NotNull JTabbedPane tabbedPane, @NotNull FileSystemFactory fileSystemFactory, @NotNull TabbedFileBrowserViewModel viewModel) {
+    TabbedFileBrowserComponent(@NotNull JComponent root, @NotNull JButton navigateBackButton,
+                               @NotNull JTabbedPane tabbedPane, @NotNull FileSystemFactory fileSystemFactory,
+                               @NotNull TabbedFileBrowserViewModel viewModel) {
+        this.root = root;
         this.tabbedPane = tabbedPane;
         this.fileSystemFactory = fileSystemFactory;
         this.viewModel = viewModel;
+
+        initialiseNavigateBackButton(navigateBackButton);
     }
 
     /**
@@ -43,6 +53,8 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         FileBrowser.View fileBrowserView = FileBrowser.builder()
                 .startingPath(path)
                 .build();
+
+        fileBrowserViews.add(fileBrowserView);
 
         JComponent component = fileBrowserView.getComponent();
 
@@ -75,7 +87,7 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
      */
     @Override
     public @NotNull JComponent getComponent() {
-        return tabbedPane;
+        return root;
     }
 
     /**
@@ -83,10 +95,28 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
      */
     @Override
     public void removeCurrentTab() {
-        Component component = tabbedPane.getSelectedComponent();
-        if (component != null) {
-            tabbedPane.remove(component);
+        int index = tabbedPane.getSelectedIndex();
+        if (index >= 0) {
+            fileBrowserViews.remove(index);
+            tabbedPane.remove(index);
         }
+    }
+
+    private @NotNull Optional<FileBrowser.View> getCurrentFileBrowserView() {
+        int index = tabbedPane.getSelectedIndex();
+        if (index < 0) {
+            return Optional.empty();
+        }
+
+        return Optional.of(fileBrowserViews.get(index));
+    }
+
+    private void initialiseNavigateBackButton(JButton navigateBackButton) {
+        navigateBackButton.addActionListener(e -> {
+            Optional<FileBrowser.View> mFileBrowserView = getCurrentFileBrowserView();
+
+            mFileBrowserView.ifPresent(FileBrowser.View::navigateBack);
+        });
     }
 
     @NotThreadSafe

@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.Mockito.*;
 
 class TabbedFileBrowserComponentTests {
+    private JComponent root;
     private JTabbedPane tabbedPane;
 
     private FileSystemFactory fileSystemFactory;
@@ -23,6 +24,7 @@ class TabbedFileBrowserComponentTests {
 
     @BeforeEach
     void init() {
+        root = spy(JComponent.class);
         tabbedPane = spy(JTabbedPane.class);
         fileSystemFactory = mock(FileSystemFactory.class);
 
@@ -31,7 +33,8 @@ class TabbedFileBrowserComponentTests {
 
         TabbedFileBrowserViewModel viewModel = new TabbedFileBrowserViewModel();
 
-        component = new TabbedFileBrowserComponent(tabbedPane, fileSystemFactory, viewModel);
+        component = new TabbedFileBrowserComponent(root, mock(JButton.class), mock(JButton.class), tabbedPane,
+                fileSystemFactory, viewModel);
     }
 
     @AfterEach
@@ -73,7 +76,7 @@ class TabbedFileBrowserComponentTests {
         void returnsComponent() {
             JComponent result = component.getComponent();
 
-            assertEquals(tabbedPane, result);
+            assertEquals(root, result);
         }
     }
 

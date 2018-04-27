@@ -35,6 +35,11 @@ public final class FileBrowser {
          * @param listener the listener.
          */
         void addDirectoryChangeListener(@NotNull Consumer<Path> listener);
+
+        /**
+         * Navigates back a directory. This has no effect if the file browser is currently pointing to the root.
+         */
+        void navigateBack();
     }
 
     @NotThreadSafe
