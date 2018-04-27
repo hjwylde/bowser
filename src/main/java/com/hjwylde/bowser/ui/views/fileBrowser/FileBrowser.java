@@ -37,6 +37,13 @@ public final class FileBrowser {
         void addDirectoryChangeListener(@NotNull Consumer<Path> listener);
 
         /**
+         * Gets a title for this file browser.
+         *
+         * @return the title.
+         */
+        @NotNull String getTitle();
+
+        /**
          * Navigates back a directory. This has no effect if the file browser is currently pointing to the root.
          */
         void navigateBack();

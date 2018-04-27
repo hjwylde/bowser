@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,11 +102,27 @@ final class FileDirectoryComponent implements FileDirectory.View {
      * {@inheritDoc}
      */
     @Override
+    public @NotNull String getTitle() {
+        if (getFileSystem().equals(FileSystems.getDefault())) {
+            return directory.toString();
+        }
+
+        return directory.toUri().toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setDirectory(@NotNull Path directory) {
         OnGetChildrenConsumer handler = new OnGetChildrenConsumer(directory);
 
         viewModel.getChildren(directory)
                 .whenCompleteAsync(handler, SwingExecutors.edt());
+    }
+
+    private @NotNull FileSystem getFileSystem() {
+        return directory.getFileSystem();
     }
 
     private void initialiseActionMap() {

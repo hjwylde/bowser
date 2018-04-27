@@ -30,7 +30,7 @@ final class EmptyFileComponentFactory implements FileComponentFactory<FileCompon
      *
      * @return the singleton instance.
      */
-    public static @NotNull EmptyFileComponentFactory getInstance() {
+    static @NotNull EmptyFileComponentFactory getInstance() {
         return INSTANCE;
     }
 
@@ -44,18 +44,18 @@ final class EmptyFileComponentFactory implements FileComponentFactory<FileCompon
         return createFileComponent();
     }
 
-    public @NotNull FileComponent createFileComponent() {
-        TextFileComponentFactory fileComponentFactory = new TextFileComponentFactory();
-        String text = RESOURCES.getString(RESOURCE_EMPTY_LABEL);
-
-        return fileComponentFactory.createFileComponent(text);
-    }
-
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean isSupportedContentType(@NotNull String contentType) {
         return true;
+    }
+
+    @NotNull FileComponent createFileComponent() {
+        TextFileComponentFactory fileComponentFactory = new TextFileComponentFactory();
+        String text = RESOURCES.getString(RESOURCE_EMPTY_LABEL);
+
+        return fileComponentFactory.createFileComponent(text);
     }
 }

@@ -2,6 +2,7 @@ package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 
 import com.hjwylde.bowser.io.file.FileSystemFactory;
 import com.hjwylde.bowser.modules.LocaleModule;
+import com.hjwylde.bowser.ui.views.fileBrowser.FileBrowser;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 /**
  * {@link TabbedFileBrowser} provides the interfaces to create and use a component that adds/removes different file
@@ -48,6 +50,15 @@ public final class TabbedFileBrowser {
          * Adds a browser tab using the default file system factory.
          */
         void addTab();
+
+        /**
+         * Adds a tab change listener. The listener will be informed of the selected file browser whenever the current
+         * tab changes. When a listener is first added, it is immediately informed of the currently selected file
+         * browser.
+         *
+         * @param listener the listener.
+         */
+        void addTabChangeListener(Consumer<FileBrowser.View> listener);
 
         /**
          * Removes the current tab.

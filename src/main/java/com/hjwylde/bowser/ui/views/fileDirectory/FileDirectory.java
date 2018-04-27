@@ -59,6 +59,13 @@ public final class FileDirectory {
         @NotNull Optional<Path> getSelectedPath();
 
         /**
+         * Gets a title for this file directory.
+         *
+         * @return the title.
+         */
+        @NotNull String getTitle();
+
+        /**
          * Sets the current directory to the provided path. The view is to deal with asynchronously finding the
          * directory's children and refreshing the listing.
          *

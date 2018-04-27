@@ -53,6 +53,14 @@ final class FileBrowserComponent implements FileBrowser.View {
      * {@inheritDoc}
      */
     @Override
+    public @NotNull String getTitle() {
+        return fileDirectoryView.getTitle();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void navigateBack() {
         // Do nothing if at the root directory
         if (currentState <= 0) {

@@ -69,7 +69,7 @@ public final class Bowser {
             frame.pack();
             frame.setVisible(true);
 
-            return new BowserFrame(frame);
+            return new BowserFrame(frame, tabbedFileBrowserView);
         }
 
         public @NotNull Builder title(@NotNull String title) {

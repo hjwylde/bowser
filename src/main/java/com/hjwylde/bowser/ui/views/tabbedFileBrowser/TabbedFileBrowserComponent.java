@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 @NotThreadSafe
 final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
@@ -24,6 +25,8 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
     private final @NotNull JTabbedPane tabbedPane;
 
     private final @NotNull List<FileBrowser.View> fileBrowserViews = new ArrayList<>();
+
+    private final @NotNull List<Consumer<FileBrowser.View>> tabChangeListeners = new ArrayList<>();
 
     private final @NotNull TabbedFileBrowserViewModel viewModel;
 
@@ -40,6 +43,7 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         this.viewModel = viewModel;
 
         initialiseNavigationButtons(navigateBackButton, navigateForwardButton);
+        initialiseTabChangeListener();
     }
 
     /**
@@ -50,6 +54,9 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         addTab(fileSystemFactory.getFileSystem());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addTab(@NotNull Path path) {
         FileBrowser.View fileBrowserView = FileBrowser.builder()
@@ -70,6 +77,8 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
 
                 tabbedPane.setTitleAt(index, fileName.toString());
             }
+
+            notifyTabChangeListeners();
         });
     }
 
@@ -82,6 +91,18 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
 
         viewModel.selectStartingPath(fileSystem)
                 .whenCompleteAsync(handler, SwingExecutors.edt());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addTabChangeListener(Consumer<FileBrowser.View> listener) {
+        tabChangeListeners.add(listener);
+
+        Optional<FileBrowser.View> mFileBrowserView = getCurrentFileBrowserView();
+
+        mFileBrowserView.ifPresent(listener);
     }
 
     /**
@@ -101,6 +122,8 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         if (index >= 0) {
             fileBrowserViews.remove(index);
             tabbedPane.remove(index);
+
+            notifyTabChangeListeners();
         }
     }
 
@@ -125,6 +148,16 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
 
             mFileBrowserView.ifPresent(FileBrowser.View::navigateForward);
         });
+    }
+
+    private void initialiseTabChangeListener() {
+        tabbedPane.addChangeListener(e -> notifyTabChangeListeners());
+    }
+
+    private void notifyTabChangeListeners() {
+        Optional<FileBrowser.View> mFileBrowserView = getCurrentFileBrowserView();
+
+        mFileBrowserView.ifPresent(view -> tabChangeListeners.forEach(listener -> listener.accept(view)));
     }
 
     @NotThreadSafe
