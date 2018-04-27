@@ -1,6 +1,7 @@
 package com.hjwylde.bowser.ui.views.tabbedFileBrowser;
 
 import com.hjwylde.bowser.io.file.FileSystemFactory;
+import com.hjwylde.bowser.modules.LocaleModule;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
@@ -8,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
+import java.util.ResourceBundle;
 
 /**
  * {@link TabbedFileBrowser} provides the interfaces to create and use a component that adds/removes different file
@@ -15,6 +17,10 @@ import java.nio.file.Path;
  * which {@link FileSystem} they have backing them.
  */
 public final class TabbedFileBrowser {
+    private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(TabbedFileBrowser.class.getName(), LocaleModule.provideLocale());
+    private static final @NotNull String RESOURCE_BUTTON_BACK = "buttonBack";
+    private static final @NotNull String RESOURCE_BUTTON_FORWARD = "buttonForward";
+
     private TabbedFileBrowser() {
     }
 
@@ -70,8 +76,8 @@ public final class TabbedFileBrowser {
             }
 
             // TODO (hjw): Localise the button names
-            JButton navigateBackButton = new JButton("Back");
-            JButton navigateForwardButton = new JButton("Forward");
+            JButton navigateBackButton = new JButton(RESOURCES.getString(RESOURCE_BUTTON_BACK));
+            JButton navigateForwardButton = new JButton(RESOURCES.getString(RESOURCE_BUTTON_FORWARD));
 
             JPanel buttonsPanel = new JPanel();
             buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
