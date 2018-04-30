@@ -86,7 +86,6 @@ public final class TabbedFileBrowser {
                 throw new IllegalStateException("fileSystemFactory cannot be null.");
             }
 
-            // TODO (hjw): Localise the button names
             JButton navigateBackButton = new JButton(RESOURCES.getString(RESOURCE_BUTTON_BACK));
             JButton navigateForwardButton = new JButton(RESOURCES.getString(RESOURCE_BUTTON_FORWARD));
 
