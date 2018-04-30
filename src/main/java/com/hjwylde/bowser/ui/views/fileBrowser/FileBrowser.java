@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.function.Consumer;
 
 /**
@@ -53,6 +54,13 @@ public final class FileBrowser {
          * state.
          */
         void navigateForward();
+
+        /**
+         * Sorts the directory listing by the given comparator.
+         *
+         * @param comparator the comparator.
+         */
+        void sortDirectory(@NotNull Comparator<Path> comparator);
     }
 
     @NotThreadSafe

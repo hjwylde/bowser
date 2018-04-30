@@ -1,5 +1,6 @@
 package com.hjwylde.bowser.ui.views.fileDirectory;
 
+import com.hjwylde.bowser.ui.models.SortedListModel;
 import com.hjwylde.bowser.util.concurrent.SwingExecutors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +16,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -25,7 +27,7 @@ final class FileDirectoryComponent implements FileDirectory.View {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(FileDirectoryComponent.class.getSimpleName());
 
     private final @NotNull JList<FileNode> list;
-    private final @NotNull DefaultListModel<FileNode> listModel;
+    private final @NotNull SortedListModel<FileNode> listModel;
 
     private final @NotNull List<Consumer<Path>> directoryChangeListeners = new ArrayList<>();
     private final @NotNull List<Consumer<Optional<Path>>> selectedPathChangeListeners = new ArrayList<>();
@@ -34,7 +36,7 @@ final class FileDirectoryComponent implements FileDirectory.View {
 
     private @NotNull Path directory;
 
-    FileDirectoryComponent(@NotNull JList<FileNode> list, @NotNull DefaultListModel<FileNode> listModel,
+    FileDirectoryComponent(@NotNull JList<FileNode> list, @NotNull SortedListModel<FileNode> listModel,
                            @NotNull Path startingPath, @NotNull FileDirectoryViewModel viewModel) {
         this.list = list;
         this.listModel = listModel;
@@ -121,6 +123,14 @@ final class FileDirectoryComponent implements FileDirectory.View {
                 .whenCompleteAsync(handler, SwingExecutors.edt());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void sort(@NotNull Comparator<Path> comparator) {
+        listModel.setComparator((first, second) -> comparator.compare(first.getPath(), second.getPath()));
+    }
+
     private @NotNull FileSystem getFileSystem() {
         return directory.getFileSystem();
     }
@@ -196,7 +206,7 @@ final class FileDirectoryComponent implements FileDirectory.View {
         private void onSuccess(@NotNull List<Path> paths) {
             listModel.clear();
 
-            paths.forEach(path -> listModel.addElement(new FileNode(path)));
+            paths.forEach(path -> listModel.add(new FileNode(path)));
 
             FileDirectoryComponent.this.directory = directory;
             notifyDirectoryChangeListeners();

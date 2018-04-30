@@ -1,10 +1,12 @@
 package com.hjwylde.bowser.ui.views.fileDirectory;
 
+import com.hjwylde.bowser.ui.models.SortedListModel;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -72,6 +74,13 @@ public final class FileDirectory {
          * @param directory the new directory for listing.
          */
         void setDirectory(@NotNull Path directory);
+
+        /**
+         * Sorts the directory listing by the given comparator.
+         *
+         * @param comparator the comparator.
+         */
+        void sort(@NotNull Comparator<Path> comparator);
     }
 
     @NotThreadSafe
@@ -93,7 +102,7 @@ public final class FileDirectory {
                 throw new IllegalStateException("startingPath must be set.");
             }
 
-            DefaultListModel<FileNode> listModel = new DefaultListModel<>();
+            SortedListModel<FileNode> listModel = new SortedListModel<FileNode>(Comparator.naturalOrder());
             JList<FileNode> list = new JList<>(listModel);
 
             FileDirectoryViewModel viewModel = new FileDirectoryViewModel();

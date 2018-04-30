@@ -9,6 +9,10 @@ import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 /**
@@ -16,11 +20,15 @@ import java.util.ResourceBundle;
  */
 public final class Bowser {
     private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(Bowser.class.getName(), LocaleModule.provideLocale());
-    private static final @NotNull String RESOURCE_CLOSE_TAB = "closeTab";
     private static final @NotNull String RESOURCE_FILE = "file";
+    private static final @NotNull String RESOURCE_CLOSE_TAB = "closeTab";
     private static final @NotNull String RESOURCE_NEW_FTP_TAB = "newFtpTab";
     private static final @NotNull String RESOURCE_NEW_TAB = "newTab";
     private static final @NotNull String RESOURCE_OPEN = "open";
+    private static final @NotNull String RESOURCE_VIEW = "view";
+    private static final @NotNull String RESOURCE_SORT_BY = "sortBy";
+    private static final @NotNull String RESOURCE_SORT_BY_NAME = "sortByName";
+    private static final @NotNull String RESOURCE_SORT_BY_SIZE = "sortBySize";
 
     private Bowser() {
     }
@@ -37,6 +45,20 @@ public final class Bowser {
 
     @NotThreadSafe
     public static final class Builder {
+        private static final @NotNull Comparator<Path> NAME_COMPARATOR = Comparator.comparing(Path::getFileName);
+        private static final @NotNull Comparator<Path> SIZE_COMPARATOR = Comparator.comparing(path -> {
+            if (Files.isDirectory(path)) {
+                return -1L;
+            }
+
+            try {
+                return Files.size(path);
+            } catch (IOException ignored) {
+                // 0 is a valid size, so return -1
+                return -1L;
+            }
+        });
+
         private final @NotNull JFrame frame = new JFrame();
 
         private boolean built = false;
@@ -106,6 +128,20 @@ public final class Bowser {
             closeTabMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             closeTabMenuItem.addActionListener(e -> tabbedFileBrowserView.removeCurrentTab());
             fileMenu.add(closeTabMenuItem);
+
+            JMenu viewMenu = new JMenu(RESOURCES.getString(RESOURCE_VIEW));
+            menuBar.add(viewMenu);
+
+            JMenuItem sortByMenu = new JMenu(RESOURCES.getString(RESOURCE_SORT_BY));
+            viewMenu.add(sortByMenu);
+
+            JMenuItem sortByNameMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_SORT_BY_NAME));
+            sortByNameMenuItem.addActionListener(e -> new SortByAction(tabbedFileBrowserView, NAME_COMPARATOR).run());
+            sortByMenu.add(sortByNameMenuItem);
+
+            JMenuItem sortBySizeMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_SORT_BY_SIZE));
+            sortBySizeMenuItem.addActionListener(e -> new SortByAction(tabbedFileBrowserView, SIZE_COMPARATOR).run());
+            sortByMenu.add(sortBySizeMenuItem);
 
             return menuBar;
         }

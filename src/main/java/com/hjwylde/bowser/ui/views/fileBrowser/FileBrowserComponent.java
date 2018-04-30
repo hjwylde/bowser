@@ -8,6 +8,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -86,6 +87,14 @@ final class FileBrowserComponent implements FileBrowser.View {
         currentState++;
 
         fileDirectoryView.setDirectory(fileDirectoryState.get(currentState));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void sortDirectory(@NotNull Comparator<Path> comparator) {
+        fileDirectoryView.sort(comparator);
     }
 
     private void initialiseFileDirectoryStateListener() {

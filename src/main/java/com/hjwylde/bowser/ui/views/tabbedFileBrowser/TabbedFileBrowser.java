@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
@@ -59,6 +60,13 @@ public final class TabbedFileBrowser {
          * @param listener the listener.
          */
         void addTabChangeListener(Consumer<FileBrowser.View> listener);
+
+        /**
+         * Gets the current tab, or {@link Optional#empty()} if there are no tabs.
+         *
+         * @return the current tab, or {@link Optional#empty()}.
+         */
+        @NotNull Optional<FileBrowser.View> getCurrentTab();
 
         /**
          * Removes the current tab.

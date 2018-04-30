@@ -100,7 +100,7 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
     public void addTabChangeListener(Consumer<FileBrowser.View> listener) {
         tabChangeListeners.add(listener);
 
-        Optional<FileBrowser.View> mFileBrowserView = getCurrentFileBrowserView();
+        Optional<FileBrowser.View> mFileBrowserView = getCurrentTab();
 
         mFileBrowserView.ifPresent(listener);
     }
@@ -117,6 +117,19 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
      * {@inheritDoc}
      */
     @Override
+    public @NotNull Optional<FileBrowser.View> getCurrentTab() {
+        int index = tabbedPane.getSelectedIndex();
+        if (index < 0) {
+            return Optional.empty();
+        }
+
+        return Optional.of(fileBrowserViews.get(index));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void removeCurrentTab() {
         int index = tabbedPane.getSelectedIndex();
         if (index >= 0) {
@@ -127,24 +140,15 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         }
     }
 
-    private @NotNull Optional<FileBrowser.View> getCurrentFileBrowserView() {
-        int index = tabbedPane.getSelectedIndex();
-        if (index < 0) {
-            return Optional.empty();
-        }
-
-        return Optional.of(fileBrowserViews.get(index));
-    }
-
     private void initialiseNavigationButtons(@NotNull JButton navigateBackButton, @NotNull JButton navigateForwardButton) {
         navigateBackButton.addActionListener(e -> {
-            Optional<FileBrowser.View> mFileBrowserView = getCurrentFileBrowserView();
+            Optional<FileBrowser.View> mFileBrowserView = getCurrentTab();
 
             mFileBrowserView.ifPresent(FileBrowser.View::navigateBack);
         });
 
         navigateForwardButton.addActionListener(e -> {
-            Optional<FileBrowser.View> mFileBrowserView = getCurrentFileBrowserView();
+            Optional<FileBrowser.View> mFileBrowserView = getCurrentTab();
 
             mFileBrowserView.ifPresent(FileBrowser.View::navigateForward);
         });
@@ -155,7 +159,7 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
     }
 
     private void notifyTabChangeListeners() {
-        Optional<FileBrowser.View> mFileBrowserView = getCurrentFileBrowserView();
+        Optional<FileBrowser.View> mFileBrowserView = getCurrentTab();
 
         mFileBrowserView.ifPresent(view -> tabChangeListeners.forEach(listener -> listener.accept(view)));
     }
