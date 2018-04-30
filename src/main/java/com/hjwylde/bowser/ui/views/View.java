@@ -23,7 +23,9 @@ public interface View {
      * @param t the error to handle.
      */
     default void handleError(@NotNull Throwable t) {
+        JFrame parent = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, getComponent());
+
         // TODO (hjw): Localise the error title
-        JOptionPane.showMessageDialog(getComponent(), t.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(parent, t.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
