@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
@@ -99,6 +100,7 @@ public final class TabbedFileBrowser {
 
             JPanel buttonsPanel = new JPanel();
             buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+            buttonsPanel.setBorder(new EmptyBorder(8, 0, 0, 0));
             buttonsPanel.add(navigateBackButton);
             buttonsPanel.add(navigateForwardButton);
 
