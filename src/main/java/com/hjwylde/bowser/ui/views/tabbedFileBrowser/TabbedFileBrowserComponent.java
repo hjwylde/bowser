@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,9 +74,16 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
         fileBrowserView.addDirectoryChangeListener(directory -> {
             int index = tabbedPane.indexOfComponent(component);
             if (index != -1) {
-                Path fileName = directory.getFileName() != null ? directory.getFileName() : directory;
+                StringBuilder sb = new StringBuilder();
 
-                tabbedPane.setTitleAt(index, fileName.toString());
+                if (!directory.getFileSystem().equals(FileSystems.getDefault())) {
+                    sb.append(directory.getRoot().toUri().toString());
+                    sb.append(" - ");
+                }
+
+                sb.append(fileBrowserView.getTitle());
+
+                tabbedPane.setTitleAt(index, sb.toString());
             }
 
             notifyTabChangeListeners();

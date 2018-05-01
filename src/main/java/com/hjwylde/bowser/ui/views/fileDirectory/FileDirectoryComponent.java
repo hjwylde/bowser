@@ -13,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -105,11 +104,11 @@ final class FileDirectoryComponent implements FileDirectory.View {
      */
     @Override
     public @NotNull String getTitle() {
-        if (getFileSystem().equals(FileSystems.getDefault())) {
+        if (directory.getFileName() == null) {
             return directory.toString();
         }
 
-        return directory.toUri().toString();
+        return directory.getFileName().toString();
     }
 
     /**
