@@ -9,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLDecoder;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -77,7 +80,16 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
                 StringBuilder sb = new StringBuilder();
 
                 if (!directory.getFileSystem().equals(FileSystems.getDefault())) {
-                    sb.append(directory.getRoot().toUri().toString());
+                    URI uri = directory.getRoot().toUri();
+
+                    String fileSystemName;
+                    try {
+                        fileSystemName = URLDecoder.decode(uri.toString(), "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        fileSystemName = uri.toString();
+                    }
+
+                    sb.append(fileSystemName);
                     sb.append(" - ");
                 }
 

@@ -8,6 +8,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -32,9 +33,16 @@ final class CopyPathAction implements Runnable {
             return;
         }
 
-        String path = mPath.get().toUri().toString();
+        Path path = mPath.get();
+
+        String content;
+        if (path.getFileSystem().equals(FileSystems.getDefault())) {
+            content = path.toString();
+        } else {
+            content = path.toUri().toString();
+        }
 
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.setContents(new StringSelection(path.toString()), null);
+        clipboard.setContents(new StringSelection(content), null);
     }
 }
