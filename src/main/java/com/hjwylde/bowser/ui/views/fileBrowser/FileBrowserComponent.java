@@ -125,9 +125,14 @@ final class FileBrowserComponent implements FileBrowser.View {
         }
 
         Path directory = fileDirectoryState.get(currentState);
-        Path parent = directory.getParent();
 
         // Do nothing if at the root directory
+        if (directory.equals(directory.getRoot())) {
+            return;
+        }
+
+        Path parent = directory.getParent();
+
         if (directory.equals(parent)) {
             return;
         }
