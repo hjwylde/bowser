@@ -8,8 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -21,7 +19,7 @@ import java.util.concurrent.CompletionException;
 import java.util.function.BiConsumer;
 
 @NotThreadSafe
-final class OpenAction extends AbstractAction {
+final class OpenAction implements Runnable {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(OpenAction.class.getSimpleName());
 
     private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(OpenAction.class.getName(), LocaleModule.provideLocale());
@@ -45,7 +43,7 @@ final class OpenAction extends AbstractAction {
      * {@inheritDoc}
      */
     @Override
-    public void actionPerformed(ActionEvent event) {
+    public void run() {
         Optional<Path> mPath = view.getSelectedPath();
         if (!mPath.isPresent()) {
             LOGGER.debug("OpenAction called while no path is selected, doing nothing");

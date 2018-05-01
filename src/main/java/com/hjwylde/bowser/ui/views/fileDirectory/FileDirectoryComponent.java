@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -130,13 +129,14 @@ final class FileDirectoryComponent implements FileDirectory.View {
         listModel.setComparator((first, second) -> comparator.compare(first.getPath(), second.getPath()));
     }
 
-    private @NotNull FileSystem getFileSystem() {
-        return directory.getFileSystem();
-    }
-
     private void initialiseActionMap() {
         // TODO (hjw): Cyclic references -> is it possible to avoid this?
-        list.getActionMap().put(FileDirectoryAction.OPEN, new OpenAction(this));
+        list.getActionMap().put(FileDirectoryAction.OPEN, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new OpenAction(FileDirectoryComponent.this).run();
+            }
+        });
     }
 
     private void initialiseInputMap() {
@@ -145,18 +145,35 @@ final class FileDirectoryComponent implements FileDirectory.View {
 
     private void initialiseMouseListener() {
         list.addMouseListener(new MouseAdapter() {
+            private JPopupMenu popupMenu = new FileDirectoryPopupMenu(FileDirectoryComponent.this);
+
             /**
              * {@inheritDoc}
              */
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() != 2) {
-                    return;
+                if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
+                    doubleClick(e);
+                } else if (e.getClickCount() == 1 && SwingUtilities.isRightMouseButton(e)) {
+                    rightClick(e);
                 }
+            }
 
+            private void doubleClick(MouseEvent e) {
                 ActionEvent event = new ActionEvent(e, ActionEvent.ACTION_PERFORMED, "");
 
                 list.getActionMap().get(FileDirectoryAction.OPEN).actionPerformed(event);
+            }
+
+            private void rightClick(MouseEvent e) {
+                int index = list.locationToIndex(e.getPoint());
+                if (index < 0) {
+                    return;
+                }
+
+                list.setSelectedIndex(index);
+
+                popupMenu.show(e.getComponent(), e.getX(), e.getY());
             }
         });
     }
