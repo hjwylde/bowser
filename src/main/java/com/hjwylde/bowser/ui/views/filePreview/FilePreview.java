@@ -43,6 +43,7 @@ public final class FilePreview {
          */
         public @NotNull View build() {
             JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
             panel.setBackground(Color.WHITE);
 
             return new FilePreviewComponent(panel);
