@@ -66,11 +66,15 @@ public final class OpenDialog {
 
         JLabel pathLabel = new JLabel(RESOURCES.getString(RESOURCE_PATH));
 
-        Object[] message = {pathLabel, pathField};
+        JPanel panel = new JPanel(new GridLayout(1, 2));
+        panel.add(pathLabel);
+        panel.add(pathField);
+
+        pathField.addAncestorListener(new RequestFocusListener());
 
         return JOptionPane.showConfirmDialog(
                 parent,
-                message,
+                panel,
                 RESOURCES.getString(RESOURCE_TITLE),
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);

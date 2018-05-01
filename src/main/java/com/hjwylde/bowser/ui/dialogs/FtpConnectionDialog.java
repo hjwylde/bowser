@@ -121,11 +121,19 @@ public final class FtpConnectionDialog {
         JLabel usernameLabel = new JLabel(RESOURCES.getString(RESOURCE_USERNAME));
         JLabel passwordLabel = new JLabel(RESOURCES.getString(RESOURCE_PASSWORD));
 
-        Object[] message = {hostLabel, hostField, usernameLabel, usernameField, passwordLabel, passwordField};
+        JPanel panel = new JPanel(new GridLayout(3, 2));
+        panel.add(hostLabel);
+        panel.add(hostField);
+        panel.add(usernameLabel);
+        panel.add(usernameField);
+        panel.add(passwordLabel);
+        panel.add(passwordField);
+
+        hostField.addAncestorListener(new RequestFocusListener());
 
         return JOptionPane.showConfirmDialog(
                 parent,
-                message,
+                panel,
                 RESOURCES.getString(RESOURCE_TITLE),
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
