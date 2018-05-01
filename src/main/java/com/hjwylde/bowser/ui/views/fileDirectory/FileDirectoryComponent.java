@@ -204,8 +204,12 @@ final class FileDirectoryComponent implements FileDirectory.View {
 
         private void onSuccess(@NotNull List<Path> paths) {
             listModel.clear();
-
             paths.forEach(path -> listModel.add(new FileNode(path)));
+
+            if (!paths.isEmpty()) {
+                list.setSelectedIndex(0);
+                list.clearSelection();
+            }
 
             FileDirectoryComponent.this.directory = directory;
             notifyDirectoryChangeListeners();
