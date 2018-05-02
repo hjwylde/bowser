@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -84,7 +85,9 @@ final class BrowseArchiveStrategy implements OpenStrategy {
             Path tempDirectory = Files.createTempDirectory(null);
             archive = tempDirectory.resolve(path.getFileName().toString());
 
-            Files.copy(path, archive);
+            try (InputStream in = Files.newInputStream(path)) {
+                Files.copy(in, archive);
+            }
         }
 
         return FileSystems.newFileSystem(archive, null);
