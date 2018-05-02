@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
@@ -49,8 +50,13 @@ public final class OpenDialog {
      *
      * @return the path.
      */
-    public @NotNull Path getPath() throws URISyntaxException {
-        return Paths.get(getPathUri()).toAbsolutePath();
+    public @NotNull Path getPath() throws URISyntaxException, FileSystemNotFoundException {
+        URI uri = getPathUri();
+        if (uri.getScheme() == null) {
+            return Paths.get(getPathInput());
+        }
+
+        return Paths.get(uri);
     }
 
     /**

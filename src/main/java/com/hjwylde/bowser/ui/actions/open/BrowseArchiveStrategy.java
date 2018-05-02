@@ -1,6 +1,7 @@
-package com.hjwylde.bowser.ui.views.fileDirectory;
+package com.hjwylde.bowser.ui.actions.open;
 
 import com.hjwylde.bowser.modules.LocaleModule;
+import com.hjwylde.bowser.ui.views.fileDirectory.FileDirectory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -15,8 +16,8 @@ import java.nio.file.Path;
 import java.util.*;
 
 @NotThreadSafe
-final class BrowseArchiveStrategy implements OpenStrategy {
-    private static final @NotNull Logger LOGGER = LogManager.getLogger(FileDirectoryComponent.class.getSimpleName());
+public final class BrowseArchiveStrategy implements OpenStrategy {
+    private static final @NotNull Logger LOGGER = LogManager.getLogger(BrowseArchiveStrategy.class.getSimpleName());
 
     private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(BrowseArchiveStrategy.class.getName(), LocaleModule.provideLocale());
     private static final @NotNull String RESOURCE_ERROR = "error";
@@ -29,7 +30,7 @@ final class BrowseArchiveStrategy implements OpenStrategy {
 
     private final @NotNull FileDirectory.View view;
 
-    BrowseArchiveStrategy(@NotNull FileDirectory.View view) {
+    public BrowseArchiveStrategy(@NotNull FileDirectory.View view) {
         this.view = view;
     }
 

@@ -1,4 +1,4 @@
-package com.hjwylde.bowser.ui.views.fileDirectory;
+package com.hjwylde.bowser.ui.actions.open;
 
 import com.hjwylde.bowser.modules.LocaleModule;
 import org.jetbrains.annotations.NotNull;
@@ -12,8 +12,8 @@ import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 @Immutable
-final class OpenWithAssociatedApplicationStrategy implements OpenStrategy {
-    private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(OpenWithAssociatedApplicationStrategy.class.getName(), LocaleModule.provideLocale());
+public final class OpenFileWithAssociatedApplicationStrategy implements OpenStrategy {
+    private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(OpenFileWithAssociatedApplicationStrategy.class.getName(), LocaleModule.provideLocale());
     private static final @NotNull String RESOURCE_ERROR_DESKTOP_NOT_SUPPORTED = "errorDesktopNotSupported";
 
     /**

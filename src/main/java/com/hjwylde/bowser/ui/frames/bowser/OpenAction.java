@@ -1,33 +1,36 @@
 package com.hjwylde.bowser.ui.frames.bowser;
 
-import com.hjwylde.bowser.modules.ExecutorServiceModule;
 import com.hjwylde.bowser.modules.LocaleModule;
+import com.hjwylde.bowser.ui.actions.open.AbstractOpenAction;
+import com.hjwylde.bowser.ui.actions.open.OpenDirectoryInNewTabStrategy;
+import com.hjwylde.bowser.ui.actions.open.OpenFileWithAssociatedApplicationStrategy;
 import com.hjwylde.bowser.ui.dialogs.OpenDialog;
 import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowser;
-import com.hjwylde.bowser.util.concurrent.SwingExecutors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.concurrent.NotThreadSafe;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.function.BiConsumer;
 
 @NotThreadSafe
-final class OpenAction implements Runnable {
+final class OpenAction extends AbstractOpenAction<TabbedFileBrowser.View> {
     private static final @NotNull Logger LOGGER = LogManager.getLogger(OpenAction.class.getSimpleName());
 
     private static final @NotNull ResourceBundle RESOURCES = ResourceBundle.getBundle(OpenAction.class.getName(), LocaleModule.provideLocale());
     private static final @NotNull String RESOURCE_ERROR_BAD_URI = "errorBadUri";
-
-    private final @NotNull TabbedFileBrowser.View view;
+    private static final @NotNull String RESOURCE_ERROR_UNSUPPORTED_URI = "errorUnsupportedUri";
 
     OpenAction(@NotNull TabbedFileBrowser.View view) {
-        this.view = view;
+        super(view, Arrays.asList(
+                new OpenDirectoryInNewTabStrategy(view),
+                new OpenFileWithAssociatedApplicationStrategy()
+        ));
     }
 
     /**
@@ -36,7 +39,7 @@ final class OpenAction implements Runnable {
     @Override
     public void run() {
         OpenDialog dialog = OpenDialog.builder()
-                .parent(view.getComponent())
+                .parent(getView().getComponent())
                 .build();
 
         int result = dialog.show();
@@ -44,40 +47,23 @@ final class OpenAction implements Runnable {
             return;
         }
 
-        CompletableFuture.supplyAsync(() -> {
-            try {
-                return dialog.getPath();
-            } catch (URISyntaxException e) {
-                throw new CompletionException(RESOURCES.getString(RESOURCE_ERROR_BAD_URI), e);
-            }
-        }, ExecutorServiceModule.provideExecutorService()).whenCompleteAsync(
-                new OnGetPathConsumer(), SwingExecutors.edt()
-        );
-    }
+        try {
+            Path path = dialog.getPath();
 
-    @NotThreadSafe
-    private final class OnGetPathConsumer implements BiConsumer<Path, Throwable> {
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void accept(Path path, Throwable throwable) {
-            if (path != null) {
-                onSuccess(path);
-            } else if (throwable != null) {
-                onError(throwable);
-            }
-        }
+            openAsync(path);
+        } catch (FileSystemNotFoundException e) {
+            // TODO (hjw): Sadly FTP file systems will always through this. The file system needs to be created first
+            // before it can be found by a URI, but the FTP file system library doesn't properly look up already created
+            // file systems.
+            Exception e2 = new IOException(RESOURCES.getString(RESOURCE_ERROR_UNSUPPORTED_URI), e);
+            LOGGER.warn(e2.getMessage(), e2);
 
-        private void onError(@NotNull Throwable throwable) {
-            LOGGER.warn(throwable.getMessage(), throwable);
+            getView().handleError(e2);
+        } catch (URISyntaxException e) {
+            Exception e2 = new IOException(RESOURCES.getString(RESOURCE_ERROR_BAD_URI), e);
+            LOGGER.warn(e2.getMessage(), e2);
 
-            // throwable is a CompletionException, let's handle the actual cause
-            view.handleError(throwable.getCause());
-        }
-
-        private void onSuccess(@NotNull Path path) {
-            view.addTab(path);
+            getView().handleError(e2);
         }
     }
 }
