@@ -1,6 +1,7 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import com.hjwylde.bowser.ui.views.fileDirectory.FileDirectory;
+import com.hjwylde.bowser.ui.views.fileDirectory.FileNode;
 import com.hjwylde.bowser.ui.views.filePreview.FilePreview;
 import org.jetbrains.annotations.NotNull;
 
@@ -60,7 +61,7 @@ public final class FileBrowser {
          *
          * @param comparator the comparator.
          */
-        void sortDirectory(@NotNull Comparator<Path> comparator);
+        void sortDirectory(@NotNull Comparator<FileNode> comparator);
     }
 
     @NotThreadSafe

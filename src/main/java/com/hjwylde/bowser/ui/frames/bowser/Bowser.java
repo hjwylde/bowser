@@ -2,6 +2,7 @@ package com.hjwylde.bowser.ui.frames.bowser;
 
 import com.hjwylde.bowser.io.file.DefaultFileSystemFactory;
 import com.hjwylde.bowser.modules.LocaleModule;
+import com.hjwylde.bowser.ui.views.fileDirectory.FileNode;
 import com.hjwylde.bowser.ui.views.tabbedFileBrowser.TabbedFileBrowser;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,10 +10,6 @@ import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.ResourceBundle;
 
 /**
@@ -45,20 +42,6 @@ public final class Bowser {
 
     @NotThreadSafe
     public static final class Builder {
-        private static final @NotNull Comparator<Path> NAME_COMPARATOR = Comparator.comparing(Path::getFileName);
-        private static final @NotNull Comparator<Path> SIZE_COMPARATOR = Comparator.comparing(path -> {
-            if (Files.isDirectory(path)) {
-                return -1L;
-            }
-
-            try {
-                return Files.size(path);
-            } catch (IOException ignored) {
-                // 0 is a valid size, so return -1
-                return -1L;
-            }
-        });
-
         private final @NotNull JFrame frame = new JFrame();
 
         private boolean built = false;
@@ -136,11 +119,11 @@ public final class Bowser {
             viewMenu.add(sortByMenu);
 
             JMenuItem sortByNameMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_SORT_BY_NAME));
-            sortByNameMenuItem.addActionListener(e -> new SortByAction(tabbedFileBrowserView, NAME_COMPARATOR).run());
+            sortByNameMenuItem.addActionListener(e -> new SortByAction(tabbedFileBrowserView, FileNode.NAME_COMPARATOR).run());
             sortByMenu.add(sortByNameMenuItem);
 
             JMenuItem sortBySizeMenuItem = new JMenuItem(RESOURCES.getString(RESOURCE_SORT_BY_SIZE));
-            sortBySizeMenuItem.addActionListener(e -> new SortByAction(tabbedFileBrowserView, SIZE_COMPARATOR).run());
+            sortBySizeMenuItem.addActionListener(e -> new SortByAction(tabbedFileBrowserView, FileNode.SIZE_COMPARATOR).run());
             sortByMenu.add(sortBySizeMenuItem);
 
             return menuBar;

@@ -80,7 +80,7 @@ public final class FileDirectory {
          *
          * @param comparator the comparator.
          */
-        void sort(@NotNull Comparator<Path> comparator);
+        void sort(@NotNull Comparator<FileNode> comparator);
     }
 
     @NotThreadSafe

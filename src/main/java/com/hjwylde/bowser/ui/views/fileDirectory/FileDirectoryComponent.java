@@ -1,5 +1,6 @@
 package com.hjwylde.bowser.ui.views.fileDirectory;
 
+import com.hjwylde.bowser.lang.util.Pair;
 import com.hjwylde.bowser.ui.models.SortedListModel;
 import com.hjwylde.bowser.util.concurrent.SwingExecutors;
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -125,8 +127,8 @@ final class FileDirectoryComponent implements FileDirectory.View {
      * {@inheritDoc}
      */
     @Override
-    public void sort(@NotNull Comparator<Path> comparator) {
-        listModel.setComparator((first, second) -> comparator.compare(first.getPath(), second.getPath()));
+    public void sort(@NotNull Comparator<FileNode> comparator) {
+        listModel.setComparator(comparator);
     }
 
     private void initialiseActionMap() {
@@ -193,7 +195,7 @@ final class FileDirectoryComponent implements FileDirectory.View {
     }
 
     @NotThreadSafe
-    private final class OnGetChildrenConsumer implements BiConsumer<List<Path>, Throwable> {
+    private final class OnGetChildrenConsumer implements BiConsumer<List<Pair<Path, Optional<BasicFileAttributes>>>, Throwable> {
         private final @NotNull Path directory;
 
         OnGetChildrenConsumer(@NotNull Path directory) {
@@ -204,9 +206,9 @@ final class FileDirectoryComponent implements FileDirectory.View {
          * {@inheritDoc}
          */
         @Override
-        public void accept(List<Path> paths, Throwable throwable) {
-            if (paths != null) {
-                onSuccess(paths);
+        public void accept(List<Pair<Path, Optional<BasicFileAttributes>>> pairs, Throwable throwable) {
+            if (pairs != null) {
+                onSuccess(pairs);
             } else if (throwable != null) {
                 onError(throwable);
             }
@@ -219,11 +221,20 @@ final class FileDirectoryComponent implements FileDirectory.View {
             handleError(throwable.getCause());
         }
 
-        private void onSuccess(@NotNull List<Path> paths) {
+        private void onSuccess(@NotNull List<Pair<Path, Optional<BasicFileAttributes>>> pairs) {
             listModel.clear();
-            paths.forEach(path -> listModel.add(new FileNode(path)));
+            pairs.forEach(pair -> {
+                Path path = pair.getFirst();
+                Optional<BasicFileAttributes> mAttributes = pair.getSecond();
 
-            if (!paths.isEmpty()) {
+                FileNode fileNode = mAttributes
+                        .map(basicFileAttributes -> new FileNode(path, basicFileAttributes))
+                        .orElseGet(() -> new FileNode(path));
+
+                listModel.add(fileNode);
+            });
+
+            if (!pairs.isEmpty()) {
                 list.setSelectedIndex(0);
                 list.clearSelection();
             }

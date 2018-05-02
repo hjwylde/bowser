@@ -1,6 +1,7 @@
 package com.hjwylde.bowser.ui.views.fileBrowser;
 
 import com.hjwylde.bowser.ui.views.fileDirectory.FileDirectory;
+import com.hjwylde.bowser.ui.views.fileDirectory.FileNode;
 import com.hjwylde.bowser.ui.views.filePreview.FilePreview;
 import org.jetbrains.annotations.NotNull;
 
@@ -93,7 +94,7 @@ final class FileBrowserComponent implements FileBrowser.View {
      * {@inheritDoc}
      */
     @Override
-    public void sortDirectory(@NotNull Comparator<Path> comparator) {
+    public void sortDirectory(@NotNull Comparator<FileNode> comparator) {
         fileDirectoryView.sort(comparator);
     }
 
