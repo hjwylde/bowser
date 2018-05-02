@@ -6,6 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
@@ -47,8 +49,8 @@ public final class OpenDialog {
      *
      * @return the path.
      */
-    public @NotNull Path getPath() {
-        return Paths.get(getPathInput()).toAbsolutePath();
+    public @NotNull Path getPath() throws URISyntaxException {
+        return Paths.get(getPathUri()).toAbsolutePath();
     }
 
     /**
@@ -87,6 +89,10 @@ public final class OpenDialog {
      */
     private @NotNull String getPathInput() {
         return pathField.getText().trim();
+    }
+
+    private @NotNull URI getPathUri() throws URISyntaxException {
+        return new URI(getPathInput());
     }
 
     /**
