@@ -55,12 +55,13 @@ public final class TabbedFileBrowser {
 
         /**
          * Adds a tab change listener. The listener will be informed of the selected file browser whenever the current
-         * tab changes. When a listener is first added, it is immediately informed of the currently selected file
-         * browser.
+         * tab changes. If all tabs are removed and none is selected, the listener will be called with
+         * {@link Optional#empty()}. When a listener is first added, it is immediately informed of the currently
+         * selected file browser.
          *
          * @param listener the listener.
          */
-        void addTabChangeListener(Consumer<FileBrowser.View> listener);
+        void addTabChangeListener(Consumer<Optional<FileBrowser.View>> listener);
 
         /**
          * Gets the current tab, or {@link Optional#empty()} if there are no tabs.

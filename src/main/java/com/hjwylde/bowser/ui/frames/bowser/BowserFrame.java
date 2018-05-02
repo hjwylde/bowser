@@ -43,10 +43,12 @@ public final class BowserFrame {
     }
 
     private void initialiseTabChangeListener() {
-        tabbedFileBrowserView.addTabChangeListener(view -> {
-            String title = RESOURCES.getString(RESOURCE_TITLE) + " - " + view.getTitle();
+        tabbedFileBrowserView.addTabChangeListener(mView -> {
+            StringBuilder sb = new StringBuilder(RESOURCES.getString(RESOURCE_TITLE));
 
-            frame.setTitle(title);
+            mView.ifPresent(view -> sb.append(" - ").append(view.getTitle()));
+
+            frame.setTitle(sb.toString());
         });
     }
 }

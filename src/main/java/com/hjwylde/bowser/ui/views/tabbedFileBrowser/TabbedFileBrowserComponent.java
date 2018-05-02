@@ -30,7 +30,7 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
 
     private final @NotNull List<FileBrowser.View> fileBrowserViews = new ArrayList<>();
 
-    private final @NotNull List<Consumer<FileBrowser.View>> tabChangeListeners = new ArrayList<>();
+    private final @NotNull List<Consumer<Optional<FileBrowser.View>>> tabChangeListeners = new ArrayList<>();
 
     private final @NotNull TabbedFileBrowserViewModel viewModel;
 
@@ -117,12 +117,11 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
      * {@inheritDoc}
      */
     @Override
-    public void addTabChangeListener(Consumer<FileBrowser.View> listener) {
+    public void addTabChangeListener(Consumer<Optional<FileBrowser.View>> listener) {
         tabChangeListeners.add(listener);
 
         Optional<FileBrowser.View> mFileBrowserView = getCurrentTab();
-
-        mFileBrowserView.ifPresent(listener);
+        listener.accept(mFileBrowserView);
     }
 
     /**
@@ -181,7 +180,7 @@ final class TabbedFileBrowserComponent implements TabbedFileBrowser.View {
     private void notifyTabChangeListeners() {
         Optional<FileBrowser.View> mFileBrowserView = getCurrentTab();
 
-        mFileBrowserView.ifPresent(view -> tabChangeListeners.forEach(listener -> listener.accept(view)));
+        tabChangeListeners.forEach(listener -> listener.accept(mFileBrowserView));
     }
 
     @NotThreadSafe
